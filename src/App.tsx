@@ -68,7 +68,6 @@ function App() {
   };
 
   const showHeaderFooter = !['login', 'coins', 'payment-summary', 'payment-gateway'].includes(currentPage);
-  const showHeaderFooter = !['login', 'coins', 'payment-summary', 'payment-gateway', 'creator-registration'].includes(currentPage);
 
   return (
     <div className="min-h-screen flex flex-col">
