@@ -1,0 +1,364 @@
+import React, { useState } from 'react';
+import { ArrowLeft, Upload, X, CheckCircle, User, Phone, Mail, Calendar, Instagram, Building } from 'lucide-react';
+
+interface CreatorRegistrationFormProps {
+  onNavigate: (page: string) => void;
+}
+
+export default function CreatorRegistrationForm({ onNavigate }: CreatorRegistrationFormProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    isAbove18: false,
+    instagramHandle: '',
+    agency: ''
+  });
+  
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [dragActive, setDragActive] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const agencies = [
+    'Independent Creator',
+    'Talent Management Agency',
+    'Digital Marketing Agency',
+    'Entertainment Company',
+    'Media House',
+    'Other'
+  ];
+
+  const handleInputChange = (field: string, value: string | boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleImageUpload = (files: FileList | null) => {
+    if (!files) return;
+    
+    const newImages = Array.from(files).slice(0, 3 - uploadedImages.length);
+    setUploadedImages(prev => [...prev, ...newImages]);
+  };
+
+  const removeImage = (index: number) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImageUpload(e.dataTransfer.files);
+    }
+  };
+
+  const isFormValid = () => {
+    return (
+      formData.name.trim() &&
+      formData.phone.length === 10 &&
+      formData.email.includes('@') &&
+      formData.isAbove18 &&
+      uploadedImages.length === 3 &&
+      formData.agency &&
+      formData.instagramHandle.trim()
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid()) return;
+
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert('Application submitted successfully! We will review your profile and get back to you within 24 hours.');
+      onNavigate('home');
+    }, 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <button 
+              onClick={() => onNavigate('creators')}
+              className="flex items-center text-purple-600 hover:text-purple-700 transition-colors"
+            >
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              Back
+            </button>
+            <h1 className="text-lg font-semibold text-gray-800">Become a Creator</h1>
+            <div className="w-20"></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="bg-gradient-to-r from-purple-600 to-violet-600 rounded-3xl p-8 text-white mb-8">
+          <h2 className="text-3xl font-bold mb-4">Join Our Creator Community</h2>
+          <p className="text-purple-100 leading-relaxed">
+            Fill out this form to start your journey as a Biffle creator. We'll review your application 
+            and get back to you within 24 hours.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Personal Information */}
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <User className="h-6 w-6 mr-2 text-purple-600" />
+              Personal Information
+            </h3>
+
+            <div className="space-y-6">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Please enter your name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  placeholder="Your full name"
+                  required
+                />
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Please enter your phone number *
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    placeholder="9876543210"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Provide your email address *
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    placeholder="your.email@example.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Age Verification */}
+              <div>
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.isAbove18}
+                    onChange={(e) => handleInputChange('isAbove18', e.target.checked)}
+                    className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    required
+                  />
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="h-5 w-5 text-gray-400" />
+                    <span className="text-gray-700">Are you 18 years and above? *</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Image Upload */}
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <Upload className="h-6 w-6 mr-2 text-purple-600" />
+              Profile Images
+            </h3>
+
+            <p className="text-gray-600 mb-6">
+              Upload 3 high-quality photos of yourself. These will be displayed on your creator profile.
+            </p>
+
+            {/* Upload Area */}
+            <div
+              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
+                dragActive 
+                  ? 'border-purple-500 bg-purple-50' 
+                  : uploadedImages.length >= 3 
+                    ? 'border-gray-200 bg-gray-50' 
+                    : 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
+              }`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+            >
+              {uploadedImages.length < 3 ? (
+                <>
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 mb-2">
+                    Drag and drop images here, or{' '}
+                    <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
+                      browse files
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e.target.files)}
+                        className="hidden"
+                      />
+                    </label>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {uploadedImages.length}/3 images uploaded
+                  </p>
+                </>
+              ) : (
+                <div className="flex items-center justify-center space-x-2 text-green-600">
+                  <CheckCircle className="h-6 w-6" />
+                  <span className="font-medium">All 3 images uploaded!</span>
+                </div>
+              )}
+            </div>
+
+            {/* Image Preview */}
+            {uploadedImages.length > 0 && (
+              <div className="grid grid-cols-3 gap-4 mt-6">
+                {uploadedImages.map((image, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`Upload ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-xl"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Professional Information */}
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <Building className="h-6 w-6 mr-2 text-purple-600" />
+              Professional Information
+            </h3>
+
+            <div className="space-y-6">
+              {/* Agency */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select your agency *
+                </label>
+                <select
+                  value={formData.agency}
+                  onChange={(e) => handleInputChange('agency', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  required
+                >
+                  <option value="">Choose your agency type</option>
+                  {agencies.map((agency) => (
+                    <option key={agency} value={agency}>
+                      {agency}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Instagram Handle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Share your Instagram handle *
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Instagram className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
+                    <span className="text-gray-500">@</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={formData.instagramHandle}
+                    onChange={(e) => handleInputChange('instagramHandle', e.target.value.replace('@', ''))}
+                    className="w-full pl-16 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    placeholder="your_instagram_handle"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <div className="text-center">
+              <button
+                type="submit"
+                disabled={!isFormValid() || isSubmitting}
+                className="bg-mint-500 text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                style={{ backgroundColor: '#27CDB1' }}
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Submitting Application...</span>
+                  </div>
+                ) : (
+                  'Submit Application'
+                )}
+              </button>
+              
+              <p className="text-sm text-gray-500 mt-4">
+                By submitting, you agree to our Terms of Service and Privacy Policy
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

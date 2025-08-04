@@ -7,8 +7,9 @@ import LoginPage from './components/LoginPage';
 import CoinPackages from './components/CoinPackages';
 import PaymentSummary from './components/PaymentSummary';
 import PaymentGateway from './components/PaymentGateway';
+import CreatorRegistrationForm from './components/CreatorRegistrationForm';
 
-type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support';
+type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -31,6 +32,8 @@ function App() {
         return <PaymentSummary onNavigate={handleNavigation} />;
       case 'payment-gateway':
         return <PaymentGateway onNavigate={handleNavigation} />;
+      case 'creator-registration':
+        return <CreatorRegistrationForm onNavigate={handleNavigation} />;
       case 'safety':
         return (
           <div className="min-h-screen bg-gray-50 py-20">
@@ -65,6 +68,7 @@ function App() {
   };
 
   const showHeaderFooter = !['login', 'coins', 'payment-summary', 'payment-gateway'].includes(currentPage);
+  const showHeaderFooter = !['login', 'coins', 'payment-summary', 'payment-gateway', 'creator-registration'].includes(currentPage);
 
   return (
     <div className="min-h-screen flex flex-col">

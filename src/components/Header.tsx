@@ -68,7 +68,7 @@ export default function Header({ currentPage = 'home', onNavigate }: HeaderProps
               Login
             </button>
             <button 
-              onClick={() => handleNavigation('creators')}
+              onClick={() => handleNavigation('creator-registration')}
               className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
             >
               Become a Creator
@@ -120,7 +120,7 @@ export default function Header({ currentPage = 'home', onNavigate }: HeaderProps
                   Login
                 </button>
                 <button 
-                  onClick={() => handleNavigation('creators')}
+                  onClick={() => handleNavigation('creator-registration')}
                   className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-2 rounded-full font-medium w-fit"
                 >
                   Become a Creator

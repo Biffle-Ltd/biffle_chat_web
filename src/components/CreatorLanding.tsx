@@ -34,7 +34,7 @@ export default function CreatorLanding({ onNavigate }: CreatorLandingProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
-                onClick={() => onNavigate('login')}
+                onClick={() => onNavigate('creator-registration')}
                 className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
                 style={{ backgroundColor: '#27CDB1' }}
               >
@@ -331,7 +331,7 @@ export default function CreatorLanding({ onNavigate }: CreatorLandingProps) {
             Join thousands of creators who are already monetizing their passion on Biffle
           </p>
           <button 
-            onClick={() => onNavigate('login')}
+            onClick={() => onNavigate('creator-registration')}
             className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
             style={{ backgroundColor: '#27CDB1' }}
           >
