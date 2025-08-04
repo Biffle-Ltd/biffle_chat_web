@@ -5,35 +5,124 @@ interface LoginPageProps {
   onNavigate: (page: string) => void;
 }
 
+// API configuration
+const apiUri = 'https://api.biffle.com'; // Replace with your actual API base URL
+
 export default function LoginPage({ onNavigate }: LoginPageProps) {
   const [step, setStep] = useState<'phone' | 'otp' | 'profile'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [userType, setUserType] = useState<'fan' | 'creator' | null>(null);
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [countryCode, setCountryCode] = useState('91');
 
-  const handlePhoneSubmit = (e: React.FormEvent) => {
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phoneNumber.length === 10) {
-      setStep('otp');
+    if (phoneNumber.length !== 10) return;
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${apiUri}/api/v1/auth/login/otp/request/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          country_code: countryCode,
+          phone_number: phoneNumber,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStep('otp');
+      } else {
+        setError(data.message || 'Failed to send OTP. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleOtpSubmit = (e: React.FormEvent) => {
+  const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length === 6) {
-      if (isLogin) {
-        // Existing user - redirect based on type
-        onNavigate('coins'); // or dashboard based on user type
+    if (otp.length !== 6) return;
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Login with OTP
+      const loginResponse = await fetch(`${apiUri}/api/v1/auth/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          provider: 'phone',
+          country_code: countryCode,
+          phone_number: phoneNumber,
+          otp: otp,
+        }),
+      });
+
+      const loginData = await loginResponse.json();
+
+      if (loginResponse.ok && loginData.token) {
+        // Get user details
+        const userDetailsResponse = await fetch(`${apiUri}/api/v1/user_center/details/get-user-details/`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${loginData.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const userDetailsData = await userDetailsResponse.json();
+
+        if (userDetailsResponse.ok) {
+          // Store user data in localStorage or state management
+          localStorage.setItem('authToken', loginData.token);
+          localStorage.setItem('userData', JSON.stringify(userDetailsData));
+
+          // Check if user is new or existing based on user details
+          if (userDetailsData.is_new_user || !userDetailsData.user_type) {
+            // New user - ask for user type
+            setStep('profile');
+          } else {
+            // Existing user - redirect based on type
+            if (userDetailsData.user_type === 'creator') {
+              onNavigate('creator-dashboard');
+            } else {
+              onNavigate('coins');
+            }
+          }
+        } else {
+          setError('Failed to get user details. Please try again.');
+        }
       } else {
-        // New user - ask for user type
-        setStep('profile');
+        setError(loginData.message || 'Invalid OTP. Please try again.');
       }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleProfileSubmit = (type: 'fan' | 'creator') => {
     setUserType(type);
+    
+    // Update user type in backend if needed
+    // You might want to call an API to update user type here
+    
     if (type === 'fan') {
       onNavigate('coins');
     } else {
@@ -41,6 +130,35 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
     }
   };
 
+  const handleResendOtp = async () => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${apiUri}/api/v1/auth/login/otp/request/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          country_code: countryCode,
+          phone_number: phoneNumber,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('OTP sent successfully!');
+      } else {
+        setError(data.message || 'Failed to resend OTP. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -68,6 +186,12 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                 </p>
               </div>
 
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                  <p className="text-red-600 text-sm">{error}</p>
+                </div>
+              )}
+
               <form onSubmit={handlePhoneSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -75,7 +199,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500">+91</span>
+                      <span className="text-gray-500">+{countryCode}</span>
                     </div>
                     <input
                       type="tel"
@@ -83,6 +207,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                       onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                       className="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                       placeholder="9876543210"
+                      disabled={isLoading}
                       required
                     />
                   </div>
@@ -93,10 +218,17 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
 
                 <button
                   type="submit"
-                  disabled={phoneNumber.length !== 10}
+                  disabled={phoneNumber.length !== 10 || isLoading}
                   className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
-                  Send OTP
+                  {isLoading ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Sending OTP...</span>
+                    </div>
+                  ) : (
+                    'Send OTP'
+                  )}
                 </button>
               </form>
 
@@ -137,9 +269,15 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                 </div>
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">Verify Phone</h1>
                 <p className="text-gray-600">
-                  Enter the 6-digit code sent to +91 {phoneNumber}
+                  Enter the 6-digit code sent to +{countryCode} {phoneNumber}
                 </p>
               </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                  <p className="text-red-600 text-sm">{error}</p>
+                </div>
+              )}
 
               <form onSubmit={handleOtpSubmit} className="space-y-6">
                 <div>
@@ -152,21 +290,33 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     className="block w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-center text-lg tracking-widest"
                     placeholder="000000"
+                    disabled={isLoading}
                     required
                   />
                 </div>
 
                 <button
                   type="submit"
-                  disabled={otp.length !== 6}
+                  disabled={otp.length !== 6 || isLoading}
                   className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
-                  Verify & Continue
+                  {isLoading ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Verifying...</span>
+                    </div>
+                  ) : (
+                    'Verify & Continue'
+                  )}
                 </button>
               </form>
 
               <div className="mt-6 text-center">
-                <button className="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                <button 
+                  onClick={handleResendOtp}
+                  disabled={isLoading}
+                  className="text-purple-600 hover:text-purple-700 text-sm font-medium disabled:opacity-50"
+                >
                   Didn't receive code? Resend
                 </button>
               </div>
