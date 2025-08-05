@@ -207,7 +207,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                     onClick={() => onNavigate('login')}
                     className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                   >
-                    Get Coins
+                    Buy Coins
                   </button>
                 </div>
               ))}

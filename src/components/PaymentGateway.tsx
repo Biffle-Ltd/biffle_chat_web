@@ -3,14 +3,19 @@ import { ArrowLeft, Shield, CreditCard, Smartphone, Building, Wallet, CheckCircl
 
 interface PaymentGatewayProps {
   onNavigate: (page: string) => void;
+  selectedPackage: any;
+  appliedCoupon: string | null;
 }
 
-export default function PaymentGateway({ onNavigate }: PaymentGatewayProps) {
+export default function PaymentGateway({ onNavigate, selectedPackage, appliedCoupon }: PaymentGatewayProps) {
   const [selectedMethod, setSelectedMethod] = useState<'upi' | 'card' | 'netbanking' | 'wallet'>('upi');
   const [upiId, setUpiId] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const finalAmount = 405; // From previous page
+  // Calculate final amount based on selected package and coupon
+  const packageData = selectedPackage || { coins: 500, discountedPrice: 450 };
+  const additionalDiscount = appliedCoupon === 'FIRST10' ? 45 : 0;
+  const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -54,7 +59,7 @@ export default function PaymentGateway({ onNavigate }: PaymentGatewayProps) {
           <div className="text-center">
             <p className="text-purple-100 mb-2">Amount to Pay</p>
             <p className="text-4xl font-bold mb-2">₹{finalAmount}</p>
-            <p className="text-purple-200 text-sm">For 500 Biffle Coins</p>
+            <p className="text-purple-200 text-sm">For {packageData.coins} Biffle Coins</p>
           </div>
         </div>
 

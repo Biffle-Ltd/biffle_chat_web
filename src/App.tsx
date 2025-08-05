@@ -11,13 +11,73 @@ import CreatorRegistrationForm from './components/CreatorRegistrationForm';
 
 type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration';
 
+interface User {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  user_type: 'fan' | 'creator';
+  is_new_user: boolean;
+  token: string;
+}
+
+interface SelectedPackage {
+  id: number;
+  coins: number;
+  price: number;
+  originalPrice: number;
+  discount: number;
+}
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [user, setUser] = useState<User | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<SelectedPackage | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+
+  // Check for stored user data on app load
+  React.useEffect(() => {
+    const storedToken = localStorage.getItem('authToken');
+    const storedUserData = localStorage.getItem('userData');
+    
+    if (storedToken && storedUserData) {
+      try {
+        const userData = JSON.parse(storedUserData);
+        setUser({ ...userData, token: storedToken });
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+      }
+    }
+  }, []);
 
   const handleNavigation = (page: string) => {
+    // If trying to access coins page without login, redirect to login
+    if (page === 'coins' && !user) {
+      setCurrentPage('login');
+      return;
+    }
     setCurrentPage(page as Page);
   };
 
+  const handleLogin = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('authToken', userData.token);
+    localStorage.setItem('userData', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setSelectedPackage(null);
+    setAppliedCoupon(null);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    setCurrentPage('home');
+  };
+
+  const handlePackageSelect = (pkg: SelectedPackage) => {
+    setSelectedPackage(pkg);
+  };
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -25,13 +85,22 @@ function App() {
       case 'creators':
         return <CreatorLanding onNavigate={handleNavigation} />;
       case 'login':
-        return <LoginPage onNavigate={handleNavigation} />;
+        return <LoginPage onNavigate={handleNavigation} onLogin={handleLogin} />;
       case 'coins':
-        return <CoinPackages onNavigate={handleNavigation} />;
+        return <CoinPackages onNavigate={handleNavigation} onPackageSelect={handlePackageSelect} user={user} />;
       case 'payment-summary':
-        return <PaymentSummary onNavigate={handleNavigation} />;
+        return <PaymentSummary 
+          onNavigate={handleNavigation} 
+          selectedPackage={selectedPackage}
+          appliedCoupon={appliedCoupon}
+          onCouponApply={setAppliedCoupon}
+        />;
       case 'payment-gateway':
-        return <PaymentGateway onNavigate={handleNavigation} />;
+        return <PaymentGateway 
+          onNavigate={handleNavigation} 
+          selectedPackage={selectedPackage}
+          appliedCoupon={appliedCoupon}
+        />;
       case 'creator-registration':
         return <CreatorRegistrationForm onNavigate={handleNavigation} />;
       case 'safety':
@@ -71,7 +140,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {showHeaderFooter && <Header currentPage={currentPage} onNavigate={handleNavigation} />}
+      {showHeaderFooter && <Header currentPage={currentPage} onNavigate={handleNavigation} user={user} onLogout={handleLogout} />}
       <main className="flex-1">
         {renderPage()}
       </main>

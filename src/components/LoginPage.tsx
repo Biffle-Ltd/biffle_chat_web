@@ -3,12 +3,13 @@ import { ArrowLeft, Phone, MessageSquare, Shield, CheckCircle } from 'lucide-rea
 
 interface LoginPageProps {
   onNavigate: (page: string) => void;
+  onLogin: (userData: any) => void;
 }
 
 // API configuration
-const apiUri = 'https://prod.biffle.ai'; // Replace with your actual API base URL
+const apiUri = 'https://prod.biffle.ai';
 
-export default function LoginPage({ onNavigate }: LoginPageProps) {
+export default function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
   const [step, setStep] = useState<'phone' | 'otp' | 'profile'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
@@ -89,8 +90,12 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
 
         if (userDetailsResponse.ok) {
           // Store user data in localStorage or state management
-          localStorage.setItem('authToken', loginData.token);
-          localStorage.setItem('userData', JSON.stringify(userDetailsData));
+          const userData = {
+            ...userDetailsData,
+            token: loginData.token
+          };
+          
+          onLogin(userData);
 
           // Check if user is new or existing based on user details
           if (userDetailsData.is_new_user || !userDetailsData.user_type) {

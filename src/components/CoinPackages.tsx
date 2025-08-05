@@ -3,11 +3,13 @@ import { ArrowLeft, Coins, Tag, ShoppingCart, Gift, Shield, CheckCircle, Star, T
 
 interface CoinPackagesProps {
   onNavigate: (page: string) => void;
+  onPackageSelect: (pkg: any) => void;
+  user: any;
 }
 
-export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
+export default function CoinPackages({ onNavigate, onPackageSelect, user }: CoinPackagesProps) {
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
-  const [currentBalance] = useState(0);
+  const [currentBalance] = useState(user?.coin_balance || 0);
   const [currentBenefit, setCurrentBenefit] = useState(0);
 
   const packages = [
@@ -44,6 +46,7 @@ export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
 
   const handlePackageSelect = (pkg: typeof packages[0]) => {
     setSelectedPackage(pkg.id);
+    onPackageSelect(pkg);
   };
 
   const handleBuyNow = () => {
