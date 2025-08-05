@@ -82,12 +82,20 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
                 </div>
               </div>
             ) : (
-              <button 
-                onClick={() => handleNavigation('coins')}
-                className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
-              >
-                Buy Coins
-              </button>
+              <div className="flex items-center space-x-4">
+                <button 
+                  onClick={() => handleNavigation('login')}
+                  className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
+                >
+                  Login
+                </button>
+                <button 
+                  onClick={() => handleNavigation('login')}
+                  className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
+                >
+                  Buy Coins
+                </button>
+              </div>
             )}
             <button 
               onClick={() => handleNavigation('creator-registration')}
@@ -154,12 +162,20 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
                     </div>
                   </div>
                 ) : (
-                  <button 
-                    onClick={() => handleNavigation('coins')}
-                    className="text-left text-purple-600 font-medium"
-                  >
-                    Buy Coins
-                  </button>
+                  <div className="space-y-3">
+                    <button 
+                      onClick={() => handleNavigation('login')}
+                      className="text-left text-purple-600 font-medium"
+                    >
+                      Login
+                    </button>
+                    <button 
+                      onClick={() => handleNavigation('login')}
+                      className="text-left text-purple-600 font-medium"
+                    >
+                      Buy Coins
+                    </button>
+                  </div>
                 )}
                 <button 
                   onClick={() => handleNavigation('creator-registration')}

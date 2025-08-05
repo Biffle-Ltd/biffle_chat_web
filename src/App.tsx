@@ -8,8 +8,13 @@ import CoinPackages from './components/CoinPackages';
 import PaymentSummary from './components/PaymentSummary';
 import PaymentGateway from './components/PaymentGateway';
 import CreatorRegistrationForm from './components/CreatorRegistrationForm';
+import AboutUsPage from './components/AboutUsPage';
+import GuidelinesPage from './components/GuidelinesPage';
+import PrivacyPage from './components/PrivacyPage';
+import SafetyPage from './components/SafetyPage';
+import TermsPage from './components/TermsPage';
 
-type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration';
+type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration' | 'about' | 'guidelines' | 'privacy' | 'terms';
 
 interface User {
   id: string;
@@ -63,6 +68,9 @@ function App() {
       return;
     }
     setCurrentPage(page as Page);
+    
+    // Scroll to top when navigating to a new page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogin = (userData: User) => {
@@ -86,7 +94,7 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <LandingPage onNavigate={handleNavigation} />;
+        return <LandingPage onNavigate={handleNavigation} user={user} />;
       case 'creators':
         return <CreatorLanding onNavigate={handleNavigation} />;
       case 'login':
@@ -108,20 +116,16 @@ function App() {
         />;
       case 'creator-registration':
         return <CreatorRegistrationForm onNavigate={handleNavigation} />;
+      case 'about':
+        return <AboutUsPage />;
+      case 'guidelines':
+        return <GuidelinesPage />;
+      case 'privacy':
+        return <PrivacyPage />;
+      case 'terms':
+        return <TermsPage />;
       case 'safety':
-        return (
-          <div className="min-h-screen bg-gray-50 py-20">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-4xl font-bold text-gray-800 mb-8">Safety & Compliance</h1>
-              <div className="bg-white rounded-3xl shadow-lg p-8">
-                <p className="text-gray-600 leading-relaxed">
-                  At Biffle, user safety is our top priority. We maintain strict compliance with industry standards 
-                  and implement comprehensive moderation policies to ensure a safe environment for all users.
-                </p>
-              </div>
-            </div>
-          </div>
-        );
+        return <SafetyPage />;
       case 'support':
         return (
           <div className="min-h-screen bg-gray-50 py-20">
@@ -149,7 +153,7 @@ function App() {
       <main className="flex-1">
         {renderPage()}
       </main>
-      {showHeaderFooter && <Footer />}
+      {showHeaderFooter && <Footer onNavigate={handleNavigation} />}
     </div>
   );
 }

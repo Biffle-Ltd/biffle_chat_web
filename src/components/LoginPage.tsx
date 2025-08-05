@@ -375,7 +375,7 @@ export default function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
         </div>
 
         {/* Additional Options */}
-        {step === 'phone' && (
+        {/* {step === 'phone' && (
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm mb-4">Or continue with</p>
             <div className="flex space-x-4">
@@ -387,7 +387,7 @@ export default function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
               </button>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -1,0 +1,238 @@
+{
+    "lastUpdated": "Aug 5, 2025",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": [
+          "Welcome to Biffle.ai, a platform designed to connect users through meaningful and personalized interactions. This Privacy Policy (\"Policy\") explains how Sofnics Tech Labs Pvt. Ltd. (\"Biffle,\" \"we,\" \"us,\" or \"our\") collects, uses, and discloses your information when you use our mobile application (\"App\") and related services (collectively, the \"Platform\"). By using the Platform, you agree to the terms of this Policy and consent to the collection, use, and disclosure of your information as described herein."
+        ]
+      },
+      "informationWeCollect": {
+        "title": "Information We Collect and How We Use It",
+        "content": []
+      },
+      "loginData": {
+        "title": "1. Log-in Data",
+        "content": [
+          "We collect the following information during account creation and log-in:",
+          "User ID, mobile number, password, gender, voice recording, and IP address.",
+          "Indicative age range to verify eligibility for platform access.",
+          "Purpose:",
+          "Facilitate account creation and log-in.",
+          "Notify you of platform updates, including changes to this Policy.",
+          "Provide user support and enforce platform policies.",
+          "Improve services and personalize user experiences.",
+          "Conduct demographic analysis and assess marketing effectiveness."
+        ]
+      },
+      "profileInformation": {
+        "title": "2. Additional Profile Information",
+        "content": [
+          "We collect: Username, birth year, and biography provided in your profile.",
+          "Purpose: Enhance user profiles and enable personalized interactions."
+        ]
+      },
+      "contentShared": {
+        "title": "3. Content You Share",
+        "content": [
+          "We collect:",
+          "Posts, images, videos, voice recordings, and location data shared on the Platform.",
+          "Content shared by other users about you.",
+          "Purpose:",
+          "Facilitate user interactions and content sharing.",
+          "Improve platform functionality and user experience."
+        ]
+      },
+      "thirdPartyInfo": {
+        "title": "4. Information from Third Parties",
+        "content": [
+          "We may receive information from: Business partners, analytics providers, and advertisers.",
+          "Purpose: Enhance platform services and improve user experience."
+        ]
+      },
+      "logData": {
+        "title": "5. Log Data",
+        "content": [
+          "We automatically collect:",
+          "Technical information (e.g., device version, IP address).",
+          "Usage details (e.g., search terms, social media profiles visited).",
+          "Communication metadata (e.g., time, date, and duration of interactions).",
+          "Purpose:",
+          "Monitor platform usage and improve functionality.",
+          "Detects and prevents fraud or security breaches."
+        ]
+      },
+      "cookies": {
+        "title": "6. Cookies",
+        "content": [
+          "We use cookies to:",
+          "Distinguish users and enhance platform functionality.",
+          "Analyze user behavior and improve services.",
+          "Purpose: Provide a seamless user experience and enable personalized features."
+        ]
+      },
+      "surveys": {
+        "title": "7. Surveys",
+        "content": [
+          "We may request Personal Information (e.g., name, email) during surveys.",
+          "Purpose: Gather user feedback to improve platform services."
+        ]
+      },
+      "searchData": {
+        "title": "8. User Search Data",
+        "content": [
+          "We collect: Search queries made on the Platform.",
+          "Purpose:",
+          "Provide quick access to previous searches.",
+          "Enable personalized recommendations and targeted advertisements."
+        ]
+      },
+      "accountSecurity": {
+        "title": "9. Additional Account Security",
+        "content": [
+          "We collect: Phone number and OTP for identity verification.",
+          "Purpose: Ensure account security and prevent unauthorized access."
+        ]
+      },
+      "contactsList": {
+        "title": "10. Contacts List",
+        "content": [
+          "We may access your device's contacts list with your consent.",
+          "Purpose: Connect you with other users through the \"Invite Users\" feature."
+        ]
+      },
+      "locationInfo": {
+        "title": "11. Location Information",
+        "content": [
+          "We collect: GPS data, IP address, and location-based posts.",
+          "Purpose: Provide location-based services and enhance security."
+        ]
+      },
+      "customerSupport": {
+        "title": "12. Customer Support Information",
+        "content": [
+          "We collect Information provided during support requests.",
+          "Purpose: Resolve user issues and improve support services."
+        ]
+      },
+      "deviceData": {
+        "title": "13. Device Data",
+        "content": [
+          "We collect: Device attributes, operations, identifiers, and network connections.",
+          "Purpose: Optimize platform functionality and user experience."
+        ]
+      },
+      "contestInfo": {
+        "title": "14. Contest Information",
+        "content": [
+          "We collect: Information provided during contest participation.",
+          "Purpose: Facilitate contests and award prizes."
+        ]
+      },
+      "purchaseInfo": {
+        "title": "15. Purchase Information",
+        "content": [
+          "We collect:",
+          "Payment details for premium services and in-app purchases.",
+          "Purpose: Process transactions and record sales."
+        ]
+      },
+      "disclosureOfInfo": {
+        "title": "Disclosure of Your Information",
+        "content": []
+      },
+      "contentVisibility": {
+        "title": "1. Content Visible to Others",
+        "content": [
+          "Public content (e.g., profile information, posts) is accessible to all users and may be reshared."
+        ]
+      },
+      "sharingWithGroups": {
+        "title": "2. Sharing with Group Companies",
+        "content": [
+          "We may share your information with affiliates for platform operations and service improvement."
+        ]
+      },
+      "sharingWithThirdParties": {
+        "title": "3. Sharing with Third Parties",
+        "content": [
+          "We may share information with:",
+          "Business partners and advertisers for targeted advertising.",
+          "Government bodies or law enforcement for legal compliance."
+        ]
+      },
+      "thirdPartyStores": {
+        "title": "Third-Party Stores and Premium Services",
+        "content": [
+          "In-app purchases are processed through third-party platforms (e.g., Google Play).",
+          "Refunds are not provided for completed transactions."
+        ]
+      },
+      "coinsPurchase": {
+        "title": "Coins Purchase and Refund Policy",
+        "content": [
+          "Coins are virtual currency used for purchasing gifts and customizations.",
+          "Coins and gifts are non-refundable and non-transferable."
+        ]
+      },
+      "securityPractices": {
+        "title": "Security Practices",
+        "content": [
+          "We implement technical and security measures to protect your information.",
+          "Your username and password must be kept confidential."
+        ]
+      },
+      "dataStorage": {
+        "title": "Data Storage",
+        "content": [
+          "Your data is stored on Amazon Web Services (AWS) and Google Cloud Platform (GCP) servers."
+        ]
+      },
+      "policyChanges": {
+        "title": "Changes to This Policy",
+        "content": [
+          "We may update this Policy periodically. Changes will be posted on the Platform."
+        ]
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "content": [
+          "You can access, correct, or delete your Personal Information.",
+          "You may revoke consent for data collection, but this may limit platform functionality."
+        ]
+      },
+      "thirdPartyLinks": {
+        "title": "Third-Party Links and Embeds",
+        "content": [
+          "The Platform may contain links to third-party websites. We are not responsible for their privacy practices."
+        ]
+      },
+      "communications": {
+        "title": "Communications from Us",
+        "content": [
+          "We may send service-related announcements via SMS. These are not promotional and cannot be opted out of."
+        ]
+      },
+      "cookiePolicy": {
+        "title": "Cookie Policy",
+        "content": [
+          "We use cookies, pixels, and local storage to enhance user experience and analyze platform usage.",
+          "You can control cookies through your device settings."
+        ]
+      },
+      "contactUs": {
+        "title": "Contact Us",
+        "content": [
+          "For questions or concerns, contact our Grievance Officer:",
+          "Email: care@biffle.ai",
+          "Let's build a safe and vibrant community together!"
+        ]
+      },
+      "tagline": {
+        "title": "Tagline",
+        "content": [
+          "\"Where Connections Come Alive.\""
+        ]
+      }
+    }
+  }

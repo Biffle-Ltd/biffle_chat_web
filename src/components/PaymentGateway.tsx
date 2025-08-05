@@ -260,11 +260,11 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
           </button>
           
           <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
-            <span>Powered by</span>
-            <div className="flex space-x-3">
+            {/* <span>Powered by</span> */}
+            {/* <div className="flex space-x-3">
               <span className="bg-gray-100 px-2 py-1 rounded">Razorpay</span>
               <span className="bg-gray-100 px-2 py-1 rounded">JusPay</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

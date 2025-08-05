@@ -1,0 +1,245 @@
+{
+  "lastUpdated": "Aug 5, 2025",
+  "sections": {
+    "introduction": {
+      "title": "Safety & Compliance at Biffle",
+      "content": [
+        "At Biffle, user safety is our top priority. We maintain strict compliance with industry standards and implement comprehensive moderation policies to ensure a safe environment for all users. Our commitment to safety extends across every aspect of our platform, from content moderation to user interactions."
+      ]
+    },
+    "safetyMeasures": {
+      "title": "Our Safety Measures",
+      "content": [
+        "We implement multiple layers of protection to keep our community safe:"
+      ],
+      "subsections": [
+        {
+          "title": "AI-Powered Content Moderation",
+          "content": [
+            "Advanced artificial intelligence systems that scan content in real-time",
+            "Detection of inappropriate, harmful, or prohibited content",
+            "Automatic flagging of suspicious activities and behaviors"
+          ]
+        },
+        {
+          "title": "24/7 Human Moderation Team",
+          "content": [
+            "Dedicated team of trained moderators available round the clock",
+            "Expert review of flagged content and user reports",
+            "Swift action on violations and policy breaches"
+          ]
+        },
+        {
+          "title": "User Verification Systems",
+          "content": [
+            "Multi-factor authentication for enhanced account security",
+            "Identity verification processes for creators",
+            "Phone number verification for all users"
+          ]
+        }
+      ]
+    },
+    "complianceStandards": {
+      "title": "Compliance Standards",
+      "content": [
+        "Biffle adheres to the highest standards of compliance and regulatory requirements:"
+      ],
+      "subsections": [
+        {
+          "title": "Indian Legal Framework",
+          "content": [
+            "Full compliance with the Information Technology Act, 2000",
+            "Adherence to the Bharatiya Nyaya Sanhita, 2023",
+            "Implementation of Consumer Protection Act, 2019 requirements"
+          ]
+        },
+        {
+          "title": "Data Protection",
+          "content": [
+            "GDPR-compliant data handling practices",
+            "Secure storage on AWS and Google Cloud Platform",
+            "Encrypted transmission of all sensitive data"
+          ]
+        },
+        {
+          "title": "Payment Security",
+          "content": [
+            "PCI DSS compliance for payment processing",
+            "SSL encryption for all financial transactions",
+            "Secure integration with trusted payment gateways"
+          ]
+        }
+      ]
+    },
+    "reportingSystem": {
+      "title": "Reporting & Enforcement",
+      "content": [
+        "We provide multiple channels for users to report concerns:"
+      ],
+      "subsections": [
+        {
+          "title": "In-App Reporting",
+          "content": [
+            "Easy-to-use reporting tools within the platform",
+            "Multiple categories for different types of violations",
+            "Anonymous reporting options for sensitive cases"
+          ]
+        },
+        {
+          "title": "Direct Contact",
+          "content": [
+            "Email support at support@biffle.ai",
+            "Dedicated grievance officer for legal matters",
+            "24/7 support team for urgent safety concerns"
+          ]
+        },
+        {
+          "title": "Response Timeline",
+          "content": [
+            "Immediate review of critical safety reports",
+            "Response within 24 hours for standard reports",
+            "Follow-up communication on resolution status"
+          ]
+        }
+      ]
+    },
+    "userGuidelines": {
+      "title": "User Safety Guidelines",
+      "content": [
+        "Help us maintain a safe environment by following these guidelines:"
+      ],
+      "subsections": [
+        {
+          "title": "Personal Information",
+          "content": [
+            "Never share personal contact information in public posts",
+            "Be cautious about sharing location details",
+            "Report any requests for private information"
+          ]
+        },
+        {
+          "title": "Content Sharing",
+          "content": [
+            "Only share content you have the right to post",
+            "Respect copyright and intellectual property rights",
+            "Avoid sharing sensitive or private information about others"
+          ]
+        },
+        {
+          "title": "Interactions",
+          "content": [
+            "Treat all users with respect and kindness",
+            "Report any form of harassment or bullying",
+            "Be mindful of cultural sensitivities and differences"
+          ]
+        }
+      ]
+    },
+    "emergencyProcedures": {
+      "title": "Emergency Procedures",
+      "content": [
+        "In case of immediate safety concerns:"
+      ],
+      "subsections": [
+        {
+          "title": "Immediate Actions",
+          "content": [
+            "Block the user immediately if you feel threatened",
+            "Take screenshots or recordings of concerning content",
+            "Report the incident through our emergency reporting system"
+          ]
+        },
+        {
+          "title": "Law Enforcement",
+          "content": [
+            "Contact local law enforcement for immediate threats",
+            "We cooperate fully with legal authorities",
+            "Provide all necessary information to support investigations"
+          ]
+        },
+        {
+          "title": "Support Resources",
+          "content": [
+            "Access to mental health resources and support",
+            "Crisis intervention services for affected users",
+            "Community support groups and counseling referrals"
+          ]
+        }
+      ]
+    },
+    "creatorSafety": {
+      "title": "Creator Safety",
+      "content": [
+        "Special safety measures for content creators:"
+      ],
+      "subsections": [
+        {
+          "title": "Verification Process",
+          "content": [
+            "Comprehensive identity verification for all creators",
+            "Background checks for high-profile creators",
+            "Regular re-verification to maintain platform integrity"
+          ]
+        },
+        {
+          "title": "Content Protection",
+          "content": [
+            "Watermarking and digital rights management",
+            "Monitoring for unauthorized content distribution",
+            "Legal support for copyright infringement cases"
+          ]
+        },
+        {
+          "title": "Fan Interaction Safety",
+          "content": [
+            "Tools to manage and moderate fan interactions",
+            "Ability to block or restrict problematic users",
+            "Support for handling overwhelming or inappropriate attention"
+          ]
+        }
+      ]
+    },
+    "transparency": {
+      "title": "Transparency & Accountability",
+      "content": [
+        "We believe in transparency about our safety practices:"
+      ],
+      "subsections": [
+        {
+          "title": "Regular Reports",
+          "content": [
+            "Quarterly safety reports published publicly",
+            "Statistics on content moderation and enforcement actions",
+            "Updates on new safety features and improvements"
+          ]
+        },
+        {
+          "title": "User Feedback",
+          "content": [
+            "Regular surveys on safety and user experience",
+            "Open channels for safety suggestions and improvements",
+            "Community advisory board for safety policy input"
+          ]
+        },
+        {
+          "title": "Continuous Improvement",
+          "content": [
+            "Regular review and updates of safety policies",
+            "Integration of new technologies for enhanced protection",
+            "Partnerships with safety organizations and experts"
+          ]
+        }
+      ]
+    },
+    "contactInformation": {
+      "title": "Contact Information",
+      "content": [
+        "For safety-related concerns, contact us:",
+        "Emergency Support: Available 24/7 through in-app reporting",
+        "General Safety Inquiries: safety@biffle.ai",
+        "Legal Matters: legal@biffle.ai",
+        "Grievance Officer: grievance@biffle.ai"
+      ]
+    }
+  }
+} 

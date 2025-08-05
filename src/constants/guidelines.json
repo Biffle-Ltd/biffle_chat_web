@@ -1,0 +1,195 @@
+{
+    "lastUpdated": "Aug 5, 2025",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": [
+          "Welcome to Biffle.ai! These Community Guidelines (\"Guidelines\") outline the standards for respectful and responsible engagement on our platform. They are designed to ensure a safe, inclusive, and enjoyable experience for all users. These Guidelines should be read alongside our Privacy Policy and Terms of Use, collectively referred to as the Platform Policies. Any capitalized terms not defined here carry the same meaning as in the Terms of Use.",
+          "By using Biffle.ai, you agree to follow these Guidelines. We reserve the right to update them periodically, and your continued use of the platform signifies your acceptance of any changes."
+        ]
+      },
+      "compliance": {
+        "title": "Compliance with applicable laws",
+        "content": [
+          "All content shared on Biffle.ai must comply with applicable laws, including:",
+          "The Bharatiya Nyaya Sanhita, 2023",
+          "The Information Technology Act, 2000",
+          "The Consumer Protection Act, 2019",
+          "Other relevant laws and regulations",
+          "Prohibited content includes, but is not limited to:",
+          "Content that threatens national security, public order, or India's sovereignty",
+          "Content that incites violence, hatred, or illegal activities",
+          "Content that insults or harms the reputation of other nations"
+        ]
+      },
+      "platformSafety": {
+        "title": "Platform Safety",
+        "content": [
+          "We prioritize user safety through:",
+          "Advanced AI Tools: Real-time detection of harmful or inappropriate content.",
+          "24/7 Moderation: A dedicated team reviews flagged content and user reports promptly."
+        ]
+      },
+      "enforcementActions": {
+        "title": "Enforcement Actions",
+        "content": [
+          "Critical Offenses: Illegal activities, threats of harm, or severe violations may result in immediate and permanent account suspension.",
+          "Repeated Violations: Accounts with consistent breaches of these Guidelines may face permanent restrictions.",
+          "Temporary Suspensions: Users may return to the platform after demonstrating improved behavior."
+        ]
+      },
+      "contentRights": {
+        "title": "Your Content and Platform Rights",
+        "content": [
+          "When you share content on Biffle.ai, you retain ownership of your work. However, by posting, you grant us a global, non-exclusive, royalty-free license to use, modify, distribute, and display your content for platform improvement, marketing, and other purposes.",
+          "You are responsible for ensuring you have the necessary rights to any content you share, including third-party materials like music or videos. We may remove or modify content that violates Platform Policies or infringes on others' rights."
+        ]
+      },
+      "intellectualProperty": {
+        "title": "Platform Ownership and Intellectual Property",
+        "content": [
+          "Biffle.ai owns all platform content, including visuals, features, design elements, and software (excluding user and third-party content). These are protected by intellectual property laws worldwide.",
+          "You may not reproduce, modify, or distribute platform content without explicit permission from the owner."
+        ]
+      },
+      "feedback": {
+        "title": "Feedback and Suggestions",
+        "content": [
+          "We welcome your feedback to improve our services. By submitting ideas or suggestions, you agree that:",
+          "Your feedback must not include confidential or proprietary information.",
+          "We are not obligated to keep your feedback confidential.",
+          "We may use your feedback without compensation or obligation."
+        ]
+      },
+      "reporting": {
+        "title": "Reporting and Enforcement",
+        "content": [
+          "To report violations, email our Grievance Officer at support@Biffle.ai. We review all reports and take appropriate action within legal timelines. Misusing the reporting system to harass others may result in account suspension.",
+          "We cooperate with law enforcement in cases involving harm, public safety threats, or legal violations."
+        ]
+      },
+      "payments": {
+        "title": "Platform Payments and Virtual Items",
+        "content": [
+          "Biffle.ai offers premium features and virtual items (e.g., coins, subscriptions) for purchase. By using these services, you agree to:",
+          "Final and non-refundable transactions.",
+          "Use only authorized payment channels.",
+          "Comply with Platform Policies regarding paid features."
+        ]
+      },
+      "prohibitedContent": {
+        "title": "Prohibited Content and Behavior",
+        "content": []
+      },
+      "violenceContent": {
+        "title": "Violence and Harmful Content",
+        "content": [
+          "We prohibit content that:",
+          "Promotes violence, dangerous activities, or harmful behavior.",
+          "Depicts graphic violence, cruelty to animals, or glorifies suffering.",
+          "Supports terrorism, extremist groups, or criminal organizations.",
+          "Provides instructions for making weapons or dangerous materials."
+        ]
+      },
+      "sexualContent": {
+        "title": "Sexual Content and Exploitation",
+        "content": [
+          "We strictly prohibit:",
+          "Pornographic, sexually explicit, or suggestive material.",
+          "Non-consensual sexual content, revenge pornography, or exploitation.",
+          "Content harmful to minors, including child exploitation or abuse."
+        ]
+      },
+      "harassment": {
+        "title": "Harassment and Bullying",
+        "content": [
+          "We do not tolerate:",
+          "Abusive language, morphed images, or malicious recordings.",
+          "Discrimination based on gender, race, religion, caste, or sexual orientation.",
+          "Extortion, blackmail, or sharing personal information without consent."
+        ]
+      },
+      "hateSpeech": {
+        "title": "Hate Speech and Propaganda",
+        "content": [
+          "Prohibited content includes:",
+          "Material that promotes discrimination, violence, or hatred against individuals or groups.",
+          "Content that demeans or targets communities based on protected characteristics.",
+          "Symbols or ideologies associated with hate groups."
+        ]
+      },
+      "mentalHealth": {
+        "title": "Abuse and Mental Health",
+        "content": [
+          "We prohibit content that:",
+          "Glorifies self-harm, suicide, or abusive behavior.",
+          "Exploits or harms individuals, including children.",
+          "Shares triggering details without consent."
+        ]
+      },
+      "privacy": {
+        "title": "Privacy and Personal Data Protection",
+        "content": [
+          "Do not:",
+          "Share personal or sensitive information without consent.",
+          "Record or distribute interactions without permission.",
+          "Impersonate others or misuse their private content."
+        ]
+      },
+      "falseInfo": {
+        "title": "False Information and Spam",
+        "content": [
+          "We prohibit:",
+          "Deliberate sharing of false, defamatory, or misleading content.",
+          "Spam, phishing attempts, or malicious links.",
+          "Misleading titles or descriptions that misrepresent content."
+        ]
+      },
+      "platformIntegrity": {
+        "title": "Platform Integrity and Fair Usage",
+        "content": [
+          "Prohibited activities include:",
+          "Using unauthorized tools, bots, or modifications to alter platform functionality.",
+          "Creating multiple accounts or manipulating platform metrics.",
+          "Accessing other users' accounts without authorization."
+        ]
+      },
+      "prohibitedItems": {
+        "title": "Prohibited Items and Services",
+        "content": [
+          "Trading or promoting regulated or restricted items is strictly prohibited, including:",
+          "Alcohol, tobacco, or recreational drugs.",
+          "Pharmaceuticals or sexual services.",
+          "Goods requiring government authorization."
+        ]
+      },
+      "nationalSymbols": {
+        "title": "National Symbols and Security",
+        "content": [
+          "Respect national emblems, including the Indian flag and anthem. Content that disrespects or misuses these symbols is prohibited."
+        ]
+      },
+      "contentResponsibility": {
+        "title": "Responsibility for Content",
+        "content": [
+          "As an intermediary under Indian law, we are not directly liable for user-generated content. However, we enforce these Guidelines to ensure a safe and compliant community."
+        ]
+      },
+      "updatesGuidelines": {
+        "title": "Updates to Guidelines",
+        "content": [
+          "We regularly review and update these Guidelines. Significant changes will be communicated through official channels. Continued use of Biffle.ai constitutes acceptance of the updated Guidelines."
+        ]
+      },
+      "indemnification": {
+        "title": "Indemnification",
+        "content": [
+          "You agree to indemnify and hold Biffle.ai harmless from any claims, damages, or expenses arising from:",
+          "Your use of the platform.",
+          "Breaches of these Guidelines.",
+          "Violations of third-party rights or applicable laws.",
+          "Let's build a safe and vibrant community together!"
+        ]
+      }
+    }
+  }

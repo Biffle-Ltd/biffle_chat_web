@@ -40,9 +40,7 @@ export default function CreatorLanding({ onNavigate }: CreatorLandingProps) {
               >
                 Become a Creator
               </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200">
-                Watch Demo
-              </button>
+
             </div>
           </div>
         </div>
@@ -53,19 +51,19 @@ export default function CreatorLanding({ onNavigate }: CreatorLandingProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">10K+</div>
+              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">100+</div>
               <div className="text-gray-600">Active Creators</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">₹5Cr+</div>
+              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">₹5L+</div>
               <div className="text-gray-600">Total Earnings</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">1M+</div>
-              <div className="text-gray-600">Fan Interactions</div>
+              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">100%</div>
+              <div className="text-gray-600">Secure</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">4.8★</div>
+              <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2">4.1★</div>
               <div className="text-gray-600">Creator Rating</div>
             </div>
           </div>
