@@ -11,15 +11,37 @@ interface PaymentSummaryProps {
 export default function PaymentSummary({ onNavigate, selectedPackage, appliedCoupon, onCouponApply }: PaymentSummaryProps) {
   const [couponCode, setCouponCode] = useState('');
   
-  // Default package if none selected
-  const packageData = selectedPackage || {
-    coins: 500,
-    basePrice: 500,
-    discountedPrice: 450,
-    websiteDiscount: 50
+  // If no package selected, redirect back to coins page
+  React.useEffect(() => {
+    if (!selectedPackage) {
+      onNavigate('coins');
+    }
+  }, [selectedPackage, onNavigate]);
+
+  if (!selectedPackage) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No package selected</p>
+          <button 
+            onClick={() => onNavigate('coins')}
+            className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium"
+          >
+            Select Package
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const packageData = {
+    coins: selectedPackage.coins,
+    basePrice: selectedPackage.originalPrice,
+    discountedPrice: selectedPackage.price,
+    websiteDiscount: selectedPackage.originalPrice - selectedPackage.price
   };
 
-  const additionalDiscount = appliedCoupon === 'FIRST10' ? 45 : 0;
+  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(packageData.discountedPrice * 0.1) : 0;
   const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handleCouponApply = () => {

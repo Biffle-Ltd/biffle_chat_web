@@ -57,6 +57,11 @@ function App() {
       setCurrentPage('login');
       return;
     }
+    // If trying to access login page while already logged in, redirect to coins
+    if (page === 'login' && user) {
+      setCurrentPage('coins');
+      return;
+    }
     setCurrentPage(page as Page);
   };
 

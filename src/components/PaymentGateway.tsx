@@ -12,9 +12,32 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
   const [upiId, setUpiId] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // If no package selected, redirect back to coins page
+  React.useEffect(() => {
+    if (!selectedPackage) {
+      onNavigate('coins');
+    }
+  }, [selectedPackage, onNavigate]);
+
+  if (!selectedPackage) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No package selected</p>
+          <button 
+            onClick={() => onNavigate('coins')}
+            className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium"
+          >
+            Select Package
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // Calculate final amount based on selected package and coupon
-  const packageData = selectedPackage || { coins: 500, discountedPrice: 450 };
-  const additionalDiscount = appliedCoupon === 'FIRST10' ? 45 : 0;
+  const packageData = { coins: selectedPackage.coins, discountedPrice: selectedPackage.price };
+  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(selectedPackage.price * 0.1) : 0;
   const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handlePayment = async () => {

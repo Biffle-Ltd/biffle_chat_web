@@ -83,10 +83,10 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
               </div>
             ) : (
               <button 
-                onClick={() => handleNavigation('login')}
+                onClick={() => handleNavigation('coins')}
                 className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
               >
-                Login
+                Buy Coins
               </button>
             )}
             <button 
@@ -155,10 +155,10 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
                   </div>
                 ) : (
                   <button 
-                    onClick={() => handleNavigation('login')}
+                    onClick={() => handleNavigation('coins')}
                     className="text-left text-purple-600 font-medium"
                   >
-                    Login
+                    Buy Coins
                   </button>
                 )}
                 <button 

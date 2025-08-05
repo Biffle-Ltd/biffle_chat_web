@@ -22,11 +22,11 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
-                  onClick={() => onNavigate('login')}
+                  onClick={() => onNavigate('coins')}
                   className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
                   style={{ backgroundColor: '#27CDB1' }}
                 >
-                  Login / Sign up
+                  Buy Coins
                 </button>
                 <button 
                   onClick={() => onNavigate('creators')}
@@ -135,7 +135,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                 </li>
               </ul>
               <button 
-                onClick={() => onNavigate('login')}
+                onClick={() => onNavigate('coins')}
                 className="bg-mint-500 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center"
                 style={{ backgroundColor: '#27CDB1' }}
               >
@@ -204,7 +204,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                   <p className="text-3xl font-bold text-purple-600 mb-2">₹{pack.price}</p>
                   <p className="text-sm text-green-600 font-medium mb-4">{pack.discount}</p>
                   <button 
-                    onClick={() => onNavigate('login')}
+                    onClick={() => onNavigate('coins')}
                     className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                   >
                     Buy Coins
