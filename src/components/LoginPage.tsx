@@ -6,7 +6,7 @@ interface LoginPageProps {
 }
 
 // API configuration
-const apiUri = 'https://api.biffle.com'; // Replace with your actual API base URL
+const apiUri = 'https://prod.biffle.ai'; // Replace with your actual API base URL
 
 export default function LoginPage({ onNavigate }: LoginPageProps) {
   const [step, setStep] = useState<'phone' | 'otp' | 'profile'>('phone');
@@ -289,7 +289,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     className="block w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-center text-lg tracking-widest"
-                    placeholder="000000"
+                    placeholder="- - - - - -"
                     disabled={isLoading}
                     required
                   />
