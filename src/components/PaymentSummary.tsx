@@ -143,8 +143,6 @@ export default function PaymentSummary({ onNavigate, selectedPackage, appliedCou
                   <span className="text-green-700 font-medium">Coupon Applied: {appliedCoupon}</span>
                 </div>
                 <button
-                  onClick={() => setAppliedCoupon(null)}
-                <button
                   onClick={() => onCouponApply(null)}
                   className="text-green-600 hover:text-green-800 text-sm font-medium"
                 >
