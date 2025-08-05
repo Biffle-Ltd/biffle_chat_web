@@ -1,11 +1,22 @@
 import React from 'react';
 import { Users, Heart, Coins, Shield, Star, CheckCircle, ArrowRight, Sparkles, Zap, TrendingUp } from 'lucide-react';
 
-interface LandingPageProps {
-  onNavigate: (page: string) => void;
+interface User {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  user_type: 'fan' | 'creator';
+  is_new_user: boolean;
+  token: string;
 }
 
-export default function LandingPage({ onNavigate }: LandingPageProps) {
+interface LandingPageProps {
+  onNavigate: (page: string) => void;
+  user?: User | null;
+}
+
+export default function LandingPage({ onNavigate, user }: LandingPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -22,14 +33,14 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
-                  onClick={() => onNavigate('login')}
+                  onClick={() => onNavigate(user ? 'coins' : 'login')}
                   className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
                   style={{ backgroundColor: '#27CDB1' }}
                 >
-                  Login / Sign up
+                  {user ? 'Buy Coins' : 'Login'}
                 </button>
                 <button 
-                  onClick={() => onNavigate('creators')}
+                  onClick={() => onNavigate('creator-registration')}
                   className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200"
                 >
                   Become a Creator
@@ -41,15 +52,15 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-yellow-400/20 rounded-2xl p-4 text-center">
                     <Users className="h-8 w-8 text-yellow-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">10K+ Creators</p>
+                    <p className="text-white font-medium">100+ Creators</p>
                   </div>
                   <div className="bg-pink-400/20 rounded-2xl p-4 text-center">
                     <Heart className="h-8 w-8 text-pink-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">1M+ Connections</p>
+                    <p className="text-white font-medium">10K+ Connections</p>
                   </div>
                   <div className="bg-green-400/20 rounded-2xl p-4 text-center">
                     <Coins className="h-8 w-8 text-green-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">₹5Cr+ Earned</p>
+                    <p className="text-white font-medium">₹5L+ Earned</p>
                   </div>
                   <div className="bg-blue-400/20 rounded-2xl p-4 text-center">
                     <Shield className="h-8 w-8 text-blue-300 mx-auto mb-2" />
@@ -61,6 +72,25 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
         </div>
       </section>
+      <div className="flex justify-center py-8">
+        <a
+          href="https://play.google.com/store/apps/details?id=com.biffle.app" // Replace with actual app link
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white px-10 py-4 rounded-full font-bold text-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 flex items-center gap-3"
+        >
+          {/* Play Store Logo SVG */}
+          {/* <svg className="h-6 w-6 mr-2" viewBox="0 0 512 512" fill="none">
+            <g>
+              <path d="M57.6 32.6C51.2 35.8 48 41.2 48 51.2v409.6c0 10 3.2 15.4 9.6 18.6 6.4 3.2 13.2 2.2 20.2-2.2l246.2-142.2-276-276c-4.4 2.2-7.6 4.4-10.4 6.6z" fill="#34A853"/>
+              <path d="M464 239.2L388.8 195.2 320 256l68.8 60.8L464 272.8c13.2-7.6 13.2-27.2 0-33.6z" fill="#EA4335"/>
+              <path d="M77.8 460.8c6.4 3.2 13.2 2.2 20.2-2.2l246.2-142.2-68.8-60.8-197.6 205.2z" fill="#FBBC05"/>
+              <path d="M464 239.2L77.8 51.2c-7-4.4-13.8-5.4-20.2-2.2l276 276 130.4-75.8c13.2-7.6 13.2-27.2 0-33.6z" fill="#4285F4"/>
+            </g>
+          </svg> */}
+          Download Now
+        </a>
+      </div>
 
       {/* Value Proposition */}
       <section className="py-20 bg-gray-50">
@@ -97,7 +127,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                 </li>
               </ul>
               <button 
-                onClick={() => onNavigate('creators')}
+                onClick={() => onNavigate('creator-registration')}
                 className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center"
               >
                 Start Creating <ArrowRight className="h-4 w-4 ml-2" />
@@ -187,9 +217,9 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
                 { coins: 100, price: 99, discount: '1% off', popular: false },
-                { coins: 500, price: 450, discount: '10% off', popular: true },
-                { coins: 1000, price: 850, discount: '15% off', popular: false },
-                { coins: 2500, price: 2000, discount: '20% off', popular: false }
+                { coins: 500, price: 250, discount: '15% off', popular: true },
+                { coins: 150, price: 150, discount: '0% off', popular: false },
+                { coins: 2000, price: 2000, discount: '0% off', popular: false }
               ].map((pack, index) => (
                 <div key={index} className={`bg-white rounded-2xl p-6 text-center relative ${pack.popular ? 'ring-2 ring-purple-500 transform scale-105' : ''}`}>
                   {pack.popular && (
@@ -204,10 +234,10 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                   <p className="text-3xl font-bold text-purple-600 mb-2">₹{pack.price}</p>
                   <p className="text-sm text-green-600 font-medium mb-4">{pack.discount}</p>
                   <button 
-                    onClick={() => onNavigate('login')}
+                    onClick={() => onNavigate(user ? 'coins' : 'login')}
                     className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                   >
-                    Get Coins
+                    {user ? 'Buy Coins' : 'Login'}
                   </button>
                 </div>
               ))}
@@ -236,11 +266,11 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             </div>
             <div className="flex items-center space-x-2 bg-white px-6 py-3 rounded-full shadow-md">
               <Star className="h-6 w-6 text-yellow-500" />
-              <span className="font-medium">4.8★ Rating</span>
+              <span className="font-medium">4.1★ Rating</span>
             </div>
             <div className="flex items-center space-x-2 bg-white px-6 py-3 rounded-full shadow-md">
               <TrendingUp className="h-6 w-6 text-blue-500" />
-              <span className="font-medium">₹5Cr+ Processed</span>
+              <span className="font-medium">₹5L+ Processed</span>
             </div>
           </div>
 
@@ -261,7 +291,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
               },
               {
                 name: "Meera R.",
-                role: "Influencer",
+                role: "Content Creator",
                 content: "Best platform for creators! Easy to use, great payouts, and amazing community support.",
                 rating: 5
               }
@@ -282,7 +312,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           {/* Payment Partners */}
-          <div className="mt-16 text-center">
+          {/* <div className="mt-16 text-center">
             <p className="text-gray-600 mb-8">Powered by trusted payment partners</p>
             <div className="flex justify-center items-center space-x-8 opacity-60">
               <div className="bg-white px-6 py-3 rounded-lg shadow-sm">
@@ -298,7 +328,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                 <span className="font-bold text-orange-600">PayTM</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

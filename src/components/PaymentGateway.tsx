@@ -3,14 +3,42 @@ import { ArrowLeft, Shield, CreditCard, Smartphone, Building, Wallet, CheckCircl
 
 interface PaymentGatewayProps {
   onNavigate: (page: string) => void;
+  selectedPackage: any;
+  appliedCoupon: string | null;
 }
 
-export default function PaymentGateway({ onNavigate }: PaymentGatewayProps) {
+export default function PaymentGateway({ onNavigate, selectedPackage, appliedCoupon }: PaymentGatewayProps) {
   const [selectedMethod, setSelectedMethod] = useState<'upi' | 'card' | 'netbanking' | 'wallet'>('upi');
   const [upiId, setUpiId] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const finalAmount = 405; // From previous page
+  // If no package selected, redirect back to coins page
+  React.useEffect(() => {
+    if (!selectedPackage) {
+      onNavigate('coins');
+    }
+  }, [selectedPackage, onNavigate]);
+
+  if (!selectedPackage) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No package selected</p>
+          <button 
+            onClick={() => onNavigate('coins')}
+            className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium"
+          >
+            Select Package
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate final amount based on selected package and coupon
+  const packageData = { coins: selectedPackage.coins, discountedPrice: selectedPackage.price };
+  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(selectedPackage.price * 0.1) : 0;
+  const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -54,7 +82,7 @@ export default function PaymentGateway({ onNavigate }: PaymentGatewayProps) {
           <div className="text-center">
             <p className="text-purple-100 mb-2">Amount to Pay</p>
             <p className="text-4xl font-bold mb-2">₹{finalAmount}</p>
-            <p className="text-purple-200 text-sm">For 500 Biffle Coins</p>
+            <p className="text-purple-200 text-sm">For {packageData.coins} Biffle Coins</p>
           </div>
         </div>
 
@@ -232,11 +260,11 @@ export default function PaymentGateway({ onNavigate }: PaymentGatewayProps) {
           </button>
           
           <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
-            <span>Powered by</span>
-            <div className="flex space-x-3">
+            {/* <span>Powered by</span> */}
+            {/* <div className="flex space-x-3">
               <span className="bg-gray-100 px-2 py-1 rounded">Razorpay</span>
               <span className="bg-gray-100 px-2 py-1 rounded">JusPay</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

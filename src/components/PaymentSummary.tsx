@@ -3,26 +3,50 @@ import { ArrowLeft, Tag, Percent, Coins, ShoppingCart, Gift } from 'lucide-react
 
 interface PaymentSummaryProps {
   onNavigate: (page: string) => void;
+  selectedPackage: any;
+  appliedCoupon: string | null;
+  onCouponApply: (coupon: string | null) => void;
 }
 
-export default function PaymentSummary({ onNavigate }: PaymentSummaryProps) {
+export default function PaymentSummary({ onNavigate, selectedPackage, appliedCoupon, onCouponApply }: PaymentSummaryProps) {
   const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   
-  // Mock selected package (in real app, this would come from state/props)
-  const selectedPackage = {
-    coins: 500,
-    basePrice: 500,
-    discountedPrice: 450,
-    websiteDiscount: 50
+  // If no package selected, redirect back to coins page
+  React.useEffect(() => {
+    if (!selectedPackage) {
+      onNavigate('coins');
+    }
+  }, [selectedPackage, onNavigate]);
+
+  if (!selectedPackage) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No package selected</p>
+          <button 
+            onClick={() => onNavigate('coins')}
+            className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium"
+          >
+            Select Package
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const packageData = {
+    coins: selectedPackage.coins,
+    basePrice: selectedPackage.originalPrice,
+    discountedPrice: selectedPackage.price,
+    websiteDiscount: selectedPackage.originalPrice - selectedPackage.price
   };
 
-  const additionalDiscount = appliedCoupon === 'FIRST10' ? 45 : 0;
-  const finalAmount = selectedPackage.discountedPrice - additionalDiscount;
+  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(packageData.discountedPrice * 0.1) : 0;
+  const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handleCouponApply = () => {
     if (couponCode.toUpperCase() === 'FIRST10') {
-      setAppliedCoupon('FIRST10');
+      onCouponApply('FIRST10');
       setCouponCode('');
     } else {
       alert('Invalid coupon code');
@@ -63,13 +87,13 @@ export default function PaymentSummary({ onNavigate }: PaymentSummaryProps) {
                 <Coins className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg">{selectedPackage.coins} Coins</h3>
+                <h3 className="font-semibold text-lg">{packageData.coins} Coins</h3>
                 <p className="text-sm text-gray-600">Digital currency for creator interactions</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500 line-through">₹{selectedPackage.basePrice}</p>
-              <p className="text-2xl font-bold text-purple-600">₹{selectedPackage.discountedPrice}</p>
+              <p className="text-sm text-gray-500 line-through">₹{packageData.basePrice}</p>
+              <p className="text-2xl font-bold text-purple-600">₹{packageData.discountedPrice}</p>
             </div>
           </div>
 
@@ -77,7 +101,7 @@ export default function PaymentSummary({ onNavigate }: PaymentSummaryProps) {
           <div className="space-y-3 border-t border-gray-100 pt-4">
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Base Price</span>
-              <span className="font-medium">₹{selectedPackage.basePrice}</span>
+              <span className="font-medium">₹{packageData.basePrice}</span>
             </div>
             
             <div className="flex justify-between items-center text-green-600">
@@ -85,7 +109,7 @@ export default function PaymentSummary({ onNavigate }: PaymentSummaryProps) {
                 <Tag className="h-4 w-4" />
                 <span>Website Discount (10%)</span>
               </div>
-              <span className="font-medium">-₹{selectedPackage.websiteDiscount}</span>
+              <span className="font-medium">-₹{packageData.websiteDiscount}</span>
             </div>
 
             {appliedCoupon && (
@@ -141,7 +165,7 @@ export default function PaymentSummary({ onNavigate }: PaymentSummaryProps) {
                   <span className="text-green-700 font-medium">Coupon Applied: {appliedCoupon}</span>
                 </div>
                 <button
-                  onClick={() => setAppliedCoupon(null)}
+                  onClick={() => onCouponApply(null)}
                   className="text-green-600 hover:text-green-800 text-sm font-medium"
                 >
                   Remove

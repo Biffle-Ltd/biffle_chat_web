@@ -3,20 +3,22 @@ import { ArrowLeft, Coins, Tag, ShoppingCart, Gift, Shield, CheckCircle, Star, T
 
 interface CoinPackagesProps {
   onNavigate: (page: string) => void;
+  onPackageSelect: (pkg: any) => void;
+  user: any;
 }
 
-export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
+export default function CoinPackages({ onNavigate, onPackageSelect, user }: CoinPackagesProps) {
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
-  const [currentBalance] = useState(0);
+  const [currentBalance] = useState(user?.coin_balance || 0);
   const [currentBenefit, setCurrentBenefit] = useState(0);
 
   const packages = [
     { id: 1, coins: 100, price: 99, originalPrice: 100, discount: 1, popular: false },
-    { id: 2, coins: 500, price: 450, originalPrice: 500, discount: 10, popular: true },
-    { id: 3, coins: 1000, price: 850, originalPrice: 1000, discount: 15, popular: false },
-    { id: 4, coins: 2500, price: 2000, originalPrice: 2500, discount: 20, popular: false },
-    { id: 5, coins: 5000, price: 3750, originalPrice: 5000, discount: 25, popular: false },
-    { id: 6, coins: 10000, price: 7000, originalPrice: 10000, discount: 30, popular: false }
+    { id: 2, coins: 500, price: 250, originalPrice: 299, discount: 15, popular: true },
+    { id: 3, coins: 150, price: 150, originalPrice: 199, discount: 15, popular: false },
+    { id: 4, coins: 500, price: 500, originalPrice: 599, discount: 20, popular: false },
+    { id: 5, coins: 2000, price: 2000, originalPrice: 2500, discount: 25, popular: false },
+    // { id: 6, coins: 10000, price: 7000, originalPrice: 10000, discount: 30, popular: false }
   ];
 
   const benefits = [
@@ -32,18 +34,19 @@ export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
     },
     {
       icon: TrendingUp,
-      title: "₹50Cr+ Processed",
+      title: "₹10k+ Processed",
       description: "Trusted by millions of users nationwide"
     },
     {
       icon: Star,
-      title: "4.8★ User Rating",
+      title: "4.1★ User Rating",
       description: "Highly rated for security and ease of use"
     }
   ];
 
   const handlePackageSelect = (pkg: typeof packages[0]) => {
     setSelectedPackage(pkg.id);
+    onPackageSelect(pkg);
   };
 
   const handleBuyNow = () => {
@@ -137,7 +140,7 @@ export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
           {/* Right Panel - Packages */}
           <div className="lg:col-span-2">
             {/* Discount Banner */}
-            <div className="bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl p-4 mb-6 text-center">
+            {/* <div className="bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl p-4 mb-6 text-center">
               <div className="flex items-center justify-center space-x-2">
                 <Gift className="h-5 w-5 text-white" />
                 <span className="text-white font-semibold">Get up to 30% off on coin purchases!</span>
@@ -145,7 +148,7 @@ export default function CoinPackages({ onNavigate }: CoinPackagesProps) {
               <button className="text-white underline text-sm mt-1 hover:no-underline">
                 View all coupons
               </button>
-            </div>
+            </div> */}
 
             {/* Current Selection Summary */}
             {selectedPackage && (
