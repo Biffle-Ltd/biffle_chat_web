@@ -74,7 +74,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
       </section>
       <div className="flex justify-center py-8">
         <a
-          href="https://play.google.com/store/apps/details?id=com.biffle.app" // Replace with actual app link
+          href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white px-10 py-4 rounded-full font-bold text-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 flex items-center gap-3"

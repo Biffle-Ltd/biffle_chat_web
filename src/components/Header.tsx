@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MessageCircleHeart, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import biffleLogo from '../assets/biffleLogoPur.png';
 
 interface HeaderProps {
   currentPage?: string;
@@ -26,11 +27,9 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
             onClick={() => handleNavigation('home')}
           >
             <div className="relative">
-              <MessageCircleHeart className="h-8 w-8 text-purple-600" />
+              
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent">
-              BIFFLE
-            </span>
+            <img src={biffleLogo} alt="Biffle Logo" className="h-8 md:w-[8rem]" />
           </div>
 
           {/* Desktop Navigation */}
@@ -89,12 +88,12 @@ export default function Header({ currentPage = 'home', onNavigate, user, onLogou
                 >
                   Login
                 </button>
-                <button 
+                {/* <button 
                   onClick={() => handleNavigation('login')}
                   className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
                 >
                   Buy Coins
-                </button>
+                </button> */}
               </div>
             )}
             <button 
