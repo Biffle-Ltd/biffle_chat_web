@@ -1,5 +1,5 @@
-// export const apiUri = 'https://prod.biffle.ai';
-export const apiUri = 'http://127.0.0.1:8003';
+export const apiUri = 'https://dev.biffle.ai';
+// export const apiUri = 'http://127.0.0.1:8003';
 // Full country code list with flag emojis (195 countries)
 
 export const countryCodes = [
