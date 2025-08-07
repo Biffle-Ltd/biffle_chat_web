@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { ArrowLeft, Phone, MessageSquare, Shield, CheckCircle } from 'lucide-react';
 import { apiUri } from '../utility/constants';
