@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Phone, MessageSquare, Shield, CheckCircle } from 'lucide-react';
-
+import { apiUri } from '../utility/constants';
 interface LoginPageProps {
   onNavigate: (page: string) => void;
   onLogin: (userData: any) => void;
 }
 
 // API configuration
-const apiUri = 'https://prod.biffle.ai';
 
 export default function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
   const [step, setStep] = useState<'phone' | 'otp' | 'profile'>('phone');
