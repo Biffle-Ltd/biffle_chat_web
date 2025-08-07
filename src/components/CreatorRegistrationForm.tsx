@@ -171,7 +171,7 @@ export default function CreatorRegistrationForm({
   // Helper: Submit the registration form data
   const submitRegistration = async (payload: CreatorRegistrationPayload) => {
     const res = await fetch(
-      `${apiUri}/api/v1/creator_center/application/creator-applicant-onboarding/`,
+      `${apiUri}/api/v1/creator_center/application/create/`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
