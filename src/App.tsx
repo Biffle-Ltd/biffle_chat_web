@@ -13,6 +13,7 @@ import GuidelinesPage from './components/GuidelinesPage';
 import PrivacyPage from './components/PrivacyPage';
 import SafetyPage from './components/SafetyPage';
 import TermsPage from './components/TermsPage';
+import ContactUs from './components/ContactUs';
 
 type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration' | 'about' | 'guidelines' | 'privacy' | 'terms';
 
@@ -127,19 +128,7 @@ function App() {
       case 'safety':
         return <SafetyPage />;
       case 'support':
-        return (
-          <div className="min-h-screen bg-gray-50 py-20">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-4xl font-bold text-gray-800 mb-8">Support Center</h1>
-              <div className="bg-white rounded-3xl shadow-lg p-8">
-                <p className="text-gray-600 leading-relaxed">
-                  Need help? Our support team is here to assist you 24/7. Contact us through our help center 
-                  or reach out directly for any questions or concerns.
-                </p>
-              </div>
-            </div>
-          </div>
-        );
+        return <ContactUs />;
       default:
         return <LandingPage onNavigate={handleNavigation} />;
     }
