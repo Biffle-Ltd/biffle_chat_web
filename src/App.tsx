@@ -14,8 +14,10 @@ import PrivacyPage from './components/PrivacyPage';
 import SafetyPage from './components/SafetyPage';
 import TermsPage from './components/TermsPage';
 import ContactUs from './components/ContactUs';
+import ProductsServices from './components/ProductAndServices';
+import PricingPage from './components/Pricing';
 
-type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration' | 'about' | 'guidelines' | 'privacy' | 'terms';
+type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration' | 'about' | 'guidelines' | 'privacy' | 'terms' | 'products' | 'pricing';
 
 interface User {
   id: string;
@@ -129,6 +131,10 @@ function App() {
         return <SafetyPage />;
       case 'support':
         return <ContactUs />;
+      case 'products':
+        return <ProductsServices />;
+      case 'pricing':
+        return <PricingPage />;
       default:
         return <LandingPage onNavigate={handleNavigation} />;
     }
