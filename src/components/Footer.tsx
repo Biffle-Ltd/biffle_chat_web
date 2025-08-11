@@ -22,11 +22,6 @@ export default function Footer({ onNavigate }: FooterProps) {
                 alt="Biffle Logo"
                 className="h-8 md:w-8"
               />
-              <img
-                src={logo}
-                alt="Biffle Logo"
-                className="h-8 md:w-8"
-              />
               <span className="text-2xl font-bold">BIFFLE</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
