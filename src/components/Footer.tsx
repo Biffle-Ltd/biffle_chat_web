@@ -1,6 +1,8 @@
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { CheckCircle } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -17,6 +19,11 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="flex items-center space-x-2 mb-4 cursor-pointer"
               onClick={() => onNavigate?.("home")}
             >
+              <img
+                src={logo}
+                alt="Biffle Logo"
+                className="h-8 md:w-8"
+              />
               <img
                 src={logo}
                 alt="Biffle Logo"
