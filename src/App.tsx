@@ -81,6 +81,8 @@ function AppContent() {
     navigate(
       page === "home"
         ? "/"
+        : page === "login"
+        ? "/login"
         : page === "creators"
         ? "/creators"
         : page === "coins"
