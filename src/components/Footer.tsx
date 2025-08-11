@@ -1,8 +1,6 @@
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
 import logo from '../assets/logo.png';
-import { CheckCircle } from 'lucide-react';
-import logo from '../assets/logo.png';
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
