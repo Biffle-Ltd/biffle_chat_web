@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import LandingPage from './components/LandingPage';
-import CreatorLanding from './components/CreatorLanding';
-import LoginPage from './components/LoginPage';
-import CoinPackages from './components/CoinPackages';
-import PaymentSummary from './components/PaymentSummary';
-import PaymentGateway from './components/PaymentGateway';
-import CreatorRegistrationForm from './components/CreatorRegistrationForm';
-import AboutUsPage from './components/AboutUsPage';
-import GuidelinesPage from './components/GuidelinesPage';
-import PrivacyPage from './components/PrivacyPage';
-import SafetyPage from './components/SafetyPage';
-import TermsPage from './components/TermsPage';
-import ContactUs from './components/ContactUs';
-import ProductsServices from './components/ProductAndServices';
-import PricingPage from './components/Pricing';
-
-type Page = 'home' | 'creators' | 'login' | 'coins' | 'payment-summary' | 'payment-gateway' | 'safety' | 'support' | 'creator-registration' | 'about' | 'guidelines' | 'privacy' | 'terms' | 'products' | 'pricing';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import LandingPage from "./components/LandingPage";
+import CreatorLanding from "./components/CreatorLanding";
+import LoginPage from "./components/LoginPage";
+import CoinPackages from "./components/CoinPackages";
+import PaymentSummary from "./components/PaymentSummary";
+import PaymentGateway from "./components/PaymentGateway";
+import CreatorRegistrationForm from "./components/CreatorRegistrationForm";
+import AboutUsPage from "./components/AboutUsPage";
+import GuidelinesPage from "./components/GuidelinesPage";
+import PrivacyPage from "./components/PrivacyPage";
+import SafetyPage from "./components/SafetyPage";
+import TermsPage from "./components/TermsPage";
+import ContactUs from "./components/ContactUs";
+import ProductsServices from "./components/ProductAndServices";
+import PricingPage from "./components/Pricing";
 
 interface User {
   id: string;
   name: string;
   phone: string;
   email: string;
-  user_type: 'fan' | 'creator';
+  user_type: "fan" | "creator";
   is_new_user: boolean;
   token: string;
 }
@@ -36,120 +42,187 @@ interface SelectedPackage {
   originalPrice: number;
   discount: number;
 }
-function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [user, setUser] = useState<User | null>(null);
-  const [selectedPackage, setSelectedPackage] = useState<SelectedPackage | null>(null);
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+
+function AppContent() {
+  const [user, setUser] = React.useState<User | null>(null);
+  const [selectedPackage, setSelectedPackage] =
+    React.useState<SelectedPackage | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = React.useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Check for stored user data on app load
   React.useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    const storedUserData = localStorage.getItem('userData');
-    
+    const storedToken = localStorage.getItem("authToken");
+    const storedUserData = localStorage.getItem("userData");
     if (storedToken && storedUserData) {
       try {
         const userData = JSON.parse(storedUserData);
         setUser({ ...userData, token: storedToken });
       } catch (error) {
-        console.error('Error parsing stored user data:', error);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
+        console.error("Error parsing stored user data:", error);
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userData");
       }
     }
   }, []);
 
   const handleNavigation = (page: string) => {
     // If trying to access coins page without login, redirect to login
-    if (page === 'coins' && !user) {
-      setCurrentPage('login');
+    if (page === "coins" && !user) {
+      navigate("/login");
       return;
     }
     // If trying to access login page while already logged in, redirect to coins
-    if (page === 'login' && user) {
-      setCurrentPage('coins');
+    if (page === "login" && user) {
+      navigate("/coins");
       return;
     }
-    setCurrentPage(page as Page);
-    
-    // Scroll to top when navigating to a new page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(
+      page === "home"
+        ? "/"
+        : page === "creators"
+        ? "/creators"
+        : page === "coins"
+        ? "/coins"
+        : page === "payment-summary"
+        ? "/payment-summary"
+        : page === "payment-gateway"
+        ? "/payment-gateway"
+        : page === "creator-registration"
+        ? "/creator-registration"
+        : page === "about"
+        ? "/about"
+        : page === "guidelines"
+        ? "/guidelines"
+        : page === "privacy"
+        ? "/privacy"
+        : page === "terms"
+        ? "/terms"
+        : page === "safety"
+        ? "/safety"
+        : page === "support"
+        ? "/support"
+        : page === "products"
+        ? "/products"
+        : page === "pricing"
+        ? "/pricing"
+        : "/"
+    );
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLogin = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('authToken', userData.token);
-    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem("authToken", userData.token);
+    localStorage.setItem("userData", JSON.stringify(userData));
+    navigate("/coins");
   };
 
   const handleLogout = () => {
     setUser(null);
     setSelectedPackage(null);
     setAppliedCoupon(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    setCurrentPage('home');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
+    navigate("/");
   };
 
   const handlePackageSelect = (pkg: SelectedPackage) => {
     setSelectedPackage(pkg);
   };
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <LandingPage onNavigate={handleNavigation} user={user} />;
-      case 'creators':
-        return <CreatorLanding onNavigate={handleNavigation} />;
-      case 'login':
-        return <LoginPage onNavigate={handleNavigation} onLogin={handleLogin} />;
-      case 'coins':
-        return <CoinPackages onNavigate={handleNavigation} onPackageSelect={handlePackageSelect} user={user} />;
-      case 'payment-summary':
-        return <PaymentSummary 
-          onNavigate={handleNavigation} 
-          selectedPackage={selectedPackage}
-          appliedCoupon={appliedCoupon}
-          onCouponApply={setAppliedCoupon}
-        />;
-      case 'payment-gateway':
-        return <PaymentGateway 
-          onNavigate={handleNavigation} 
-          selectedPackage={selectedPackage}
-          appliedCoupon={appliedCoupon}
-        />;
-      case 'creator-registration':
-        return <CreatorRegistrationForm onNavigate={handleNavigation} />;
-      case 'about':
-        return <AboutUsPage />;
-      case 'guidelines':
-        return <GuidelinesPage />;
-      case 'privacy':
-        return <PrivacyPage />;
-      case 'terms':
-        return <TermsPage />;
-      case 'safety':
-        return <SafetyPage />;
-      case 'support':
-        return <ContactUs />;
-      case 'products':
-        return <ProductsServices />;
-      case 'pricing':
-        return <PricingPage />;
-      default:
-        return <LandingPage onNavigate={handleNavigation} />;
-    }
-  };
 
-  const showHeaderFooter = !['login', 'coins', 'payment-summary', 'payment-gateway'].includes(currentPage);
+  // Hide header/footer on these routes
+  const hideHeaderFooterRoutes = [
+    "/login",
+    "/coins",
+    "/payment-summary",
+    "/payment-gateway",
+  ];
+  const showHeaderFooter = !hideHeaderFooterRoutes.includes(location.pathname);
 
   return (
     <div className="min-h-screen flex flex-col">
-      {showHeaderFooter && <Header currentPage={currentPage} onNavigate={handleNavigation} user={user} onLogout={handleLogout} />}
+      {showHeaderFooter && (
+        <Header
+          currentPage={location.pathname}
+          onNavigate={handleNavigation}
+          user={user}
+          onLogout={handleLogout}
+        />
+      )}
       <main className="flex-1">
-        {renderPage()}
+        <Routes>
+          <Route
+            path="/"
+            element={<LandingPage onNavigate={handleNavigation} user={user} />}
+          />
+          <Route
+            path="/creators"
+            element={<CreatorLanding onNavigate={handleNavigation} />}
+          />
+          <Route
+            path="/login"
+            element={
+              <LoginPage onNavigate={handleNavigation} onLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/coins"
+            element={
+              <CoinPackages
+                onNavigate={handleNavigation}
+                onPackageSelect={handlePackageSelect}
+                user={user}
+              />
+            }
+          />
+          <Route
+            path="/payment-summary"
+            element={
+              <PaymentSummary
+                onNavigate={handleNavigation}
+                selectedPackage={selectedPackage}
+                appliedCoupon={appliedCoupon}
+                onCouponApply={setAppliedCoupon}
+              />
+            }
+          />
+          <Route
+            path="/payment-gateway"
+            element={
+              <PaymentGateway
+                onNavigate={handleNavigation}
+                selectedPackage={selectedPackage}
+                appliedCoupon={appliedCoupon}
+              />
+            }
+          />
+          <Route
+            path="/creator-registration"
+            element={<CreatorRegistrationForm onNavigate={handleNavigation} />}
+          />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/guidelines" element={<GuidelinesPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/safety" element={<SafetyPage />} />
+          <Route path="/support" element={<ContactUs />} />
+          <Route path="/products" element={<ProductsServices />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </main>
       {showHeaderFooter && <Footer onNavigate={handleNavigation} />}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

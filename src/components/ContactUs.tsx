@@ -8,7 +8,46 @@ const ContactUs = () => {
     sections: {
       getInTouch: {
         title: "Get in Touch",
-        content: ["📧 Email: support@biffle.ai", "📞 Phone: +91 9988998987"],
+        content: [
+          <div>📧 Email: support@biffle.ai</div>,
+          <div>📞 Phone: +91 9988998987</div>,
+          <a
+            href="https://www.linkedin.com/company/biffle-ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className=" flex items-center hover:text-blue-500"
+            key="linkedin"
+          >
+            💼 LinkedIn
+          </a>,
+          <a
+            href="https://www.facebook.com/profile.php?id=61574120158673"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center hover:text-blue-500"
+            key="facebook"
+          >
+            📘 Facebook
+          </a>,
+          <a
+            href="https://www.instagram.com/biffle.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center hover:text-blue-500"
+            key="instagram"
+          >
+            📸 Instagram
+          </a>,
+          <a
+            href="https://www.youtube.com/@biffle-ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center hover:text-blue-500"
+            key="youtube"
+          >
+            ▶️ YouTube
+          </a>,
+        ],
       },
       operatingAddress: {
         title: "📍 Operating Address",
@@ -81,14 +120,18 @@ const ContactUs = () => {
                 {/* Section Content */}
                 {section?.content && (
                   <ul className="space-y-2">
-                    {section.content.map((item, index) => (
-                      <li
-                        key={index}
-                        className="text-gray-600 text-lg flex items-start before:content-['•'] before:mr-2 before:text-gray-400"
-                      >
-                        <span>{item}</span>
-                      </li>
-                    ))}
+                    {section.content.map((item, index) =>
+                      typeof item === "string" ? (
+                        <li
+                          key={index}
+                          className="text-gray-600 text-lg flex items-start before:content-['•'] before:mr-2 before:text-gray-400"
+                        >
+                          <span>{item}</span>
+                        </li>
+                      ) : (
+                        <li key={index}>{item}</li>
+                      )
+                    )}
                   </ul>
                 )}
               </div>
