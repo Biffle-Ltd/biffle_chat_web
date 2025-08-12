@@ -21,6 +21,7 @@ import GuidelinesPage from "./components/GuidelinesPage";
 import PrivacyPage from "./components/PrivacyPage";
 import SafetyPage from "./components/SafetyPage";
 import TermsPage from "./components/TermsPage";
+import RefundPolicyPage from "./components/RefundPolicyPage";
 import ContactUs from "./components/ContactUs";
 import ProductsServices from "./components/ProductAndServices";
 import PricingPage from "./components/Pricing";
@@ -101,6 +102,8 @@ function AppContent() {
         ? "/privacy"
         : page === "terms"
         ? "/terms"
+        : page === "refund"
+        ? "/refund"
         : page === "safety"
         ? "/safety"
         : page === "support"
@@ -208,6 +211,7 @@ function AppContent() {
           <Route path="/guidelines" element={<GuidelinesPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/refund" element={<RefundPolicyPage />} />
           <Route path="/safety" element={<SafetyPage />} />
           <Route path="/support" element={<ContactUs />} />
           <Route path="/products" element={<ProductsServices />} />

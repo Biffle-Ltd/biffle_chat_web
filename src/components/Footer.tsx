@@ -1,6 +1,6 @@
-import React from 'react';
-import { CheckCircle } from 'lucide-react';
-import logo from '../assets/logo.png';
+import React from "react";
+import { CheckCircle } from "lucide-react";
+import logo from "../assets/logo.png";
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -17,11 +17,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="flex items-center space-x-2 mb-4 cursor-pointer"
               onClick={() => onNavigate?.("home")}
             >
-              <img
-                src={logo}
-                alt="Biffle Logo"
-                className="h-8 md:w-8"
-              />
+              <img src={logo} alt="Biffle Logo" className="h-8 md:w-8" />
               <span className="text-2xl font-bold">BIFFLE</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -29,7 +25,6 @@ export default function Footer({ onNavigate }: FooterProps) {
               short-form content in a safe, compliant, and engaging digital
               environment.
             </p>
-
           </div>
 
           {/* Quick Links */}
@@ -137,7 +132,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               {/* <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Cookie Policy</a></li> */}
               <li>
                 <button
-                  onClick={() => onNavigate?.("support")}
+                  onClick={() => onNavigate?.("refund")}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Refund Policy

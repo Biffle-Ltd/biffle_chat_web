@@ -26,21 +26,22 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                Join the creators' <span className="text-yellow-300">movement</span>
+                Join the creators'{" "}
+                <span className="text-yellow-300">movement</span>
               </h1>
               <p className="text-xl lg:text-2xl text-purple-100 mb-8 leading-relaxed">
                 Showcase your talent. Connect with fans. Earn with Biffle coins.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => onNavigate(user ? 'coins' : 'login')}
+                <button
+                  onClick={() => onNavigate(user ? "coins" : "login")}
                   className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
-                  style={{ backgroundColor: '#27CDB1' }}
+                  style={{ backgroundColor: "#27CDB1" }}
                 >
-                  {user ? 'Buy Coins' : 'Login'}
+                  {user ? "Buy Coins" : "Login"}
                 </button>
-                <button 
-                  onClick={() => onNavigate('creator-registration')}
+                <button
+                  onClick={() => onNavigate("creator-registration")}
                   className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200"
                 >
                   Become a Creator
@@ -102,11 +103,14 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 <div className="bg-gradient-to-r from-purple-600 to-violet-600 p-3 rounded-2xl">
                   <Sparkles className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold ml-4 text-gray-800">Create & Monetise</h3>
+                <h3 className="text-2xl font-bold ml-4 text-gray-800">
+                  Create & Monetise
+                </h3>
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Upload stories, host audio calls, and connect directly with your audience. 
-                Keep up to 80% of your earnings and build lasting relationships with fans.
+                Upload stories, host audio calls, and connect directly with your
+                audience. Keep up to 80% of your earnings and build lasting
+                relationships with fans.
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
@@ -115,7 +119,9 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Multiple content formats</span>
+                  <span className="text-gray-700">
+                    Multiple content formats
+                  </span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
@@ -126,8 +132,8 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                   <span className="text-gray-700">Instant payouts</span>
                 </li>
               </ul>
-              <button 
-                onClick={() => onNavigate('creator-registration')}
+              <button
+                onClick={() => onNavigate("creator-registration")}
                 className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center"
               >
                 Start Creating <ArrowRight className="h-4 w-4 ml-2" />
@@ -140,16 +146,21 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 <div className="bg-gradient-to-r from-pink-500 to-red-500 p-3 rounded-2xl">
                   <Heart className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold ml-4 text-gray-800">Discover & Engage</h3>
+                <h3 className="text-2xl font-bold ml-4 text-gray-800">
+                  Discover & Engage
+                </h3>
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Browse amazing creators, purchase Biffle coins, and enjoy exclusive 
-                one-on-one interactions through chats, voice notes, and audio calls.
+                Browse amazing creators, purchase Biffle coins, and enjoy
+                exclusive one-on-one interactions through chats, voice notes,
+                and audio calls.
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">Exclusive content access</span>
+                  <span className="text-gray-700">
+                    Exclusive content access
+                  </span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
@@ -164,10 +175,10 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                   <span className="text-gray-700">Safe & secure platform</span>
                 </li>
               </ul>
-              <button 
-                onClick={() => onNavigate('login')}
+              <button
+                onClick={() => onNavigate("login")}
                 className="bg-mint-500 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center"
-                style={{ backgroundColor: '#27CDB1' }}
+                style={{ backgroundColor: "#27CDB1" }}
               >
                 Explore Creators <ArrowRight className="h-4 w-4 ml-2" />
               </button>
@@ -180,10 +191,13 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">How Biffle Coins Work</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              How Biffle Coins Work
+            </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Biffle coins are virtual tokens pegged to the rupee — one coin equals ₹1. 
-              Purchase coin packs for better value and start connecting with creators instantly.
+              Biffle coins are virtual tokens pegged to the rupee — one coin
+              equals ₹1. Purchase coin packs for better value and start
+              connecting with creators instantly.
             </p>
           </div>
 
@@ -193,35 +207,68 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 <Coins className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Buy Coins</h3>
-              <p className="text-gray-600">Choose from multiple coin packages with attractive discounts for bulk purchases.</p>
+              <p className="text-gray-600">
+                Choose from multiple coin packages with attractive discounts for
+                bulk purchases.
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-gradient-to-r from-pink-500 to-red-500 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Users className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Connect with Creators</h3>
-              <p className="text-gray-600">Use coins to tip creators, send messages, or book exclusive one-on-one sessions.</p>
+              <h3 className="text-xl font-semibold mb-4">
+                Connect with Creators
+              </h3>
+              <p className="text-gray-600">
+                Use coins to tip creators, send messages, or book exclusive
+                one-on-one sessions.
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Zap className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Enjoy Exclusive Interactions</h3>
-              <p className="text-gray-600">Experience personalized content, private chats, and direct audio conversations.</p>
+              <h3 className="text-xl font-semibold mb-4">
+                Enjoy Exclusive Interactions
+              </h3>
+              <p className="text-gray-600">
+                Experience personalized content, private chats, and direct audio
+                conversations.
+              </p>
             </div>
           </div>
 
           {/* Coin Packages Preview */}
-          <div className="bg-lavender-50 rounded-3xl p-8" style={{ backgroundColor: '#F6F4FF' }}>
-            <h3 className="text-2xl font-bold text-center mb-8">Popular Coin Packages</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div
+            className="bg-lavender-50 rounded-3xl p-8"
+            style={{ backgroundColor: "#F6F4FF" }}
+          >
+            <h3 className="text-2xl font-bold text-center mb-8">
+              Popular Coin Packages
+            </h3>
+            <div
+              className="grid grid-cols-1 md:grid-cols-4 gap-6 hover:cursor-pointer"
+              onClick={() => onNavigate(user ? "coins" : "login")}
+            >
               {[
-                { coins: 100, price: 99, discount: '1% off', popular: false },
-                { coins: 500, price: 250, discount: '15% off', popular: true },
-                { coins: 150, price: 150, discount: '0% off', popular: false },
-                { coins: 2000, price: 2000, discount: '0% off', popular: false }
+                { coins: 100, price: 99, discount: "1% off", popular: false },
+                { coins: 500, price: 250, discount: "15% off", popular: true },
+                { coins: 150, price: 150, discount: "0% off", popular: false },
+                {
+                  coins: 2000,
+                  price: 2000,
+                  discount: "0% off",
+                  popular: false,
+                },
               ].map((pack, index) => (
-                <div key={index} className={`bg-white rounded-2xl p-6 text-center relative ${pack.popular ? 'ring-2 ring-purple-500 transform scale-105' : ''}`}>
+                <div
+                  key={index}
+                  className={`bg-white rounded-2xl p-6 text-center relative ${
+                    pack.popular
+                      ? "ring-2 ring-purple-500 transform scale-105"
+                      : ""
+                  }`}
+                >
                   {pack.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <span className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 py-1 rounded-full text-sm font-medium">
@@ -230,14 +277,17 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                     </div>
                   )}
                   <Coins className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-                  <h4 className="text-2xl font-bold text-gray-800">{pack.coins} Coins</h4>
-                  <p className="text-3xl font-bold text-purple-600 mb-2">₹{pack.price}</p>
-                  <p className="text-sm text-green-600 font-medium mb-4">{pack.discount}</p>
-                  <button 
-                    onClick={() => onNavigate(user ? 'coins' : 'login')}
-                    className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
-                  >
-                    {user ? 'Buy Coins' : 'Login'}
+                  <h4 className="text-2xl font-bold text-gray-800">
+                    {pack.coins} Coins
+                  </h4>
+                  <p className="text-3xl font-bold text-purple-600 mb-2">
+                    ₹{pack.price}
+                  </p>
+                  <p className="text-sm text-green-600 font-medium mb-4">
+                    {pack.discount}
+                  </p>
+                  <button className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
+                    {user ? "Buy Coins" : "Login"}
                   </button>
                 </div>
               ))}
@@ -250,8 +300,12 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Trusted by Thousands</h2>
-            <p className="text-xl text-gray-600">Your safety and security are our top priorities</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Trusted by Thousands
+            </h2>
+            <p className="text-xl text-gray-600">
+              Your safety and security are our top priorities
+            </p>
           </div>
 
           {/* Trust Badges */}
@@ -280,31 +334,41 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               {
                 name: "Priya S.",
                 role: "Content Creator",
-                content: "Biffle helped me monetize my storytelling passion. The direct connection with fans is incredible!",
-                rating: 5
+                content:
+                  "Biffle helped me monetize my storytelling passion. The direct connection with fans is incredible!",
+                rating: 5,
               },
               {
                 name: "Arjun K.",
                 role: "Fan",
-                content: "Love the personal interactions with creators. The coin system is transparent and fair.",
-                rating: 5
+                content:
+                  "Love the personal interactions with creators. The coin system is transparent and fair.",
+                rating: 5,
               },
               {
                 name: "Meera R.",
                 role: "Content Creator",
-                content: "Best platform for creators! Easy to use, great payouts, and amazing community support.",
-                rating: 5
-              }
+                content:
+                  "Best platform for creators! Easy to use, great payouts, and amazing community support.",
+                rating: 5,
+              },
             ].map((testimonial, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star
+                      key={i}
+                      className="h-5 w-5 text-yellow-400 fill-current"
+                    />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
+                <p className="text-gray-600 mb-4 italic">
+                  "{testimonial.content}"
+                </p>
                 <div>
-                  <p className="font-semibold text-gray-800">{testimonial.name}</p>
+                  <p className="font-semibold text-gray-800">
+                    {testimonial.name}
+                  </p>
                   <p className="text-gray-500 text-sm">{testimonial.role}</p>
                 </div>
               </div>
