@@ -1,6 +1,6 @@
 // export const apiUri = 'https://dev.biffle.ai';
-export const apiUri = 'http://127.0.0.1:8003';
-// export const apiUri = "https://balanced-crow-officially.ngrok-free.app";
+// export const apiUri = 'http://127.0.0.1:8003';
+export const apiUri = "https://balanced-crow-officially.ngrok-free.app";
 // Full country code list with flag emojis (195 countries)
 
 export const countryCodes = [
