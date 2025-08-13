@@ -15,6 +15,7 @@ import LoginPage from "./components/LoginPage";
 import CoinPackages from "./components/CoinPackages";
 import PaymentSummary from "./components/PaymentSummary";
 import PaymentGateway from "./components/PaymentGateway";
+import PayUCallback from "./components/PayUCallback";
 import CreatorRegistrationForm from "./components/CreatorRegistrationForm";
 import AboutUsPage from "./components/AboutUsPage";
 import GuidelinesPage from "./components/GuidelinesPage";
@@ -143,6 +144,7 @@ function AppContent() {
     "/coins",
     "/payment-summary",
     "/payment-gateway",
+    "/payu/callback",
   ];
   const showHeaderFooter = !hideHeaderFooterRoutes.includes(location.pathname);
 
@@ -202,6 +204,10 @@ function AppContent() {
                 appliedCoupon={appliedCoupon}
               />
             }
+          />
+          <Route
+            path="/payu/callback"
+            element={<PayUCallback onNavigate={handleNavigation} />}
           />
           <Route
             path="/creator-registration"

@@ -251,14 +251,15 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               onClick={() => onNavigate(user ? "coins" : "login")}
             >
               {[
-                { coins: 100, price: 99, discount: "1% off", popular: false },
-                { coins: 500, price: 250, discount: "15% off", popular: true },
-                { coins: 150, price: 150, discount: "0% off", popular: false },
+                { coins: 100, price: 99, discount: "1% off", popular: false, product_id: "1" },
+                { coins: 500, price: 250, discount: "15% off", popular: true, product_id: "2" },
+                { coins: 150, price: 150, discount: "0% off", popular: false, product_id: "3" },
                 {
                   coins: 2000,
                   price: 2000,
                   discount: "0% off",
                   popular: false,
+                  product_id: "4"
                 },
               ].map((pack, index) => (
                 <div

@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Shield, CreditCard, Smartphone, Building, Wallet, CheckCircle, Copy } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  ArrowLeft,
+  Shield,
+  CreditCard,
+  Smartphone,
+  Building,
+  Wallet,
+  CheckCircle,
+  Copy,
+} from "lucide-react";
+import { apiUri } from "../utility/constants";
+import { createAndSubmitPayUForm, PayUInitResponse } from "../utility/payu";
 
 interface PaymentGatewayProps {
   onNavigate: (page: string) => void;
@@ -7,15 +18,21 @@ interface PaymentGatewayProps {
   appliedCoupon: string | null;
 }
 
-export default function PaymentGateway({ onNavigate, selectedPackage, appliedCoupon }: PaymentGatewayProps) {
-  const [selectedMethod, setSelectedMethod] = useState<'upi' | 'card' | 'netbanking' | 'wallet'>('upi');
-  const [upiId, setUpiId] = useState('');
+export default function PaymentGateway({
+  onNavigate,
+  selectedPackage,
+  appliedCoupon,
+}: PaymentGatewayProps) {
+  const [selectedMethod, setSelectedMethod] = useState<
+    "upi" | "card" | "netbanking" | "wallet"
+  >("upi");
+  const [upiId, setUpiId] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
   // If no package selected, redirect back to coins page
   React.useEffect(() => {
     if (!selectedPackage) {
-      onNavigate('coins');
+      onNavigate("coins");
     }
   }, [selectedPackage, onNavigate]);
 
@@ -24,8 +41,8 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">No package selected</p>
-          <button 
-            onClick={() => onNavigate('coins')}
+          <button
+            onClick={() => onNavigate("coins")}
             className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium"
           >
             Select Package
@@ -36,25 +53,79 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
   }
 
   // Calculate final amount based on selected package and coupon
-  const packageData = { coins: selectedPackage.coins, discountedPrice: selectedPackage.price };
-  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(selectedPackage.price * 0.1) : 0;
+  const packageData = {
+    coins: selectedPackage.coins,
+    discountedPrice: selectedPackage.price,
+  };
+  const additionalDiscount =
+    appliedCoupon === "FIRST10" ? Math.floor(selectedPackage.price * 0.1) : 0;
   const finalAmount = packageData.discountedPrice - additionalDiscount;
 
   const handlePayment = async () => {
-    setIsProcessing(true);
-    // Simulate payment processing
-    setTimeout(() => {
+    try {
+      setIsProcessing(true);
+      // Ask backend to create a PayU order and return SHC params + action URL
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(
+        `${apiUri}/api/v1/user_center/actions/purchase-coins/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({
+            coin_pack_id: selectedPackage.id,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to initialize PayU");
+      }
+
+      const body = await response.json();
+      const data: PayUInitResponse = body.data;
+      console.log(data)
+      if (!data?.actionURL || !data?.params) {
+        throw new Error("Invalid PayU init response");
+      }
+
+      // Redirect to PayU by submitting form
+      createAndSubmitPayUForm(data.actionURL, data.params);
+    } catch (err: any) {
+      console.error("PayU init error:", err);
+      alert("Unable to start payment. Please try again.");
       setIsProcessing(false);
-      alert('Payment Successful! Coins added to your account.');
-      onNavigate('coins');
-    }, 3000);
+    }
   };
 
   const paymentMethods = [
-    { id: 'upi', name: 'UPI', icon: Smartphone, description: 'Pay using UPI ID' },
-    { id: 'card', name: 'Card', icon: CreditCard, description: 'Credit/Debit Cards' },
-    { id: 'netbanking', name: 'Net Banking', icon: Building, description: 'Online Banking' },
-    { id: 'wallet', name: 'Wallets', icon: Wallet, description: 'PayTM, PhonePe, etc.' }
+    {
+      id: "upi",
+      name: "UPI",
+      icon: Smartphone,
+      description: "Pay using UPI ID",
+    },
+    {
+      id: "card",
+      name: "Card",
+      icon: CreditCard,
+      description: "Credit/Debit Cards",
+    },
+    {
+      id: "netbanking",
+      name: "Net Banking",
+      icon: Building,
+      description: "Online Banking",
+    },
+    {
+      id: "wallet",
+      name: "Wallets",
+      icon: Wallet,
+      description: "PayTM, PhonePe, etc.",
+    },
   ];
 
   return (
@@ -63,14 +134,16 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <button 
-              onClick={() => onNavigate('payment-summary')}
+            <button
+              onClick={() => onNavigate("payment-summary")}
               className="flex items-center text-purple-600 hover:text-purple-700 transition-colors"
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
               Back
             </button>
-            <h1 className="text-lg font-semibold text-gray-800">Secure Payment</h1>
+            <h1 className="text-lg font-semibold text-gray-800">
+              Secure Payment
+            </h1>
             <div className="w-20"></div>
           </div>
         </div>
@@ -82,14 +155,18 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
           <div className="text-center">
             <p className="text-purple-100 mb-2">Amount to Pay</p>
             <p className="text-4xl font-bold mb-2">₹{finalAmount}</p>
-            <p className="text-purple-200 text-sm">For {packageData.coins} Biffle Coins</p>
+            <p className="text-purple-200 text-sm">
+              For {packageData.coins} Biffle Coins
+            </p>
           </div>
         </div>
 
         {/* Payment Method Tabs */}
         <div className="bg-white rounded-3xl shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">Choose Payment Method</h2>
-          
+          <h2 className="text-xl font-bold text-gray-800 mb-6">
+            Choose Payment Method
+          </h2>
+
           <div className="grid grid-cols-2 gap-3 mb-6">
             {paymentMethods.map((method) => (
               <button
@@ -97,19 +174,23 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
                 onClick={() => setSelectedMethod(method.id as any)}
                 className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
                   selectedMethod === method.id
-                    ? 'border-purple-500 bg-purple-50'
-                    : 'border-gray-200 hover:border-purple-300'
+                    ? "border-purple-500 bg-purple-50"
+                    : "border-gray-200 hover:border-purple-300"
                 }`}
               >
                 <div className="flex flex-col items-center space-y-2">
-                  <method.icon 
+                  <method.icon
                     className={`h-6 w-6 ${
-                      selectedMethod === method.id ? 'text-purple-600' : 'text-gray-600'
-                    }`} 
+                      selectedMethod === method.id
+                        ? "text-purple-600"
+                        : "text-gray-600"
+                    }`}
                   />
-                  <span 
+                  <span
                     className={`font-medium text-sm ${
-                      selectedMethod === method.id ? 'text-purple-700' : 'text-gray-700'
+                      selectedMethod === method.id
+                        ? "text-purple-700"
+                        : "text-gray-700"
                     }`}
                   >
                     {method.name}
@@ -121,7 +202,7 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
 
           {/* Payment Form */}
           <div className="space-y-6">
-            {selectedMethod === 'upi' && (
+            {selectedMethod === "upi" && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   UPI ID
@@ -139,7 +220,7 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
               </div>
             )}
 
-            {selectedMethod === 'card' && (
+            {selectedMethod === "card" && (
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -176,7 +257,7 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
               </div>
             )}
 
-            {selectedMethod === 'netbanking' && (
+            {selectedMethod === "netbanking" && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Your Bank
@@ -192,16 +273,20 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
               </div>
             )}
 
-            {selectedMethod === 'wallet' && (
+            {selectedMethod === "wallet" && (
               <div className="grid grid-cols-2 gap-4">
-                {['PayTM', 'PhonePe', 'Google Pay', 'Amazon Pay'].map((wallet) => (
-                  <button
-                    key={wallet}
-                    className="p-4 border border-gray-300 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all"
-                  >
-                    <span className="font-medium text-gray-700">{wallet}</span>
-                  </button>
-                ))}
+                {["PayTM", "PhonePe", "Google Pay", "Amazon Pay"].map(
+                  (wallet) => (
+                    <button
+                      key={wallet}
+                      className="p-4 border border-gray-300 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all"
+                    >
+                      <span className="font-medium text-gray-700">
+                        {wallet}
+                      </span>
+                    </button>
+                  )
+                )}
               </div>
             )}
           </div>
@@ -213,7 +298,7 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
             <Shield className="h-5 w-5 text-green-500" />
             <h3 className="font-semibold text-gray-800">Payment Security</h3>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
@@ -232,22 +317,22 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
               <span className="text-gray-600">Fraud Protection</span>
             </div>
           </div>
-          
+
           <div className="mt-4 pt-4 border-t border-gray-100 text-center">
             <p className="text-xs text-gray-500">
-              Secured by <span className="font-medium">Razorpay</span> • 
-              Your payment information is encrypted and secure
+              Secured by <span className="font-medium">PayU</span> • Your
+              payment information is encrypted and secure
             </p>
           </div>
         </div>
 
         {/* Payment Button */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 rounded-t-2xl shadow-lg">
-          <button 
+          <button
             onClick={handlePayment}
-            disabled={isProcessing || (selectedMethod === 'upi' && !upiId)}
+            disabled={isProcessing}
             className="w-full bg-mint-500 text-white py-4 rounded-2xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            style={{ backgroundColor: '#27CDB1' }}
+            style={{ backgroundColor: "#27CDB1" }}
           >
             {isProcessing ? (
               <div className="flex items-center justify-center space-x-2">
@@ -258,7 +343,7 @@ export default function PaymentGateway({ onNavigate, selectedPackage, appliedCou
               `Pay ₹${finalAmount}`
             )}
           </button>
-          
+
           <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
             {/* <span>Powered by</span> */}
             {/* <div className="flex space-x-3">

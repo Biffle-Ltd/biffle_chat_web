@@ -13,11 +13,11 @@ export default function CoinPackages({ onNavigate, onPackageSelect, user }: Coin
   const [currentBenefit, setCurrentBenefit] = useState(0);
 
   const packages = [
-    { id: 1, coins: 100, price: 99, originalPrice: 100, discount: 1, popular: false },
-    { id: 2, coins: 500, price: 250, originalPrice: 299, discount: 15, popular: true },
-    { id: 3, coins: 150, price: 150, originalPrice: 199, discount: 15, popular: false },
-    { id: 4, coins: 500, price: 500, originalPrice: 599, discount: 20, popular: false },
-    { id: 5, coins: 2000, price: 2000, originalPrice: 2500, discount: 25, popular: false },
+    { id: 1, coins: 100, price: 99, originalPrice: 100, discount: 1, popular: false, product_id: "1" },
+    { id: 2, coins: 500, price: 250, originalPrice: 299, discount: 15, popular: true, product_id: "2" },
+    { id: 3, coins: 150, price: 150, originalPrice: 199, discount: 15, popular: false, product_id: "3" },
+    { id: 4, coins: 500, price: 500, originalPrice: 599, discount: 20, popular: false, product_id: "4" },
+    { id: 5, coins: 2000, price: 2000, originalPrice: 2500, discount: 25, popular: false, product_id: "5" },
     // { id: 6, coins: 10000, price: 7000, originalPrice: 10000, discount: 30, popular: false }
   ];
 
