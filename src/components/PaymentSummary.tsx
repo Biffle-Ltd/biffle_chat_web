@@ -36,13 +36,12 @@ export default function PaymentSummary({ onNavigate, selectedPackage, appliedCou
 
   const packageData = {
     coins: selectedPackage.coins,
-    basePrice: selectedPackage.originalPrice,
-    discountedPrice: selectedPackage.price,
-    websiteDiscount: selectedPackage.originalPrice - selectedPackage.price
+    basePrice: selectedPackage.amount + 0.1 * selectedPackage.amount,
+    discountedPrice: selectedPackage.amount,
+    websiteDiscount: 0.1 * selectedPackage.amount,
   };
 
-  const additionalDiscount = appliedCoupon === 'FIRST10' ? Math.floor(packageData.discountedPrice * 0.1) : 0;
-  const finalAmount = packageData.discountedPrice - additionalDiscount;
+  const finalAmount = packageData.discountedPrice;
 
   const handleCouponApply = () => {
     if (couponCode.toUpperCase() === 'FIRST10') {

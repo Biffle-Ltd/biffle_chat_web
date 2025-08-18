@@ -1,12 +1,24 @@
-import React from 'react';
-import { Users, Heart, Coins, Shield, Star, CheckCircle, ArrowRight, Sparkles, Zap, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import {
+  Users,
+  Heart,
+  Coins,
+  Shield,
+  Star,
+  CheckCircle,
+  ArrowRight,
+  Sparkles,
+  Zap,
+  TrendingUp,
+} from "lucide-react";
+import { apiUri } from "../utility/constants";
 
 interface User {
   id: string;
   name: string;
   phone: string;
   email: string;
-  user_type: 'fan' | 'creator';
+  user_type: "fan" | "creator";
   is_new_user: boolean;
   token: string;
 }
@@ -17,6 +29,26 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({ onNavigate, user }: LandingPageProps) {
+  const [coinPacks, setCoinPacks] = useState([]);
+  useEffect(() => {
+    const token = user ? user.token : localStorage.getItem("authToken");
+    
+    fetch(
+      `${apiUri}/api/v1/creator_center/details/get-coin-pack-details/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) setCoinPacks(data.data);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -246,52 +278,43 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
             <h3 className="text-2xl font-bold text-center mb-8">
               Popular Coin Packages
             </h3>
-            <div
-              className="grid grid-cols-1 md:grid-cols-4 gap-6 hover:cursor-pointer"
-              onClick={() => onNavigate(user ? "coins" : "login")}
-            >
-              {[
-                { coins: 100, price: 99, discount: "1% off", popular: false, product_id: "1" },
-                { coins: 500, price: 250, discount: "15% off", popular: true, product_id: "2" },
-                { coins: 150, price: 150, discount: "0% off", popular: false, product_id: "3" },
-                {
-                  coins: 2000,
-                  price: 2000,
-                  discount: "0% off",
-                  popular: false,
-                  product_id: "4"
-                },
-              ].map((pack, index) => (
-                <div
-                  key={index}
-                  className={`bg-white rounded-2xl p-6 text-center relative ${
-                    pack.popular
-                      ? "ring-2 ring-purple-500 transform scale-105"
-                      : ""
-                  }`}
-                >
-                  {pack.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-                  <Coins className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-                  <h4 className="text-2xl font-bold text-gray-800">
-                    {pack.coins} Coins
-                  </h4>
-                  <p className="text-3xl font-bold text-purple-600 mb-2">
-                    ₹{pack.price}
-                  </p>
-                  <p className="text-sm text-green-600 font-medium mb-4">
-                    {pack.discount}
-                  </p>
-                  <button className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
-                    {user ? "Buy Coins" : "Login"}
-                  </button>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {coinPacks.length > 0 ? (
+                coinPacks.map((pack) => (
+                  <div
+                    key={pack.id}
+                    className={`bg-white rounded-2xl p-6 text-center relative  hover:cursor-pointer ${
+                      pack.isBonusPack
+                        ? "ring-2 ring-purple-500 transform scale-105"
+                        : ""
+                    }`}
+                    onClick={() => onNavigate(user ? "coins" : "login")}
+                  >
+                    {pack.isBonusPack && (
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                          Bonus Pack
+                        </span>
+                      </div>
+                    )}
+                    <Coins className="h-8 w-8 text-purple-600 mx-auto mb-3" />
+                    <h4 className="text-2xl font-bold text-gray-800">
+                      {pack.coin_value} Coins
+                    </h4>
+                    <p className="text-3xl font-bold text-purple-600 mb-2">
+                      ₹{pack.amount}
+                    </p>
+                    <p className="text-sm text-green-600 font-medium mb-4">
+                      {pack.isTrialPack ? "Trial Pack" : ""}
+                    </p>
+                    <button className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
+                      {user ? "Buy Coins" : "Login"}
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center w-full text-gray-500">Loading...</p>
+              )}
             </div>
           </div>
         </div>
