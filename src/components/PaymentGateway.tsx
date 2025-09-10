@@ -329,7 +329,7 @@ export default function PaymentGateway({
         {/* Payment Button */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 rounded-t-2xl shadow-lg">
           <button
-            onClick={handlePayment}
+            // onClick={handlePayment}
             disabled={isProcessing}
             className="w-full bg-mint-500 text-white py-4 rounded-2xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             style={{ backgroundColor: "#27CDB1" }}
