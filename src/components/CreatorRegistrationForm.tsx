@@ -111,7 +111,6 @@ export default function CreatorRegistrationForm({
       formData.isAbove18 &&
       uploadedImages.length === 3 &&
       formData.agency &&
-      formData.instagramHandle.trim() &&
       formData.countryCode
     );
   };
@@ -210,6 +209,9 @@ export default function CreatorRegistrationForm({
       // 3. Prepare payload with image keys
       const payload: CreatorRegistrationPayload = {
         ...formData,
+        instagramHandle: formData.instagramHandle.trim()
+          ? formData.instagramHandle
+          : "@",
         images: presignedUrls.map((item: { key: string }) => item.key),
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
       };
@@ -545,7 +547,6 @@ export default function CreatorRegistrationForm({
                     }
                     className="w-full pl-16 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     placeholder="your_instagram_handle"
-                    required
                   />
                 </div>
               </div>
