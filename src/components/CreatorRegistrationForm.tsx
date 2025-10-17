@@ -270,7 +270,7 @@ export default function CreatorRegistrationForm({
         instagramHandle: formData.instagramHandle.trim()
           ? formData.instagramHandle
           : "@",
-        images: presignedUrls.map((item: { key: string }) => item.key),
+        images: presignedUrls.images.map((item: { key: string }) => item.key),
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
         video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
       };
