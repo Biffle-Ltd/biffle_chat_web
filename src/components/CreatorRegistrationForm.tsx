@@ -29,6 +29,7 @@ type CreatorRegistrationPayload = {
   agency: string; // "Honeybees" | "Neha" | "Hubspoke" | "Others"
   images: string[]; // Array of 3 S3 object keys
   countryCode: string; // e.g. "+91"
+  video: string; // S3 key for video
 };
 
 export default function CreatorRegistrationForm({
@@ -49,6 +50,8 @@ export default function CreatorRegistrationForm({
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
+  const [dragVideoActive, setDragVideoActive] = useState(false);
 
   const agencies = ["Honeybees", "Neha", "Hubspoke", "Others"];
 
@@ -60,6 +63,7 @@ export default function CreatorRegistrationForm({
   };
 
   const MAX_IMAGE_SIZE_MB = 5;
+  const MAX_VIDEO_SIZE_MB = 50;
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
@@ -101,6 +105,31 @@ export default function CreatorRegistrationForm({
     }
   };
 
+  // Handlers for video drag-and-drop
+  const handleVideoDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragVideoActive(true);
+    } else if (e.type === "dragleave") {
+      setDragVideoActive(false);
+    }
+  };
+  const handleVideoDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragVideoActive(false);
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!file) return;
+    if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
+      alert("Video must be less than 50MB.");
+    } else if (!file.type.includes("mp4")) {
+      alert("Only MP4 videos are allowed.");
+    } else {
+      setUploadedVideo(file);
+    }
+  };
+
   const isFormValid = () => {
     return (
       formData.firstName.trim() &&
@@ -112,6 +141,7 @@ export default function CreatorRegistrationForm({
       uploadedImages.length === 3 &&
       formData.agency &&
       formData.countryCode
+      // uploadedVideo is now optional
     );
   };
 
@@ -128,14 +158,33 @@ export default function CreatorRegistrationForm({
     return true;
   };
 
+  // Helper: Upload a single video to S3 using fields object
+  const uploadVideoToS3 = async (file: File, { url, fields }: any) => {
+    const formData = new FormData();
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+    formData.append("file", file);
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) throw new Error("Failed to upload video");
+    return true;
+  };
+
   // Helper: Get presigned URLs for image upload
-  const getPresignedUrls = async (email: string, phone: string) => {
+  const getPresignedUrls = async (
+    email: string,
+    phone: string,
+    includeVideo: boolean
+  ) => {
     const res = await fetch(
       `${apiUri}/api/v1/creator_center/application/generate-url/`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, phone }),
+        body: JSON.stringify({ email, phone, include_video: includeVideo }),
       }
     );
 
@@ -163,7 +212,7 @@ export default function CreatorRegistrationForm({
     }
 
     const data = await res.json();
-    // Expecting: [{ key: string, url: string }]
+    // Example response: { images: [...], videos: [...] }
     return data.data;
   };
 
@@ -188,32 +237,42 @@ export default function CreatorRegistrationForm({
     setIsSubmitting(true);
 
     try {
-      // 1. Get presigned URLs for all images
+      // 1. Get presigned URLs (modified for new structure)
+      const includeVideo = !!uploadedVideo;
       const presignedUrls = await getPresignedUrls(
         formData.email,
-        formData.countryCode+formData.phone
+        formData.countryCode + formData.phone,
+        includeVideo
       );
-      console.log("Presigned URLs:", presignedUrls);
       if (!presignedUrls) {
         setIsSubmitting(false);
-        return; // Stop if user already exists or error occurred
+        return;
       }
-      console.log("Presigned URLs received:", presignedUrls);
+
       // 2. Upload all images to S3
       await Promise.all(
         uploadedImages.map((file, idx) =>
-          uploadImageToS3(file, presignedUrls[idx].url)
+          uploadImageToS3(file, presignedUrls.images[idx].url)
         )
       );
 
-      // 3. Prepare payload with image keys
+      // 2.5. Upload video to S3 only if provided
+      if (uploadedVideo) {
+        if (!presignedUrls.videos || presignedUrls.videos.length === 0) {
+          throw new Error("No presigned URL returned for video upload");
+        }
+        await uploadVideoToS3(uploadedVideo, presignedUrls.videos[0]);
+      }
+
+      // 3. Prepare payload with image keys & optional video key
       const payload: CreatorRegistrationPayload = {
         ...formData,
         instagramHandle: formData.instagramHandle.trim()
           ? formData.instagramHandle
-          : "@",
-        images: presignedUrls.map((item: { key: string }) => item.key),
+          : "",
+        images: presignedUrls.images.map((item: { key: string }) => item.key),
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
+        video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
       };
 
       // 4. Submit registration data
@@ -494,6 +553,87 @@ export default function CreatorRegistrationForm({
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Video Upload Section */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <Upload className="h-6 w-6 mr-2 text-purple-600" />
+              Introduction Video
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Upload a short intro/about video (Max 50MB, MP4 only)
+            </p>
+            <div
+              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
+                dragVideoActive
+                  ? "border-purple-500 bg-purple-50"
+                  : uploadedVideo
+                  ? "border-gray-200 bg-gray-50"
+                  : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
+              }`}
+              onDragEnter={handleVideoDrag}
+              onDragLeave={handleVideoDrag}
+              onDragOver={handleVideoDrag}
+              onDrop={handleVideoDrop}
+            >
+              {!uploadedVideo ? (
+                <>
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 mb-2">
+                    Drag and drop video here, or{" "}
+                    <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
+                      browse file
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={(e) => {
+                          const file = e.target.files && e.target.files[0];
+                          if (!file) return;
+                          if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
+                            alert("Video must be less than 50MB.");
+                          } else {
+                            setUploadedVideo(file);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {uploadedVideo ? 1 : 0}/1 video uploaded
+                  </p>
+                  <p className="text-xs text-red-500 mt-1">
+                    Video is mandatory. Max size: 50MB.
+                  </p>
+                </>
+              ) : (
+                <div className="flex flex-col items-center text-green-600">
+                  <CheckCircle className="h-6 w-6 mb-2" />
+                  <span className="font-medium mb-2">Video uploaded!</span>
+                  <video controls className="rounded-lg w-full max-w-md mb-2">
+                    <source
+                      src={URL.createObjectURL(uploadedVideo)}
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div className="flex items-center space-x-4 mt-2">
+                    <span className="text-gray-700 text-sm">
+                      {uploadedVideo.name} (
+                      {(uploadedVideo.size / (1024 * 1024)).toFixed(2)} MB)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setUploadedVideo(null)}
+                      className="bg-red-500 text-white rounded-full p-1 ml-2 hover:bg-red-700"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Professional Information */}
