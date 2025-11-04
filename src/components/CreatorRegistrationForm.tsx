@@ -73,7 +73,7 @@ export default function CreatorRegistrationForm({
       } catch (error) {
         console.error("Error fetching agencies:", error);
         // Fallback to default agencies if API fails
-        setAgencies(["Honeybees", "Neha", "Hubspoke", "Others"]);
+        setAgencies(["biffle", "Others"]);
       } finally {
         setAgenciesLoading(false);
       }
