@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Users,
   Heart,
@@ -29,25 +29,102 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({ onNavigate, user }: LandingPageProps) {
-  const [coinPacks, setCoinPacks] = useState([]);
-  useEffect(() => {
+  // Default IDs provided
+  const defaultCoinPackIds = {
+    starter_packs: ["starter_pack_15"],
+    micropacks: ["coin_79", "coin_49", "coin_39", "coin_29", "coin_149"],
+    isTrialPack: ["coin_100"],
+    isBonusPack: ["coin_2000"],
+  };
+
+  // Build placeholder pack objects from IDs for initial display
+  const buildPlaceholderPacks = (ids: typeof defaultCoinPackIds) => {
+    const flagSet = (arr: string[]) => new Set(arr);
+    const trial = flagSet(ids.isTrialPack);
+    const bonus = flagSet(ids.isBonusPack);
+    const allIds = [
+      ...ids.starter_packs,
+      ...ids.micropacks,
+      ...ids.isTrialPack.filter((id) =>
+        !ids.starter_packs.includes(id) && !ids.micropacks.includes(id)
+      ),
+      ...ids.isBonusPack.filter((id) =>
+        !ids.starter_packs.includes(id) && !ids.micropacks.includes(id)
+      ),
+    ];
+    return allIds.map((id) => {
+      const numeric = Number((id.match(/(\d+)/) || ["", "0"])[1]);
+      return {
+        id: `${id}`,
+        coin_value: numeric || 0,
+        amount: numeric || 0,
+        isTrialPack: trial.has(id),
+        isBonusPack: bonus.has(id),
+        // minimal shape to satisfy UI
+      } as any;
+    });
+  };
+
+  const [coinPacks, setCoinPacks] = useState<any[]>(
+    buildPlaceholderPacks(defaultCoinPackIds)
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Function to clear authentication data from storage
+  const clearAuthData = () => {
+    localStorage.removeItem("authToken");
+    // Clear cookies if they exist
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  };
+
+  // Function to validate token and fetch data
+  const validateTokenAndFetchData = async () => {
     const token = user ? user.token : localStorage.getItem("authToken");
     
-    fetch(
-      `${apiUri}/api/v1/creator_center/details/get-coin-pack-details/`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    // If no token present, display dummy data
+    if (!token) {
+      setCoinPacks(buildPlaceholderPacks(defaultCoinPackIds));
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${apiUri}/api/v1/creator_center/details/get-coin-pack-details/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      // Check if token is valid and API call successful
+      if (response.ok && data.success && Array.isArray(data.data)) {
+        // Token is valid, display real data
+        setCoinPacks(data.data);
+      } else {
+        // Token is expired or invalid, clear it and display dummy data
+        clearAuthData();
+        setCoinPacks(buildPlaceholderPacks(defaultCoinPackIds));
       }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.data)) setCoinPacks(data.data);
-      });
-  }, []);
+    } catch (error) {
+      // Network error or other issues, clear token and display dummy data
+      console.error("Error fetching coin packs:", error);
+      clearAuthData();
+      setCoinPacks(buildPlaceholderPacks(defaultCoinPackIds));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    validateTokenAndFetchData();
+  }, [user]);
 
   return (
     <div className="min-h-screen">
@@ -279,11 +356,16 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               Popular Coin Packages
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {coinPacks.length > 0 ? (
+              {isLoading ? (
+                <div className="col-span-full flex justify-center items-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                  <span className="ml-3 text-gray-600">Loading coin packages...</span>
+                </div>
+              ) : coinPacks.length > 0 ? (
                 coinPacks.map((pack) => (
                   <div
                     key={pack.id}
-                    className={`bg-white rounded-2xl p-6 text-center relative  hover:cursor-pointer ${
+                    className={`bg-white rounded-2xl p-6 text-center relative hover:cursor-pointer ${
                       pack.isBonusPack
                         ? "ring-2 ring-purple-500 transform scale-105"
                         : ""
@@ -313,7 +395,15 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                   </div>
                 ))
               ) : (
-                <p className="text-center w-full text-gray-500">Loading...</p>
+                <div className="col-span-full text-center py-8">
+                  <p className="text-gray-500 mb-4">No coin packages available</p>
+                  <button
+                    onClick={() => onNavigate("login")}
+                    className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                  >
+                    Login to view packages
+                  </button>
+                </div>
               )}
             </div>
           </div>
