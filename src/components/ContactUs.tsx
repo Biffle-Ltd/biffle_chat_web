@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactUs = () => {
   const contactData = {
     title: "Contact Us",
@@ -88,6 +86,10 @@ const ContactUs = () => {
     responseTime: "We'll respond within 24-48 hours!",
   };
 
+  const hasDescription = (s: unknown): s is { description: string } => {
+    return typeof (s as any)?.description === "string";
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4">
       <div className="mt-8 mb-12">
@@ -111,7 +113,7 @@ const ContactUs = () => {
 
               <div className="px-4 pb-4">
                 {/* Section Description */}
-                {section?.description && (
+                {hasDescription(section) && (
                   <p className="text-gray-600 text-lg mb-4 leading-relaxed">
                     {section.description}
                   </p>
