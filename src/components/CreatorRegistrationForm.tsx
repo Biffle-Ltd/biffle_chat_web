@@ -30,6 +30,7 @@ type CreatorRegistrationPayload = {
   images: string[]; // Array of 3 S3 object keys
   countryCode: string; // e.g. "+91"
   video: string; // S3 key for video
+  languages: string[]; // array of language codes (e.g., ["en", "hi"]) 
 };
 
 export default function CreatorRegistrationForm({
@@ -54,6 +55,9 @@ export default function CreatorRegistrationForm({
   const [dragVideoActive, setDragVideoActive] = useState(false);
   const [agencies, setAgencies] = useState<string[]>([]);
   const [agenciesLoading, setAgenciesLoading] = useState(true);
+  const [languages, setLanguages] = useState<{ id: number; code: string; name: string }[]>([]);
+  const [languagesLoading, setLanguagesLoading] = useState(true);
+  const [selectedLanguageCodes, setSelectedLanguageCodes] = useState<string[]>([]);
 
   // Fetch agencies on component mount
   useEffect(() => {
@@ -81,6 +85,43 @@ export default function CreatorRegistrationForm({
 
     fetchAgencies();
   }, []);
+
+  // Fetch languages on component mount
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await fetch(
+          `${apiUri}/api/v1/creator_center/application/get-languages`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch languages");
+        }
+        const result = await response.json();
+        const langs = result?.data?.languages || [];
+        setLanguages(langs);
+      } catch (error) {
+        console.error("Error fetching languages:", error);
+        // Fallback options if API fails
+        setLanguages([
+          { id: 1, code: "en", name: "English" },
+          { id: 4, code: "hi", name: "Hindi" },
+          { id: 5, code: "other", name: "Others" },
+        ]);
+      } finally {
+        setLanguagesLoading(false);
+      }
+    };
+
+    fetchLanguages();
+  }, []);
+
+  const toggleLanguage = (code: string) => {
+    setSelectedLanguageCodes((prev) =>
+      prev.includes(code)
+        ? prev.filter((c) => c !== code)
+        : [...prev, code]
+    );
+  };
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({
@@ -300,6 +341,7 @@ export default function CreatorRegistrationForm({
         images: presignedUrls.images.map((item: { key: string }) => item.key),
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
         video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
+        languages: selectedLanguageCodes,
       };
 
       // 4. Submit registration data
@@ -693,6 +735,30 @@ export default function CreatorRegistrationForm({
                   ))}
                 </select>
               </div>
+
+            {/* Languages (Multi-select) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select languages you speak
+              </label>
+              {languagesLoading ? (
+                <p className="text-gray-500 text-sm">Loading languages...</p>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {languages.map((lang) => (
+                    <label key={lang.code} className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedLanguageCodes.includes(lang.code)}
+                        onChange={() => toggleLanguage(lang.code)}
+                        className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <span className="text-gray-700">{lang.name}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
 
               {/* Instagram Handle */}
               <div>
