@@ -70,10 +70,10 @@ const ContactUs = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800">
+      <section className="pt-6 pb-6 bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4">
               <MessageCircle className="h-10 w-10 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -96,7 +96,7 @@ const ContactUs = () => {
       </section>
 
       {/* Contact Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 pt-6 pb-12">
         {/* Follow Us Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Follow Us</h2>
@@ -149,7 +149,7 @@ const ContactUs = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <a
                   href="mailto:support@biffle.ai"
-                  className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-8 text-white hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
+                  className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-8 text-white hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
                 >
                   <div className="flex items-center mb-3">
                     <Mail className="h-6 w-6 mr-3" />
@@ -159,13 +159,13 @@ const ContactUs = () => {
                 </a>
                 <a
                   href="tel:+919988998987"
-                  className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-8 text-white hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
+                  className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-8 text-white hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
                 >
                   <div className="flex items-center mb-3">
                     <Phone className="h-6 w-6 mr-3" />
                     <h3 className="text-xl font-semibold">Phone</h3>
                   </div>
-                  <p className="text-green-100">+91 9988998987</p>
+                  <p className="text-purple-100">+91 9988998987</p>
                 </a>
               </div>
             </div>
@@ -174,36 +174,36 @@ const ContactUs = () => {
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Business */}
-                <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+                <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-6 text-white">
                   <div className="flex items-center mb-4">
                     <Users className="h-6 w-6 mr-2" />
                     <h3 className="text-lg font-semibold">Business</h3>
                   </div>
-                  <p className="text-sm text-orange-100 mb-3">For partnerships & collaborations</p>
+                  <p className="text-sm text-purple-100 mb-3">For partnerships & collaborations</p>
                   <a href="mailto:partnerships@biffle.ai" className="text-white font-medium hover:underline">
                     partnerships@biffle.ai
                   </a>
                 </div>
 
                 {/* Grievance */}
-                <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white">
+                <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-6 text-white">
                   <div className="flex items-center mb-4">
                     <AlertTriangle className="h-6 w-6 mr-2" />
                     <h3 className="text-lg font-semibold">Grievance</h3>
                   </div>
-                  <p className="text-sm text-red-100 mb-3">Content-related concerns</p>
+                  <p className="text-sm text-purple-100 mb-3">Content-related concerns</p>
                   <a href="mailto:grievance@biffle.ai" className="text-white font-medium hover:underline">
                     grievance@biffle.ai
                   </a>
                 </div>
 
                 {/* Help */}
-                <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white">
+                <div className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-6 text-white">
                   <div className="flex items-center mb-4">
                     <HelpCircle className="h-6 w-6 mr-2" />
                     <h3 className="text-lg font-semibold">Help</h3>
                   </div>
-                  <p className="text-sm text-indigo-100 mb-3">Quick answers & support</p>
+                  <p className="text-sm text-purple-100 mb-3">Quick answers & support</p>
                   <p className="text-white font-medium">Visit FAQ Section</p>
                 </div>
               </div>

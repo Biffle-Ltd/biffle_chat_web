@@ -130,7 +130,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800 min-h-[90vh] flex items-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800 min-h-screen flex">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
@@ -140,10 +140,10 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
         
         <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex flex-col">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="text-white space-y-8">
+            <div className="text-white space-y-4">
               {/* Badge */}
               <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 space-x-2">
                 <span className="text-sm font-medium">🇮🇳 India's #1 Creator Platform</span>
@@ -178,7 +178,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               </div>
               
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 pb-6">
                 <button
                   onClick={() => onNavigate(user ? "coins" : "login")}
                   className="group bg-white text-purple-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-yellow-300 transform hover:scale-105 transition-all duration-300 shadow-2xl flex items-center justify-center space-x-2"
@@ -240,50 +240,42 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Download CTA Banner */}
-      <section className="py-16 bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800 relative overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-yellow-400/20 rounded-full blur-3xl animate-pulse delay-300"></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            {/* Left Content */}
-            <div className="text-white text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
-                <span className="text-sm font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
-                  Mobile App Available
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-3">
-                Get the Biffle App
-              </h2>
-              <p className="text-xl text-white/90 mb-6 md:mb-0">
-                Connect with creators on the go. Download now!
-              </p>
-            </div>
-
-            {/* Right Download Button */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative bg-white text-gray-900 px-8 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-4 hover:scale-105"
-              >
-                {/* Google Play Store Logo */}
-                <img src="src/assets/playstore.png" alt="Google Play" className="h-12 w-12" />
-                <div className="text-left flex-1">
-                  <div className="text-xs text-gray-500 uppercase tracking-wide">GET IT ON</div>
-                  <div className="text-2xl font-bold">Google Play</div>
+          {/* Download CTA (merged into hero) */}
+          <div className="mt-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              {/* Left Content */}
+              <div className="text-white text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+                  <span className="text-sm font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
+                    Mobile App Available
+                  </span>
                 </div>
-                <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
-              </a>
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-3">
+                  Get the Biffle App
+                </h2>
+                <p className="text-xl text-white/90 mb-6 md:mb-0">
+                  Connect with creators on the go. Download now!
+                </p>
+              </div>
+
+              {/* Right Download Button */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-white text-gray-900 px-8 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-4 hover:scale-105"
+                >
+                  {/* Google Play Store Logo */}
+                  <img src="src/assets/playstore.png" alt="Google Play" className="h-12 w-12" />
+                  <div className="text-left flex-1">
+                    <div className="text-xs text-gray-500 uppercase tracking-wide">GET IT ON</div>
+                    <div className="text-2xl font-bold">Google Play</div>
+                  </div>
+                  <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -352,7 +344,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 and audio calls.
               </p>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
+                <li className="6flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
                   <span className="text-gray-700">
                     Exclusive content access

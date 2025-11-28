@@ -56,9 +56,9 @@ const SafetyPage: React.FC = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6 lg:pt-6 lg:pb-8">
           <div className="text-center text-white">
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
                 <Shield className="h-12 w-12 text-white" />
               </div>
@@ -88,9 +88,9 @@ const SafetyPage: React.FC = () => {
       </section>
 
       {/* Safety Features */}
-      <section className="py-20 bg-white">
+      <section className="pt-8 pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
               Our Safety Measures
             </h2>
@@ -102,7 +102,7 @@ const SafetyPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {safetyFeatures.map((feature, index) => (
               <div key={index} className="group">
-                <div className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                   <div className={`bg-gradient-to-r ${feature.color} p-4 rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="h-8 w-8 text-white" />
                   </div>
