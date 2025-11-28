@@ -66,9 +66,6 @@ const ContactUs = () => {
     responseTime: "We'll respond within 24-48 hours!",
   };
 
-  const hasDescription = (s: unknown): s is { description: string } => {
-    return typeof (s as any)?.description === "string";
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
