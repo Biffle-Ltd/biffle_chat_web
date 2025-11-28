@@ -12,6 +12,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { apiUri } from "../utility/constants";
+import { CountUp } from './ui/externalcomponents';
 
 interface User {
   id: string;
@@ -91,14 +92,14 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
 
     try {
       const response = await fetch(
-        `${apiUri}/api/v1/creator_center/details/get-coin-pack-details/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      `${apiUri}/api/v1/creator_center/details/get-coin-pack-details/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
       );
 
       const data = await response.json();
@@ -106,7 +107,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
       // Check if token is valid and API call successful
       if (response.ok && data.success && Array.isArray(data.data)) {
         // Token is valid, display real data
-        setCoinPacks(data.data);
+            setCoinPacks(data.data);
       } else {
         // Token is expired or invalid, clear it and display dummy data
         clearAuthData();
@@ -129,78 +130,156 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800">
+      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-violet-600 to-purple-800 min-h-screen flex">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-violet-400/30 rounded-full blur-3xl animate-pulse delay-700"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-400/20 rounded-full blur-3xl"></div>
+        </div>
+        
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex flex-col">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white">
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                Join the creators'{" "}
-                <span className="text-yellow-300">movement</span>
+            {/* Left Content */}
+            <div className="text-white space-y-4">
+              {/* Badge */}
+              <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 space-x-2">
+                <span className="text-sm font-medium">🇮🇳 India's #1 Creator Platform</span>
+              </div>
+              
+              {/* Main Heading */}
+              <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight">
+                Join the Creators'{" "}
+                <span className="text-yellow-300 inline-block animate-pulse">Movement</span>
               </h1>
-              <p className="text-xl lg:text-2xl text-purple-100 mb-8 leading-relaxed">
-                Showcase your talent. Connect with fans. Earn with Biffle coins.
+              
+              {/* Subheading */}
+              <p className="text-xl lg:text-2xl text-purple-100 leading-relaxed max-w-xl">
+                Showcase your talent. Connect with <span className="text-pink-300 font-semibold">real fans</span>. 
+                Earn with <span className="text-yellow-300 font-semibold">Biffle coins</span>.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              
+              {/* Feature Pills */}
+              <div className="flex flex-wrap gap-3">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 space-x-2">
+                  <CheckCircle className="h-5 w-5 text-green-300" />
+                  <span className="text-sm">100% Secure</span>
+                </div>
+                <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 space-x-2">
+                  <Zap className="h-5 w-5 text-yellow-300" />
+                  <span className="text-sm">Instant Payouts</span>
+                </div>
+                <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 space-x-2">
+                  <TrendingUp className="h-5 w-5 text-blue-300" />
+                  <span className="text-sm">Grow Your Brand</span>
+                </div>
+              </div>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 pb-6">
                 <button
                   onClick={() => onNavigate(user ? "coins" : "login")}
-                  className="bg-mint-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-mint-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
-                  style={{ backgroundColor: "#27CDB1" }}
+                  className="group bg-white text-purple-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-yellow-300 transform hover:scale-105 transition-all duration-300 shadow-2xl flex items-center justify-center space-x-2"
                 >
-                  {user ? "Buy Coins" : "Login"}
+                  <span>{user ? "Buy Coins Now" : "Get Started"}</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
                   onClick={() => onNavigate("creator-registration")}
-                  className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200"
+                  className="border-2 border-white text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-purple-600 transition-all duration-300 shadow-xl"
                 >
                   Become a Creator
                 </button>
               </div>
             </div>
+
+            {/* Right Stats Card */}
             <div className="relative">
-              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-yellow-400/20 rounded-2xl p-4 text-center">
-                    <Users className="h-8 w-8 text-yellow-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">100+ Creators</p>
+              {/* Decorative Elements */}
+              <div className="absolute -top-6 -right-6 w-72 h-72 bg-yellow-400/20 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-64 h-64 bg-pink-400/20 rounded-full blur-2xl"></div>
+              
+              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Live Platform Stats</h3>
+                  <p className="text-purple-200 text-sm">Real-time metrics</p>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-yellow-400/20 to-yellow-500/10 rounded-2xl p-6 text-center transform hover:scale-105 transition-transform duration-300">
+                    <Users className="h-10 w-10 text-yellow-300 mx-auto mb-3" />
+                    <p className="text-3xl font-bold text-white mb-1">
+                      <CountUp from={0} to={100} duration={2} className="inline" />+
+                    </p>
+                    <p className="text-yellow-100 text-sm">Creators</p>
                   </div>
-                  <div className="bg-pink-400/20 rounded-2xl p-4 text-center">
-                    <Heart className="h-8 w-8 text-pink-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">10K+ Connections</p>
+                  <div className="bg-gradient-to-br from-pink-400/20 to-pink-500/10 rounded-2xl p-6 text-center transform hover:scale-105 transition-transform duration-300">
+                    <Heart className="h-10 w-10 text-pink-300 mx-auto mb-3" />
+                    <p className="text-3xl font-bold text-white mb-1">
+                      <CountUp from={0} to={10} duration={2} className="inline" />K+
+                    </p>
+                    <p className="text-pink-100 text-sm">Connections</p>
                   </div>
-                  <div className="bg-green-400/20 rounded-2xl p-4 text-center">
-                    <Coins className="h-8 w-8 text-green-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">₹5L+ Earned</p>
+                  <div className="bg-gradient-to-br from-green-400/20 to-green-500/10 rounded-2xl p-6 text-center transform hover:scale-105 transition-transform duration-300">
+                    <Coins className="h-10 w-10 text-green-300 mx-auto mb-3" />
+                    <p className="text-3xl font-bold text-white mb-1">
+                      ₹<CountUp from={0} to={5} duration={2} className="inline" />L+
+                    </p>
+                    <p className="text-green-100 text-sm">Earned</p>
                   </div>
-                  <div className="bg-blue-400/20 rounded-2xl p-4 text-center">
-                    <Shield className="h-8 w-8 text-blue-300 mx-auto mb-2" />
-                    <p className="text-white font-medium">100% Secure</p>
+                  <div className="bg-gradient-to-br from-blue-400/20 to-blue-500/10 rounded-2xl p-6 text-center transform hover:scale-105 transition-transform duration-300">
+                    <Shield className="h-10 w-10 text-blue-300 mx-auto mb-3" />
+                    <p className="text-3xl font-bold text-white mb-1">
+                      <CountUp from={0} to={100} duration={2} className="inline" />%
+                    </p>
+                    <p className="text-blue-100 text-sm">Secure</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Download CTA (merged into hero) */}
+          <div className="mt-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              {/* Left Content */}
+              <div className="text-white text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+                  <span className="text-sm font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
+                    Mobile App Available
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-3">
+                  Get the Biffle App
+                </h2>
+                <p className="text-xl text-white/90 mb-6 md:mb-0">
+                  Connect with creators on the go. Download now!
+                </p>
+              </div>
+
+              {/* Right Download Button */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-white text-gray-900 px-8 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-4 hover:scale-105"
+                >
+                  {/* Google Play Store Logo */}
+                  <img src="src/assets/playstore.png" alt="Google Play" className="h-12 w-12" />
+                  <div className="text-left flex-1">
+                    <div className="text-xs text-gray-500 uppercase tracking-wide">GET IT ON</div>
+                    <div className="text-2xl font-bold">Google Play</div>
+                  </div>
+                  <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-      <div className="flex justify-center py-8">
-        <a
-          href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white px-10 py-4 rounded-full font-bold text-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 flex items-center gap-3"
-        >
-          {/* Play Store Logo SVG */}
-          {/* <svg className="h-6 w-6 mr-2" viewBox="0 0 512 512" fill="none">
-            <g>
-              <path d="M57.6 32.6C51.2 35.8 48 41.2 48 51.2v409.6c0 10 3.2 15.4 9.6 18.6 6.4 3.2 13.2 2.2 20.2-2.2l246.2-142.2-276-276c-4.4 2.2-7.6 4.4-10.4 6.6z" fill="#34A853"/>
-              <path d="M464 239.2L388.8 195.2 320 256l68.8 60.8L464 272.8c13.2-7.6 13.2-27.2 0-33.6z" fill="#EA4335"/>
-              <path d="M77.8 460.8c6.4 3.2 13.2 2.2 20.2-2.2l246.2-142.2-68.8-60.8-197.6 205.2z" fill="#FBBC05"/>
-              <path d="M464 239.2L77.8 51.2c-7-4.4-13.8-5.4-20.2-2.2l276 276 130.4-75.8c13.2-7.6 13.2-27.2 0-33.6z" fill="#4285F4"/>
-            </g>
-          </svg> */}
-          Download Now
-        </a>
-      </div>
 
       {/* Value Proposition */}
       <section className="py-20 bg-gray-50">
@@ -265,7 +344,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                 and audio calls.
               </p>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
+                <li className="6flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
                   <span className="text-gray-700">
                     Exclusive content access
