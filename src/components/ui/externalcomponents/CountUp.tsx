@@ -21,7 +21,7 @@ const CountUp: React.FC<CountUpProps> = ({
 }) => {
   const [count, setCount] = useState(from);
   const [isVisible, setIsVisible] = useState(false);
-  const countRef = useRef<HTMLDivElement>(null);
+  const countRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -98,9 +98,9 @@ const CountUp: React.FC<CountUpProps> = ({
   };
 
   return (
-    <div ref={countRef} className={className}>
+    <span ref={countRef} className={className}>
       {displayValue()}
-    </div>
+    </span>
   );
 };
 

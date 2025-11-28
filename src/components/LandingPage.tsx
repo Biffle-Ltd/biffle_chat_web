@@ -197,7 +197,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
             </div>
 
             {/* Right Stats Card */}
-            <div className="relative">
+            <div className="relative hidden lg:block">
               {/* Decorative Elements */}
               <div className="absolute -top-6 -right-6 w-72 h-72 bg-yellow-400/20 rounded-full blur-2xl"></div>
               <div className="absolute -bottom-6 -left-6 w-64 h-64 bg-pink-400/20 rounded-full blur-2xl"></div>
