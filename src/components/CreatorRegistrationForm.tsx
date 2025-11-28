@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Upload,
@@ -52,8 +52,35 @@ export default function CreatorRegistrationForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
   const [dragVideoActive, setDragVideoActive] = useState(false);
+  const [agencies, setAgencies] = useState<string[]>([]);
+  const [agenciesLoading, setAgenciesLoading] = useState(true);
 
-  const agencies = ["Honeybees", "Neha", "Hubspoke", "Others"];
+  // Fetch agencies on component mount
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        const response = await fetch(
+          `${apiUri}/api/v1/creator_center/application/get-agencies`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch agencies");
+        }
+        const result = await response.json();
+        
+        // Extract agency names from response and add "Others" option
+        const agencyNames = result.data.agencies.map((agency: { name: string }) => agency.name);
+        setAgencies([...agencyNames, "Others"]);
+      } catch (error) {
+        console.error("Error fetching agencies:", error);
+        // Fallback to default agencies if API fails
+        setAgencies(["biffle", "Others"]);
+      } finally {
+        setAgenciesLoading(false);
+      }
+    };
+
+    fetchAgencies();
+  }, []);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({
@@ -654,8 +681,11 @@ export default function CreatorRegistrationForm({
                   onChange={(e) => handleInputChange("agency", e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   required
+                  disabled={agenciesLoading}
                 >
-                  <option value="">Choose your agency type</option>
+                  <option value="">
+                    {agenciesLoading ? "Loading agencies..." : "Choose your agency type"}
+                  </option>
                   {agencies.map((agency) => (
                     <option key={agency} value={agency}>
                       {agency}
