@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { apiUri } from "../utility/constants";
 import { CountUp } from './ui/externalcomponents';
+import playstoreImg from "../assets/playstore.png";
 
 interface User {
   id: string;
@@ -268,7 +269,7 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
                   className="group relative bg-white text-gray-900 px-8 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-4 hover:scale-105"
                 >
                   {/* Google Play Store Logo */}
-                  <img src="src/assets/playstore.png" alt="Google Play" className="h-12 w-12" />
+                  <img src={playstoreImg} alt="Google Play" className="h-12 w-12" />
                   <div className="text-left flex-1">
                     <div className="text-xs text-gray-500 uppercase tracking-wide">GET IT ON</div>
                     <div className="text-2xl font-bold">Google Play</div>
