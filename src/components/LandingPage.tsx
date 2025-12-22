@@ -263,7 +263,8 @@ export default function LandingPage({ onNavigate, user }: LandingPageProps) {
               {/* Right Download Button */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
+                  // href="https://biffle-apk.s3.ap-south-1.amazonaws.com/spinoff-app.apk"
+                  href="https://play.google.com/store/apps/details?id=ai.biffle"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative bg-white text-gray-900 px-8 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-4 hover:scale-105"

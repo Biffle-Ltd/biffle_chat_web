@@ -45,6 +45,16 @@ interface SelectedPackage {
   discount: number;
 }
 
+const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=ai.biffle";
+
+const PlayStoreRedirect: React.FC = () => {
+  React.useEffect(() => {
+    window.location.replace(PLAY_STORE_URL);
+  }, []);
+
+  return null;
+};
+
 function AppContent() {
   const [user, setUser] = React.useState<User | null>(null);
   const [selectedPackage, setSelectedPackage] =
@@ -222,6 +232,7 @@ function AppContent() {
           <Route path="/support" element={<ContactUs />} />
           <Route path="/products" element={<ProductsServices />} />
           <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/app" element={<PlayStoreRedirect />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
