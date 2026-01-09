@@ -739,7 +739,7 @@ export default function CreatorRegistrationForm({
             {/* Languages (Multi-select) */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select languages you speak
+                Select languages you speak *
               </label>
               {languagesLoading ? (
                 <p className="text-gray-500 text-sm">Loading languages...</p>
@@ -763,7 +763,7 @@ export default function CreatorRegistrationForm({
               {/* Instagram Handle */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Share your Instagram handle *
+                  Share your Instagram handle 
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
