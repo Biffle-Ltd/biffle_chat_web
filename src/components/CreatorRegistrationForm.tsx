@@ -548,7 +548,7 @@ export default function CreatorRegistrationForm({
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
               <Upload className="h-6 w-6 mr-2 text-purple-600" />
-              Profile Images
+              Profile Images *
             </h3>
 
             <p className="text-gray-600 mb-6">
@@ -590,7 +590,7 @@ export default function CreatorRegistrationForm({
                     {uploadedImages.length}/3 images uploaded
                   </p>
                   <p className="text-xs text-red-500 mt-1">
-                    Each image must be less than 5 MB.
+                    Images are mandatory. Each image must be less than 5 MB.
                   </p>
                 </>
               ) : (
@@ -673,7 +673,7 @@ export default function CreatorRegistrationForm({
                     {uploadedVideo ? 1 : 0}/1 video uploaded
                   </p>
                   <p className="text-xs text-red-500 mt-1">
-                    Video is mandatory. Max size: 50MB.
+                    Video is optional. Max size: 50MB.
                   </p>
                 </>
               ) : (
