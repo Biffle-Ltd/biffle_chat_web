@@ -30,7 +30,7 @@ type CreatorRegistrationPayload = {
   images: string[]; // Array of 3 S3 object keys
   countryCode: string; // e.g. "+91"
   // video: string; // S3 key for video
-  languages: string[]; // array of language codes (e.g., ["en", "hi"]) 
+  languages: string[]; // array of language codes (e.g., ["en", "hi"])
 };
 
 export default function CreatorRegistrationForm({
@@ -70,14 +70,33 @@ export default function CreatorRegistrationForm({
           throw new Error("Failed to fetch agencies");
         }
         const result = await response.json();
-        
+
         // Extract agency names from response and add "Others" option
-        const agencyNames = result.data.agencies.map((agency: { name: string }) => agency.name);
-        setAgencies([...agencyNames, "Others"]);
+        const agencyNames = result.data.agencies.map(
+          (agency: { name: string }) => agency.name,
+        );
+        const othersAgency = agencyNames.find((a: string) => a === "Others");
+        const orderedAgencyNames = othersAgency
+          ? ["Others", ...agencyNames.filter((a: string) => a !== "Others")]
+          : [...agencyNames];
+        setAgencies(orderedAgencyNames);
+
+        // Default the selection to "Others" (if present) once loaded,
+        // but never override a user-selected value.
+      
+        if (othersAgency) {
+          setFormData((prev) =>
+            prev.agency ? prev : { ...prev, agency: othersAgency },
+          );
+        }
       } catch (error) {
         console.error("Error fetching agencies:", error);
         // Fallback to default agencies if API fails
-        setAgencies(["biffle", "Others"]);
+        const fallbackAgencies = ["Others", "biffle"];
+        setAgencies(fallbackAgencies);
+        setFormData((prev) =>
+          prev.agency ? prev : { ...prev, agency: "Others" },
+        );
       } finally {
         setAgenciesLoading(false);
       }
@@ -547,166 +566,166 @@ export default function CreatorRegistrationForm({
 
           {/* Image Upload */}
           {false && (
-          <div className="bg-white rounded-3xl shadow-lg p-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-              <Upload className="h-6 w-6 mr-2 text-purple-600" />
-              Profile Images *
-            </h3>
+            <div className="bg-white rounded-3xl shadow-lg p-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <Upload className="h-6 w-6 mr-2 text-purple-600" />
+                Profile Images *
+              </h3>
 
-            <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-6">
               Upload 3 high-quality photos of yourself. These will be displayed
               on your creator profile.
-            </p>
+              </p>
 
-            {/* Upload Area */}
-            <div
-              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
-                dragActive
-                  ? "border-purple-500 bg-purple-50"
-                  : uploadedImages.length >= 3
-                  ? "border-gray-200 bg-gray-50"
-                  : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
-              }`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              {uploadedImages.length < 3 ? (
-                <>
-                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-2">
-                    Drag and drop images here, or{" "}
-                    <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
-                      browse files
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e.target.files)}
-                        className="hidden"
+              {/* Upload Area */}
+              <div
+                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
+                  dragActive
+                    ? "border-purple-500 bg-purple-50"
+                    : uploadedImages.length >= 3
+                      ? "border-gray-200 bg-gray-50"
+                      : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
+                }`}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+              >
+                {uploadedImages.length < 3 ? (
+                  <>
+                    <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-2">
+                      Drag and drop images here, or{" "}
+                      <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
+                        browse files
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e.target.files)}
+                          className="hidden"
+                        />
+                      </label>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {uploadedImages.length}/3 images uploaded
+                    </p>
+                    <p className="text-xs text-red-500 mt-1">
+                      Images are mandatory. Each image must be less than 5 MB.
+                    </p>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-center space-x-2 text-green-600">
+                    <CheckCircle className="h-6 w-6" />
+                    <span className="font-medium">All 3 images uploaded!</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Image Preview */}
+              {uploadedImages.length > 0 && (
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  {uploadedImages.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-32 object-cover rounded-xl"
                       />
-                    </label>
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {uploadedImages.length}/3 images uploaded
-                  </p>
-                  <p className="text-xs text-red-500 mt-1">
-                    Images are mandatory. Each image must be less than 5 MB.
-                  </p>
-                </>
-              ) : (
-                <div className="flex items-center justify-center space-x-2 text-green-600">
-                  <CheckCircle className="h-6 w-6" />
-                  <span className="font-medium">All 3 images uploaded!</span>
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
-
-            {/* Image Preview */}
-            {uploadedImages.length > 0 && (
-              <div className="grid grid-cols-3 gap-4 mt-6">
-                {uploadedImages.map((image, index) => (
-                  <div key={index} className="relative group">
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt={`Upload ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-xl"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
           )}
           {/* Video Upload Section */}
           {false && (
-          <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-              <Upload className="h-6 w-6 mr-2 text-purple-600" />
-              Introduction Video
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Upload a short intro/about video (Max 50MB, MP4 only)
-            </p>
-            <div
-              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
-                dragVideoActive
-                  ? "border-purple-500 bg-purple-50"
-                  : uploadedVideo
-                  ? "border-gray-200 bg-gray-50"
-                  : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
-              }`}
-              onDragEnter={handleVideoDrag}
-              onDragLeave={handleVideoDrag}
-              onDragOver={handleVideoDrag}
-              onDrop={handleVideoDrop}
-            >
-              {!uploadedVideo ? (
-                <>
-                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-2">
-                    Drag and drop video here, or{" "}
-                    <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
-                      browse file
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => {
-                          const file = e.target.files && e.target.files[0];
-                          if (!file) return;
-                          if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
-                            alert("Video must be less than 50MB.");
-                          } else {
-                            setUploadedVideo(file);
-                          }
-                        }}
-                        className="hidden"
+            <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <Upload className="h-6 w-6 mr-2 text-purple-600" />
+                Introduction Video
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Upload a short intro/about video (Max 50MB, MP4 only)
+              </p>
+              <div
+                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
+                  dragVideoActive
+                    ? "border-purple-500 bg-purple-50"
+                    : uploadedVideo
+                      ? "border-gray-200 bg-gray-50"
+                      : "border-gray-300 hover:border-purple-400 hover:bg-purple-50"
+                }`}
+                onDragEnter={handleVideoDrag}
+                onDragLeave={handleVideoDrag}
+                onDragOver={handleVideoDrag}
+                onDrop={handleVideoDrop}
+              >
+                {!uploadedVideo ? (
+                  <>
+                    <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-2">
+                      Drag and drop video here, or{" "}
+                      <label className="text-purple-600 hover:text-purple-700 cursor-pointer font-medium">
+                        browse file
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={(e) => {
+                            const file = e.target.files && e.target.files[0];
+                            if (!file) return;
+                            if (file.size > MAX_VIDEO_SIZE_MB * 1024 * 1024) {
+                              alert("Video must be less than 50MB.");
+                            } else {
+                              setUploadedVideo(file);
+                            }
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {uploadedVideo ? 1 : 0}/1 video uploaded
+                    </p>
+                    <p className="text-xs text-red-500 mt-1">
+                      Video is optional. Max size: 50MB.
+                    </p>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center text-green-600">
+                    <CheckCircle className="h-6 w-6 mb-2" />
+                    <span className="font-medium mb-2">Video uploaded!</span>
+                    <video controls className="rounded-lg w-full max-w-md mb-2">
+                      <source
+                        src={URL.createObjectURL(uploadedVideo)}
+                        type="video/mp4"
                       />
-                    </label>
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {uploadedVideo ? 1 : 0}/1 video uploaded
-                  </p>
-                  <p className="text-xs text-red-500 mt-1">
-                    Video is optional. Max size: 50MB.
-                  </p>
-                </>
-              ) : (
-                <div className="flex flex-col items-center text-green-600">
-                  <CheckCircle className="h-6 w-6 mb-2" />
-                  <span className="font-medium mb-2">Video uploaded!</span>
-                  <video controls className="rounded-lg w-full max-w-md mb-2">
-                    <source
-                      src={URL.createObjectURL(uploadedVideo)}
-                      type="video/mp4"
-                    />
-                    Your browser does not support the video tag.
-                  </video>
-                  <div className="flex items-center space-x-4 mt-2">
-                    <span className="text-gray-700 text-sm">
-                      {uploadedVideo.name} (
-                      {(uploadedVideo.size / (1024 * 1024)).toFixed(2)} MB)
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setUploadedVideo(null)}
-                      className="bg-red-500 text-white rounded-full p-1 ml-2 hover:bg-red-700"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
+                      Your browser does not support the video tag.
+                    </video>
+                    <div className="flex items-center space-x-4 mt-2">
+                      <span className="text-gray-700 text-sm">
+                        {uploadedVideo.name} (
+                        {(uploadedVideo.size / (1024 * 1024)).toFixed(2)} MB)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setUploadedVideo(null)}
+                        className="bg-red-500 text-white rounded-full p-1 ml-2 hover:bg-red-700"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
           )}
           {/* Professional Information */}
           <div className="bg-white rounded-3xl shadow-lg p-8">
@@ -739,34 +758,34 @@ export default function CreatorRegistrationForm({
                 </select>
               </div>
 
-            {/* Languages (Multi-select) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select languages you speak *
-              </label>
-              {languagesLoading ? (
-                <p className="text-gray-500 text-sm">Loading languages...</p>
-              ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  {languages.map((lang) => (
+              {/* Languages (Multi-select) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select languages you speak *
+                </label>
+                {languagesLoading ? (
+                  <p className="text-gray-500 text-sm">Loading languages...</p>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    {languages.map((lang) => (
                     <label key={lang.code} className="flex items-center space-x-3">
-                      <input
-                        type="checkbox"
-                        checked={selectedLanguageCodes.includes(lang.code)}
-                        onChange={() => toggleLanguage(lang.code)}
-                        className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-                      />
-                      <span className="text-gray-700">{lang.name}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
+                        <input
+                          type="checkbox"
+                          checked={selectedLanguageCodes.includes(lang.code)}
+                          onChange={() => toggleLanguage(lang.code)}
+                          className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-gray-700">{lang.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {/* Instagram Handle */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Share your Instagram handle 
+                  Share your Instagram handle
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
