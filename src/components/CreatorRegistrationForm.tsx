@@ -545,6 +545,7 @@ export default function CreatorRegistrationForm({
           </div>
 
           {/* Image Upload */}
+          {false && (
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
               <Upload className="h-6 w-6 mr-2 text-purple-600" />
@@ -623,8 +624,9 @@ export default function CreatorRegistrationForm({
               </div>
             )}
           </div>
-
+          )}
           {/* Video Upload Section */}
+          {false && (
           <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
               <Upload className="h-6 w-6 mr-2 text-purple-600" />
@@ -704,7 +706,7 @@ export default function CreatorRegistrationForm({
               )}
             </div>
           </div>
-
+          )}
           {/* Professional Information */}
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
