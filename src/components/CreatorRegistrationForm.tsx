@@ -29,7 +29,7 @@ type CreatorRegistrationPayload = {
   agency: string; // "Honeybees" | "Neha" | "Hubspoke" | "Others"
   images: string[]; // Array of 3 S3 object keys
   countryCode: string; // e.g. "+91"
-  video: string; // S3 key for video
+  // video: string; // S3 key for video
   languages: string[]; // array of language codes (e.g., ["en", "hi"]) 
 };
 
@@ -206,7 +206,7 @@ export default function CreatorRegistrationForm({
       formData.email.includes("@") &&
       formData.gender && // <-- Add gender validation
       formData.isAbove18 &&
-      uploadedImages.length === 3 &&
+      // uploadedImages.length === 3 &&
       formData.agency &&
       formData.countryCode
       // uploadedVideo is now optional
@@ -306,31 +306,31 @@ export default function CreatorRegistrationForm({
 
     try {
       // 1. Get presigned URLs (modified for new structure)
-      const includeVideo = !!uploadedVideo;
-      const presignedUrls = await getPresignedUrls(
-        formData.email,
-        formData.countryCode + formData.phone,
-        includeVideo
-      );
-      if (!presignedUrls) {
-        setIsSubmitting(false);
-        return;
-      }
+      // const includeVideo = !!uploadedVideo;
+      // const presignedUrls = await getPresignedUrls(
+      //   formData.email,
+      //   formData.countryCode + formData.phone,
+      //   includeVideo
+      // );
+      // if (!presignedUrls) {
+      //   setIsSubmitting(false);
+      //   return;
+      // }
 
       // 2. Upload all images to S3
-      await Promise.all(
-        uploadedImages.map((file, idx) =>
-          uploadImageToS3(file, presignedUrls.images[idx].url)
-        )
-      );
+      // await Promise.all(
+      //   uploadedImages.map((file, idx) =>
+      //     uploadImageToS3(file, presignedUrls.images[idx].url)
+      //   )
+      // );
 
       // 2.5. Upload video to S3 only if provided
-      if (uploadedVideo) {
-        if (!presignedUrls.videos || presignedUrls.videos.length === 0) {
-          throw new Error("No presigned URL returned for video upload");
-        }
-        await uploadVideoToS3(uploadedVideo, presignedUrls.videos[0]);
-      }
+      // if (uploadedVideo) {
+      //   if (!presignedUrls.videos || presignedUrls.videos.length === 0) {
+      //     throw new Error("No presigned URL returned for video upload");
+      //   }
+      //   await uploadVideoToS3(uploadedVideo, presignedUrls.videos[0]);
+      // }
 
       // 3. Prepare payload with image keys & optional video key
       const payload: CreatorRegistrationPayload = {
@@ -338,9 +338,10 @@ export default function CreatorRegistrationForm({
         instagramHandle: formData.instagramHandle.trim()
           ? formData.instagramHandle
           : "@",
-        images: presignedUrls.images.map((item: { key: string }) => item.key),
+        // images: presignedUrls.images.map((item: { key: string }) => item.key),
+        images: ["null", "null", "null"],
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
-        video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
+        // video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
         languages: selectedLanguageCodes,
       };
 
