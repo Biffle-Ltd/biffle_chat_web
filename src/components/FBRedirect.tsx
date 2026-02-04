@@ -64,6 +64,7 @@ const FBRedirect: React.FC = () => {
 
   return (
     <div
+      onClick={!isLoading ? handleContinue : undefined}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -73,8 +74,31 @@ const FBRedirect: React.FC = () => {
         fontFamily: "system-ui, -apple-system, sans-serif",
         backgroundColor: "#fff",
         padding: "20px",
+        cursor: !isLoading ? "pointer" : "default",
       }}
     >
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
+
+      {/* Logo */}
+      <img
+        src="/biffle_logo_new.png"
+        alt="Biffle"
+        style={{
+          width: "120px",
+          height: "120px",
+          borderRadius: "24px",
+          marginBottom: "32px",
+          boxShadow: "0 8px 24px rgba(124, 58, 237, 0.2)",
+        }}
+      />
+
       {isLoading ? (
         <>
           <div
@@ -88,14 +112,6 @@ const FBRedirect: React.FC = () => {
               marginBottom: "20px",
             }}
           />
-          <style>
-            {`
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-            `}
-          </style>
           <p
             style={{
               fontSize: "18px",
@@ -107,24 +123,35 @@ const FBRedirect: React.FC = () => {
           </p>
         </>
       ) : (
-        <button
-          onClick={handleContinue}
-          style={{
-            backgroundColor: "#7c3aed",
-            color: "#fff",
-            fontSize: "18px",
-            fontWeight: 600,
-            padding: "16px 48px",
-            border: "none",
-            borderRadius: "12px",
-            cursor: "pointer",
-            transition: "background-color 0.2s ease",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#6d28d9")}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#7c3aed")}
-        >
-          Continue to App
-        </button>
+        <>
+          <button
+            onClick={handleContinue}
+            style={{
+              backgroundColor: "#7c3aed",
+              color: "#fff",
+              fontSize: "18px",
+              fontWeight: 600,
+              padding: "16px 48px",
+              border: "none",
+              borderRadius: "12px",
+              cursor: "pointer",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#6d28d9")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#7c3aed")}
+          >
+            Continue to App
+          </button>
+          <p
+            style={{
+              fontSize: "14px",
+              color: "#999",
+              marginTop: "16px",
+            }}
+          >
+            Tap anywhere to continue
+          </p>
+        </>
       )}
     </div>
   );
