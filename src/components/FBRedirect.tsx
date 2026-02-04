@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import { apiUri } from "../utility/constants";
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=ai.biffle";
-const API_BASE_URL = "http://127.0.0.1:8000";
 
 const FBRedirect: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +23,7 @@ const FBRedirect: React.FC = () => {
     }
 
     // Call backend API with fbclid
-    const apiUrl = `${API_BASE_URL}/api/v1/attribution/redirect/fb_redirect/?fbclid=${encodeURIComponent(fbclid)}`;
+    const apiUrl = `${apiUri}/api/v1/attribution/redirect/fb_redirect/?fbclid=${encodeURIComponent(fbclid)}`;
     console.log("[FBRedirect] Calling API:", apiUrl);
 
     fetch(apiUrl)
