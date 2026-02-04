@@ -26,6 +26,7 @@ import RefundPolicyPage from "./components/RefundPolicyPage";
 import ContactUs from "./components/ContactUs";
 import ProductsServices from "./components/ProductAndServices";
 import PricingPage from "./components/Pricing";
+import FBRedirect from "./components/FBRedirect";
 
 interface User {
   id: string;
@@ -155,6 +156,7 @@ function AppContent() {
     "/payment-summary",
     "/payment-gateway",
     "/payu/callback",
+    "/fbredirect",
   ];
   const showHeaderFooter = !hideHeaderFooterRoutes.includes(location.pathname);
 
@@ -233,6 +235,7 @@ function AppContent() {
           <Route path="/products" element={<ProductsServices />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/app" element={<PlayStoreRedirect />} />
+          <Route path="/fbredirect" element={<FBRedirect />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
