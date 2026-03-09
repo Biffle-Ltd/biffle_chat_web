@@ -702,17 +702,19 @@ export default function CreatorRegistrationForm({
                   <div className="flex flex-col items-center text-green-600">
                     <CheckCircle className="h-6 w-6 mb-2" />
                     <span className="font-medium mb-2">Video uploaded!</span>
-                    <video controls className="rounded-lg w-full max-w-md mb-2">
-                      <source
-                        src={URL.createObjectURL(uploadedVideo)}
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
+                    {uploadedVideo && (
+                      <video controls className="rounded-lg w-full max-w-md mb-2">
+                        <source
+                          src={URL.createObjectURL(uploadedVideo!)}
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
                     <div className="flex items-center space-x-4 mt-2">
                       <span className="text-gray-700 text-sm">
-                        {uploadedVideo.name} (
-                        {(uploadedVideo.size / (1024 * 1024)).toFixed(2)} MB)
+                        {uploadedVideo?.name} (
+                        {((uploadedVideo?.size ?? 0) / (1024 * 1024)).toFixed(2)} MB)
                       </span>
                       <button
                         type="button"
