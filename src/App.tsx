@@ -27,6 +27,7 @@ import ContactUs from "./components/ContactUs";
 import ProductsServices from "./components/ProductAndServices";
 import PricingPage from "./components/Pricing";
 import FBRedirect from "./components/FBRedirect";
+import LoadingScreen from "./components/creator-verification/LoadingScreen";
 
 interface User {
   id: string;
@@ -47,6 +48,12 @@ interface SelectedPackage {
 }
 
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=ai.biffle";
+
+// Lazy-load the verification page so Amplify / Liveness CSS only applies
+// when the user visits the creator verification route.
+const CreatorVerificationPage = React.lazy(
+  () => import("./pages/CreatorVerificationPage")
+);
 
 const PlayStoreRedirect: React.FC = () => {
   React.useEffect(() => {
@@ -106,6 +113,8 @@ function AppContent() {
         ? "/payment-gateway"
         : page === "creator-registration"
         ? "/creator-registration"
+        : page === "creator-verification"
+        ? "/creator-verification"
         : page === "about"
         ? "/about"
         : page === "guidelines"
@@ -157,6 +166,7 @@ function AppContent() {
     "/payment-gateway",
     "/payu/callback",
     "/fbredirect",
+    "/creator-verification",
   ];
   const showHeaderFooter = !hideHeaderFooterRoutes.includes(location.pathname);
 
@@ -224,6 +234,14 @@ function AppContent() {
           <Route
             path="/creator-registration"
             element={<CreatorRegistrationForm onNavigate={handleNavigation} />}
+          />
+          <Route
+            path="/creator-verification"
+            element={
+              <React.Suspense fallback={<LoadingScreen />}>
+                <CreatorVerificationPage />
+              </React.Suspense>
+            }
           />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/guidelines" element={<GuidelinesPage />} />

@@ -1,0 +1,65 @@
+/**
+ * Calmer chrome around AWS Face Liveness. Challenge colors on the freshness
+ * canvas come from Rekognition and cannot be restyled without failing checks.
+ */
+[data-amplify-theme="biffle-liveness"] {
+  --amplify-components-liveness-camera-module-background-color: hsl(220, 14%, 97%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-camera-module {
+  border-color: hsl(220, 13%, 90%);
+  box-shadow: 0 1px 2px hsl(220 14% 9% / 0.04);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-cancel-button {
+  background-color: hsl(0 0% 100% / 0.94);
+  color: hsl(220, 14%, 24%);
+  border: 1px solid hsl(220, 13%, 88%);
+  font-weight: 500;
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-recording-icon {
+  background-color: hsl(0 0% 100% / 0.94);
+  border: 1px solid hsl(220, 13%, 90%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-toast--primary {
+  background-color: hsl(220, 14%, 20%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-toast--primary .amplify-liveness-toast__message {
+  color: hsl(0, 0%, 98%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-connecting-loader {
+  background-color: hsl(220, 14%, 97%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-countdown-container {
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(220, 13%, 90%);
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-start-screen-header__heading {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+[data-amplify-theme="biffle-liveness"] .amplify-liveness-start-screen-header__body {
+  color: hsl(220, 9%, 40%);
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-amplify-theme="biffle-liveness"] .amplify-liveness-fade-out {
+    animation: none;
+    opacity: 1;
+  }
+
+  [data-amplify-theme="biffle-liveness"] .amplify-liveness-match-indicator__bar,
+  [data-amplify-theme="biffle-liveness"] .amplify-liveness-match-indicator__pin,
+  [data-amplify-theme="biffle-liveness"] .amplify-liveness-match-indicator__bar::after,
+  [data-amplify-theme="biffle-liveness"] .amplify-liveness-match-indicator__pin::after {
+    transition-duration: 0.01ms !important;
+  }
+}
