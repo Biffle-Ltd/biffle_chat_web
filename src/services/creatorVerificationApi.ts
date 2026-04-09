@@ -1,12 +1,12 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
-import { apiUri } from "../utility/constants";
+import { verifApiUri } from "../utility/constants";
 
 function getCreatorVerificationBaseURL(): string {
-  const raw = import.meta.env.VITE_API_BASE_URL;
+  const raw = import.meta.env.VITE_VERIF_API_BASE_URL;
   if (typeof raw === "string" && raw.trim() !== "") {
     return raw.trim();
   }
-  return apiUri;
+  return verifApiUri;
 }
 
 /** Axios instance for creator verification endpoints (base URL only). **/
