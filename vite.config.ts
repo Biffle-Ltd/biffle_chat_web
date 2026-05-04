@@ -5,6 +5,10 @@ import path from "path"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    // ngrok / Cloudflare Tunnel and other dev proxies use changing hostnames
+    allowedHosts: true,
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
