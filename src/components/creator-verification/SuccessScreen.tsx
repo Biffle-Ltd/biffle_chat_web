@@ -57,12 +57,12 @@ function getOutcome(result: VerifyResult): {
     };
   }
 
-  if (isDetectedFemale(result.gender)) {
+  if (isDetectedFemale(result.gender) && scoreOk) {
     return {
       tone: "success",
       title: "Verification complete",
       message:
-        "You're verified. You can become a creator on Biffle — continue in the app to finish setting up your creator profile.",
+        "You have been verified as a creator on Biffle - Kindly restart the app to continue.",
     };
   }
 
