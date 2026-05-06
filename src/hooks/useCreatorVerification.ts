@@ -1,9 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  enqueueCreatorVerificationAnalyticsEvent,
+  verifyResultToAnalyticsParams,
+} from "../services/biffleUserCenterEvents";
 import {
   createVerificationClient,
   GenderIneligibleError,
   type VerifyResult,
 } from "../services/creatorVerificationApi";
+import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
 import { postToRN, RN_EVENTS } from "../utils/rnBridge";
 
 export type CreatorVerificationStage =
@@ -15,13 +20,34 @@ export type CreatorVerificationStage =
   | "ineligible"
   | "already_verified";
 
-export function useCreatorVerification({ token }: { token: string }) {
+export function useCreatorVerification({
+  token,
+  analyticsContext,
+}: {
+  token: string;
+  analyticsContext: CreatorVerificationAnalyticsContext;
+}) {
   const [stage, setStage] = useState<CreatorVerificationStage>("loading");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const verificationCompleteSentForSessionRef = useRef<string | null>(null);
+
   const client = useMemo(() => createVerificationClient(token), [token]);
+
+  const emitVerificationCompleteOnce = useCallback(
+    (sid: string, extraParams: Record<string, unknown>) => {
+      if (verificationCompleteSentForSessionRef.current === sid) return;
+      verificationCompleteSentForSessionRef.current = sid;
+      enqueueCreatorVerificationAnalyticsEvent(analyticsContext, {
+        eventName: "verification_complete",
+        sessionId: sid,
+        extraParams,
+      });
+    },
+    [analyticsContext]
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -31,6 +57,7 @@ export function useCreatorVerification({ token }: { token: string }) {
       setSessionId(null);
       setResult(null);
       setError(null);
+      verificationCompleteSentForSessionRef.current = null;
 
       if (!token.trim()) {
         setStage("error");
@@ -83,25 +110,35 @@ export function useCreatorVerification({ token }: { token: string }) {
       return;
     }
 
+    const sid = sessionId;
+
     try {
-      const verifyResult = await client.verifySession(sessionId);
+      const verifyResult = await client.verifySession(sid);
+      emitVerificationCompleteOnce(sid, verifyResultToAnalyticsParams(verifyResult));
       setResult(verifyResult);
       setStage("success");
       postToRN(RN_EVENTS.VERIFICATION_COMPLETE, verifyResult);
-    } catch (error) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const name = err instanceof Error ? err.name : "Error";
+      emitVerificationCompleteOnce(sid, {
+        success: false,
+        error_message: message,
+        error_name: name,
+      });
       setStage("error");
-      setError(error instanceof Error ? error.message : String(error));
-      postToRN(RN_EVENTS.VERIFICATION_FAILED, { error } as object);
+      setError(message);
+      postToRN(RN_EVENTS.VERIFICATION_FAILED, { error: err } as object);
     }
-  }, [client, sessionId]);
+  }, [client, sessionId, emitVerificationCompleteOnce]);
 
-  const handleLivenessError = useCallback((error: unknown) => {
+  const handleLivenessError = useCallback((err: unknown) => {
     setStage("error");
     setError(
-      (error as { error?: { message?: string } })?.error?.message ??
+      (err as { error?: { message?: string } })?.error?.message ??
         "Liveness check failed"
     );
-    postToRN(RN_EVENTS.VERIFICATION_FAILED, { error } as object);
+    postToRN(RN_EVENTS.VERIFICATION_FAILED, { error: err } as object);
   }, []);
 
   return {

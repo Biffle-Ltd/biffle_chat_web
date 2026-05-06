@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useMemo } from "react";
 import AlreadyVerifiedScreen from "../components/creator-verification/AlreadyVerifiedScreen";
 import ErrorScreen from "../components/creator-verification/ErrorScreen";
 import IneligibleScreen from "../components/creator-verification/IneligibleScreen";
@@ -7,6 +7,7 @@ import LoadingScreen from "../components/creator-verification/LoadingScreen";
 import SuccessScreen from "../components/creator-verification/SuccessScreen";
 import VerifyingScreen from "../components/creator-verification/VerifyingScreen";
 import { useCreatorVerification } from "../hooks/useCreatorVerification";
+import { buildCreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
 
 const CreatorVerificationLivenessView = lazy(
   () => import("./CreatorVerificationLivenessView")
@@ -35,9 +36,15 @@ function useVerificationBodyStyles() {
 
 type CreatorVerificationViewProps = {
   token: string;
+  analyticsContext: ReturnType<
+    typeof buildCreatorVerificationAnalyticsContext
+  >;
 };
 
-function CreatorVerificationView({ token }: CreatorVerificationViewProps) {
+function CreatorVerificationView({
+  token,
+  analyticsContext,
+}: CreatorVerificationViewProps) {
   const {
     stage,
     sessionId,
@@ -45,7 +52,7 @@ function CreatorVerificationView({ token }: CreatorVerificationViewProps) {
     error,
     handleAnalysisComplete,
     handleLivenessError,
-  } = useCreatorVerification({ token });
+  } = useCreatorVerification({ token, analyticsContext });
 
   switch (stage) {
     case "loading":
@@ -55,6 +62,7 @@ function CreatorVerificationView({ token }: CreatorVerificationViewProps) {
         <Suspense fallback={<LoadingScreen />}>
           <CreatorVerificationLivenessView
             token={token}
+            analyticsContext={analyticsContext}
             sessionId={sessionId}
             onAnalysisComplete={handleAnalysisComplete}
             onError={handleLivenessError}
@@ -90,11 +98,23 @@ function CreatorVerificationView({ token }: CreatorVerificationViewProps) {
 export default function CreatorVerificationPage() {
   useVerificationBodyStyles();
 
-  const token = new URLSearchParams(window.location.search).get("token");
+  const search =
+    typeof window !== "undefined" ? window.location.search : "";
+  const token = new URLSearchParams(search).get("token");
 
-  if (!token) {
+  const analyticsContext = useMemo(
+    () =>
+      token
+        ? buildCreatorVerificationAnalyticsContext(token, search)
+        : null,
+    [token, search]
+  );
+
+  if (!token || !analyticsContext) {
     return <InvalidTokenScreen />;
   }
 
-  return <CreatorVerificationView token={token} />;
+  return (
+    <CreatorVerificationView token={token} analyticsContext={analyticsContext} />
+  );
 }
