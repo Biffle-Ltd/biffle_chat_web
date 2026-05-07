@@ -1,17 +1,9 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
-import { verifApiUri } from "../utility/constants";
-
-function getCreatorVerificationBaseURL(): string {
-  const raw = import.meta.env.VITE_VERIF_API_BASE_URL;
-  if (typeof raw === "string" && raw.trim() !== "") {
-    return raw.trim();
-  }
-  return verifApiUri;
-}
+import { apiUri } from "../utility/constants";
 
 /** Axios instance for creator verification endpoints (base URL only). **/
 export const creatorVerificationHttp: AxiosInstance = axios.create({
-  baseURL: getCreatorVerificationBaseURL(),
+  baseURL: apiUri,
 });
 
 export class GenderIneligibleError extends Error {
