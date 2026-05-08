@@ -10,8 +10,7 @@ import { enqueueCreatorVerificationAnalyticsEvent } from "../services/biffleUser
 import { fetchRekognitionStreamCredentials } from "../services/creatorVerificationApi";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
 
-// Built-in palette name only (not raw hex). Neutral keeps UI calm; pink primary
-// made the whole flow feel flashy next to Rekognition’s required color challenge.
+// Built-in palette name only — global theme stays neutral; primary CTAs overridden in CSS (blue Start button).
 const professionalLivenessTheme = createTheme({
   name: "biffle-liveness",
   primaryColor: "neutral",

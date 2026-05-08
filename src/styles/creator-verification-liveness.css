@@ -50,6 +50,21 @@
   line-height: 1.5;
 }
 
+/* Primary CTA (e.g. “Start verification”) */
+[data-amplify-theme="biffle-liveness"] .liveness-detector .amplify-button--primary:not(:disabled) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+[data-amplify-theme="biffle-liveness"]
+  .liveness-detector
+  .amplify-button--primary:not(:disabled):hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-amplify-theme="biffle-liveness"] .amplify-liveness-fade-out {
     animation: none;
