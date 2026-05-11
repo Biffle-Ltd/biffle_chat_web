@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   enqueueCreatorVerificationAnalyticsEvent,
-  verifyResultToAnalyticsParams,
+  resolvePostVerifyAnalyticsEvent,
 } from "../services/biffleUserCenterEvents";
 import {
   createVerificationClient,
@@ -9,6 +9,7 @@ import {
   type VerifyResult,
 } from "../services/creatorVerificationApi";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
+import { trackFemaleVerificationCompleteMeta } from "../utils/metaPixel";
 import { postToRN, RN_EVENTS } from "../utils/rnBridge";
 
 export type CreatorVerificationStage =
@@ -36,15 +37,16 @@ export function useCreatorVerification({
 
   const client = useMemo(() => createVerificationClient(token), [token]);
 
-  const emitVerificationCompleteOnce = useCallback(
-    (sid: string, extraParams: Record<string, unknown>) => {
-      if (verificationCompleteSentForSessionRef.current === sid) return;
+  const emitPostVerifyAnalyticsOnce = useCallback(
+    (sid: string, eventName: string, extraParams: Record<string, unknown>) => {
+      if (verificationCompleteSentForSessionRef.current === sid) return false;
       verificationCompleteSentForSessionRef.current = sid;
       enqueueCreatorVerificationAnalyticsEvent(analyticsContext, {
-        eventName: "verification_complete",
+        eventName,
         sessionId: sid,
         extraParams,
       });
+      return true;
     },
     [analyticsContext]
   );
@@ -114,15 +116,27 @@ export function useCreatorVerification({
 
     try {
       const verifyResult = await client.verifySession(sid);
-      emitVerificationCompleteOnce(sid, verifyResultToAnalyticsParams(verifyResult));
+      const { eventName, extraParams } =
+        resolvePostVerifyAnalyticsEvent(verifyResult);
+      const didEmitPostVerify = emitPostVerifyAnalyticsOnce(
+        sid,
+        eventName,
+        extraParams
+      );
+      if (didEmitPostVerify && eventName === "male_verification_complete") {
+        trackFemaleVerificationCompleteMeta({
+          analyticsContext,
+          verifyResult,
+        });
+      }
       setResult(verifyResult);
       setStage("success");
       postToRN(RN_EVENTS.VERIFICATION_COMPLETE, verifyResult);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       const name = err instanceof Error ? err.name : "Error";
-      emitVerificationCompleteOnce(sid, {
-        success: false,
+      emitPostVerifyAnalyticsOnce(sid, "verification_failed", {
+        failure_reason: "verify_api_error",
         error_message: message,
         error_name: name,
       });
@@ -130,7 +144,7 @@ export function useCreatorVerification({
       setError(message);
       postToRN(RN_EVENTS.VERIFICATION_FAILED, { error: err } as object);
     }
-  }, [client, sessionId, emitVerificationCompleteOnce]);
+  }, [analyticsContext, client, sessionId, emitPostVerifyAnalyticsOnce]);
 
   const handleLivenessError = useCallback((err: unknown) => {
     setStage("error");

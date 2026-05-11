@@ -85,14 +85,79 @@ export function enqueueCreatorVerificationAnalyticsEvent(
   }
 }
 
-/** Success payload shape for verification_complete analytics. */
-export function verifyResultToAnalyticsParams(result: VerifyResult): Record<string, unknown> {
+/** Must match eligibility UI in SuccessScreen (“score below 90” copy). */
+const POST_VERIFY_ANALYTICS_SCORE_MIN = 90;
+
+/** Verify API returns `"Male"` or `"Female"` (comparison is case-insensitive, trimmed). */
+function isDetectedMale(gender: string | null | undefined): boolean {
+  return typeof gender === "string" && gender.trim().toLowerCase() === "male";
+}
+
+function isDetectedFemale(gender: string | null | undefined): boolean {
+  return typeof gender === "string" && gender.trim().toLowerCase() === "female";
+}
+
+/** Common verify API fields embedded in analytics `event_params` (beyond `session_id`). */
+export function verifyResultSummaryParams(
+  result: VerifyResult
+): Record<string, unknown> {
   return {
-    success: true,
     passed: result.passed,
     score: result.score,
     gender: result.gender,
     genderConfidence: result.genderConfidence,
     message: result.message,
+  };
+}
+
+/**
+ * Maps a successful `/verify/` response JSON to which post-verify analytics event to send.
+ * - Score strictly below POST_VERIFY_ANALYTICS_SCORE_MIN → `verification_failed` (failure_reason low_liveness_score).
+ * - Score at/above threshold + female→ `female_verification_complete`, male→ `male_verification_complete`.
+ * - Score OK but gender not exactly `Male` / `Female` (after trim, case-insensitive)→ `verification_failed` (failure_reason gender_uncertain_or_other).
+ */
+export function resolvePostVerifyAnalyticsEvent(result: VerifyResult): {
+  eventName:
+    | "female_verification_complete"
+    | "male_verification_complete"
+    | "verification_failed";
+  extraParams: Record<string, unknown>;
+} {
+  const base = verifyResultSummaryParams(result);
+
+  const scoreNum = Number(result.score);
+  if (
+    !Number.isFinite(scoreNum) ||
+    scoreNum < POST_VERIFY_ANALYTICS_SCORE_MIN
+  ) {
+    return {
+      eventName: "verification_failed",
+      extraParams: {
+        ...base,
+        failure_reason: "low_liveness_score",
+      },
+    };
+  }
+
+  if (isDetectedFemale(result.gender)) {
+    return {
+      eventName: "female_verification_complete",
+      extraParams: base,
+    };
+  }
+
+  if (isDetectedMale(result.gender)) {
+    return {
+      eventName: "male_verification_complete",
+      extraParams: base,
+    };
+  }
+
+  return {
+    eventName: "verification_failed",
+    extraParams: {
+      ...base,
+      failure_reason: "gender_uncertain_or_other",
+    },
   };
 }

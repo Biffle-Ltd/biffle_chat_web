@@ -12,20 +12,13 @@ type SuccessScreenProps = {
   result: VerifyResult;
 };
 
-/** Match API / Rekognition labels like "Male", "Man" without matching "female". */
+/** Verify API returns `"Male"` or `"Female"` (case-insensitive, trimmed). */
 function isDetectedMale(gender: string | null | undefined): boolean {
-  if (gender == null || typeof gender !== "string") return false;
-  const g = gender.trim().toLowerCase();
-  if (!g) return false;
-  if (g === "female" || g === "woman") return false;
-  return g === "male" || g === "man";
+  return typeof gender === "string" && gender.trim().toLowerCase() === "male";
 }
 
 function isDetectedFemale(gender: string | null | undefined): boolean {
-  if (gender == null || typeof gender !== "string") return false;
-  const g = gender.trim().toLowerCase();
-  if (!g) return false;
-  return g === "female" || g === "woman";
+  return typeof gender === "string" && gender.trim().toLowerCase() === "female";
 }
 
 type OutcomeTone = "success" | "caution";
