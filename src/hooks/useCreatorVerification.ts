@@ -9,7 +9,7 @@ import {
   type VerifyResult,
 } from "../services/creatorVerificationApi";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
-import { trackFemaleVerificationCompleteMeta } from "../utils/metaPixel";
+import { enqueueFemaleVerificationCapiBridge } from "../services/metaConversionBridge";
 import { postToRN, RN_EVENTS } from "../utils/rnBridge";
 
 export type CreatorVerificationStage =
@@ -123,10 +123,11 @@ export function useCreatorVerification({
         eventName,
         extraParams
       );
-      if (didEmitPostVerify && eventName === "male_verification_complete") {
-        trackFemaleVerificationCompleteMeta({
+      if (didEmitPostVerify && eventName === "female_verification_complete") {
+        enqueueFemaleVerificationCapiBridge({
           analyticsContext,
           verifyResult,
+          sessionId: sid,
         });
       }
       setResult(verifyResult);
