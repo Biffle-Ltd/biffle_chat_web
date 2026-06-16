@@ -30,7 +30,7 @@ type CreatorRegistrationPayload = {
   images: string[]; // Array of 3 S3 object keys
   countryCode: string; // e.g. "+91"
   // video: string; // S3 key for video
-  languages: string[]; // array of language codes (e.g., ["en", "hi"])
+  languages: string[]; // single language code wrapped in array (e.g., ["en"])
 };
 
 export default function CreatorRegistrationForm({
@@ -57,7 +57,7 @@ export default function CreatorRegistrationForm({
   const [agenciesLoading, setAgenciesLoading] = useState(true);
   const [languages, setLanguages] = useState<{ id: number; code: string; name: string }[]>([]);
   const [languagesLoading, setLanguagesLoading] = useState(true);
-  const [selectedLanguageCodes, setSelectedLanguageCodes] = useState<string[]>([]);
+  const [selectedLanguageCode, setSelectedLanguageCode] = useState("");
 
   // Fetch agencies on component mount
   useEffect(() => {
@@ -133,14 +133,6 @@ export default function CreatorRegistrationForm({
 
     fetchLanguages();
   }, []);
-
-  const toggleLanguage = (code: string) => {
-    setSelectedLanguageCodes((prev) =>
-      prev.includes(code)
-        ? prev.filter((c) => c !== code)
-        : [...prev, code]
-    );
-  };
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({
@@ -227,7 +219,8 @@ export default function CreatorRegistrationForm({
       formData.isAbove18 &&
       // uploadedImages.length === 3 &&
       formData.agency &&
-      formData.countryCode
+      formData.countryCode &&
+      selectedLanguageCode
       // uploadedVideo is now optional
     );
   };
@@ -361,7 +354,7 @@ export default function CreatorRegistrationForm({
         images: ["null", "null", "null"],
         phone: formData.countryCode + formData.phone.replace(/\D/g, ""),
         // video: uploadedVideo ? presignedUrls.videos[0].fields.key : null,
-        languages: selectedLanguageCodes,
+        languages: [selectedLanguageCode],
       };
 
       // 4. Submit registration data
@@ -760,22 +753,24 @@ export default function CreatorRegistrationForm({
                 </select>
               </div>
 
-              {/* Languages (Multi-select) */}
+              {/* Languages (Single-select) */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select languages you speak *
+                  Select language you speak *
                 </label>
                 {languagesLoading ? (
                   <p className="text-gray-500 text-sm">Loading languages...</p>
                 ) : (
                   <div className="grid grid-cols-2 gap-3">
                     {languages.map((lang) => (
-                    <label key={lang.code} className="flex items-center space-x-3">
+                      <label key={lang.code} className="flex items-center space-x-3">
                         <input
-                          type="checkbox"
-                          checked={selectedLanguageCodes.includes(lang.code)}
-                          onChange={() => toggleLanguage(lang.code)}
-                          className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                          type="radio"
+                          name="language"
+                          value={lang.code}
+                          checked={selectedLanguageCode === lang.code}
+                          onChange={(e) => setSelectedLanguageCode(e.target.value)}
+                          className="w-5 h-5 text-purple-600 border-gray-300 focus:ring-purple-500"
                         />
                         <span className="text-gray-700">{lang.name}</span>
                       </label>
