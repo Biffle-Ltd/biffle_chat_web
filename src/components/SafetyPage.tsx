@@ -274,7 +274,7 @@ const SafetyPage: React.FC = () => {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
                 <Mail className="h-8 w-8 text-yellow-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">General Support</h3>
-                <p className="text-purple-100 text-sm">safety@biffle.ai</p>
+                <p className="text-purple-100 text-sm">social@biffle.ai</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
                 <Phone className="h-8 w-8 text-yellow-300 mx-auto mb-4" />

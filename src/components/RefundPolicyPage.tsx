@@ -79,7 +79,7 @@ const refundPolicySections: Section[] = [
       {
         subtitle: "3.1 How to Request:",
         paragraphs: [
-          "Submit a refund request within 1 day of the charge via support@biffle.ai with:",
+          "Submit a refund request within 1 day of the charge via social@biffle.ai with:",
         ],
         list: [
           "Transaction ID.",
@@ -126,7 +126,7 @@ const refundPolicySections: Section[] = [
     paragraphs: [
       "You may contact the Grievance Officer at any of the following:",
       "____________________________",
-      "Email: support@biffle.ai",
+      "Email: social@biffle.ai",
       "Address: BIFFLE (Sofnics Tech Labs Pvt. Ltd.)",
       "    3rd Floor, B-12, Kh No.82/9, Mahavir Enclave",
       "    New Delhi, South West Delhi, Delhi, 110045",

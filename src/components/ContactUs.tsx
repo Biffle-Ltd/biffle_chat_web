@@ -11,7 +11,7 @@ const ContactUs = () => {
         icon: Mail,
         color: "from-blue-500 to-blue-600",
         content: [
-          { type: "email", label: "Email", value: "support@biffle.ai", href: "mailto:support@biffle.ai" },
+          { type: "email", label: "Email", value: "social@biffle.ai", href: "mailto:social@biffle.ai" },
           { type: "phone", label: "Phone", value: "+91 9988998987", href: "tel:+919988998987" },
         ],
       },
@@ -148,14 +148,14 @@ const ContactUs = () => {
               <h2 className="text-3xl font-bold text-gray-800 mb-8">Contact</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <a
-                  href="mailto:support@biffle.ai"
+                  href="mailto:social@biffle.ai"
                   className="bg-gradient-to-br from-purple-600 to-violet-600 rounded-xl p-8 text-white hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
                 >
                   <div className="flex items-center mb-3">
                     <Mail className="h-6 w-6 mr-3" />
                     <h3 className="text-xl font-semibold">Email</h3>
                   </div>
-                  <p className="text-purple-100">support@biffle.ai</p>
+                  <p className="text-purple-100">social@biffle.ai</p>
                 </a>
                 <a
                   href="tel:+919988998987"

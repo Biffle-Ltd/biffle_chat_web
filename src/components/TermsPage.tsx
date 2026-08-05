@@ -129,7 +129,7 @@ const termsSections: Section[] = [
       {
         subtitle: "Cancellation & refunds",
         list: [
-          `Cancellation: You may cancel your subscription via the payment partner chosen at the time of transaction or email the request at care@biffle.ai. Access continues until the current Billing Cycle ends.`,
+          `Cancellation: You may cancel your subscription via the payment partner chosen at the time of transaction or email the request at social@biffle.ai. Access continues until the current Billing Cycle ends.`,
           `Refunds: Except as required by law, all fees are non-refundable, including for partial use or unused benefits.`,
         ],
       },
@@ -339,7 +339,7 @@ const termsSections: Section[] = [
             "You can report user profiles and raise complaints for content which violate our community guidelines. You can select the appropriate reason and click on the report option",
           ],
           [
-            "You can send an email to care@BIFFLE.app with your concern or complaint.",
+            "You can send an email to social@biffle.ai with your concern or complaint.",
           ],
         ],
       },
@@ -365,7 +365,7 @@ const termsSections: Section[] = [
           "You may contact the Grievance Officer at any of the following:",
         paragraphs: [
           "____________________________",
-          "Email: support@biffle.ai",
+          "Email: social@biffle.ai",
           "Address: BIFFLE (Sofnics Tech Labs Pvt. Ltd.)",
           "3rd Floor, B-12, Kh No.82/9, Mahavir Enclave",
           "New Delhi, South West Delhi, Delhi, 110045",
