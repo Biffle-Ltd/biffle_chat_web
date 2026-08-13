@@ -1,7 +1,11 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
 import { verifApiUri } from "../utility/constants";
+import {
+  coerceVerifyApiError,
+  parseVerifyResponse,
+} from "./creatorVerificationVerifyErrors";
 
-/** TEMP: verification against dev. Revert to `apiUri` before prod deploy. */
+/** Axios instance for creator verification endpoints. */
 export const creatorVerificationHttp: AxiosInstance = axios.create({
   baseURL: verifApiUri,
 });
@@ -175,18 +179,22 @@ export function createVerificationClient(token: string) {
     },
 
     async verifySession(sessionId: string): Promise<VerifyResult> {
-      const { data } = await creatorVerificationHttp.post(
-        "/api/v1/creator_center/verification/verify/",
-        { sessionId },
-        { headers }
-      );
-
-      const body = data as { data?: VerifyResult };
-      const payload = body.data ?? (data as VerifyResult);
-      if (!payload || typeof payload !== "object") {
-        throw new Error("Invalid verify response");
+      try {
+        const response = await creatorVerificationHttp.post(
+          "/api/v1/creator_center/verification/verify/",
+          { sessionId },
+          {
+            headers,
+            // Always inspect the body so 409s can be branched by error_code.
+            validateStatus: () => true,
+          }
+        );
+        return parseVerifyResponse(response.status, response.data);
+      } catch (error) {
+        const mapped = coerceVerifyApiError(error);
+        if (mapped) throw mapped;
+        throw error;
       }
-      return payload as VerifyResult;
     },
 
     async getStatus(): Promise<StatusResult> {

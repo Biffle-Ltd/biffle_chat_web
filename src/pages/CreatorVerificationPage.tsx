@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo } from "react";
 import AlreadyVerifiedScreen from "../components/creator-verification/AlreadyVerifiedScreen";
+import DuplicateFaceScreen from "../components/creator-verification/DuplicateFaceScreen";
 import ErrorScreen from "../components/creator-verification/ErrorScreen";
 import IneligibleScreen from "../components/creator-verification/IneligibleScreen";
 import InvalidTokenScreen from "../components/creator-verification/InvalidTokenScreen";
@@ -50,6 +51,8 @@ function CreatorVerificationView({
     sessionId,
     result,
     error,
+    errorTitle,
+    errorRetry,
     handleAnalysisComplete,
     handleLivenessError,
   } = useCreatorVerification({ token, analyticsContext });
@@ -79,19 +82,40 @@ function CreatorVerificationView({
       ) : (
         <LoadingScreen />
       );
+    case "duplicate_face":
+      return <DuplicateFaceScreen />;
+    case "session_already_used":
+      return (
+        <ErrorScreen
+          title={errorTitle ?? "Session already used"}
+          message={error ?? "This verification session was already used."}
+          onRetry={() => window.location.reload()}
+        />
+      );
     case "error":
       return (
         <ErrorScreen
+          title={errorTitle ?? undefined}
           message={error ?? "Something went wrong"}
-          onRetry={() => window.location.reload()}
+          onRetry={
+            errorRetry === "retry_verify"
+              ? () => {
+                  void handleAnalysisComplete();
+                }
+              : errorRetry === "none"
+                ? undefined
+                : () => window.location.reload()
+          }
         />
       );
     case "ineligible":
       return <IneligibleScreen />;
     case "already_verified":
       return <AlreadyVerifiedScreen />;
-    default:
-      return <LoadingScreen />;
+    default: {
+      const _exhaustive: never = stage;
+      return _exhaustive;
+    }
   }
 }
 

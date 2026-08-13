@@ -5,11 +5,16 @@ import CreatorVerificationScreenLayout, {
 } from "./CreatorVerificationScreenLayout";
 
 type ErrorScreenProps = {
+  title?: string;
   message: string;
   onRetry?: () => void;
 };
 
-export default function ErrorScreen({ message, onRetry }: ErrorScreenProps) {
+export default function ErrorScreen({
+  title,
+  message,
+  onRetry,
+}: ErrorScreenProps) {
   const handleClose = () => {
     postToRN(RN_EVENTS.CLOSE);
   };
@@ -25,9 +30,16 @@ export default function ErrorScreen({ message, onRetry }: ErrorScreenProps) {
           aria-hidden
         />
 
-        <p className="w-full text-pretty text-sm leading-relaxed text-gray-700 sm:text-base">
-          {message}
-        </p>
+        <div className="w-full space-y-3">
+          {title ? (
+            <h1 className="text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
+              {title}
+            </h1>
+          ) : null}
+          <p className="w-full text-pretty text-sm leading-relaxed text-gray-700 sm:text-base">
+            {message}
+          </p>
+        </div>
 
         <div className="flex w-full max-w-xs flex-col gap-3">
           {onRetry ? (

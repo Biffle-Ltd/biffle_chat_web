@@ -8,6 +8,10 @@ import {
   GenderIneligibleError,
   type VerifyResult,
 } from "../services/creatorVerificationApi";
+import {
+  getVerifyFailureUi,
+  type VerifyRetryPolicy,
+} from "../services/creatorVerificationVerifyErrors";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
 import { enqueueFemaleVerificationCapiBridge } from "../services/metaConversionBridge";
 import { postToRN, RN_EVENTS } from "../utils/rnBridge";
@@ -19,7 +23,9 @@ export type CreatorVerificationStage =
   | "success"
   | "error"
   | "ineligible"
-  | "already_verified";
+  | "already_verified"
+  | "duplicate_face"
+  | "session_already_used";
 
 export function useCreatorVerification({
   token,
@@ -32,6 +38,8 @@ export function useCreatorVerification({
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorRetry, setErrorRetry] = useState<VerifyRetryPolicy | null>(null);
 
   const verificationCompleteSentForSessionRef = useRef<string | null>(null);
 
@@ -59,6 +67,8 @@ export function useCreatorVerification({
       setSessionId(null);
       setResult(null);
       setError(null);
+      setErrorTitle(null);
+      setErrorRetry(null);
       verificationCompleteSentForSessionRef.current = null;
 
       if (!token.trim()) {
@@ -89,7 +99,9 @@ export function useCreatorVerification({
         }
 
         setStage("error");
+        setErrorTitle("Verification failed");
         setError(e instanceof Error ? e.message : "Something went wrong");
+        setErrorRetry("new_session");
       }
     }
 
@@ -105,7 +117,9 @@ export function useCreatorVerification({
 
     if (!sessionId) {
       setStage("error");
+      setErrorTitle("Verification failed");
       setError("No active session");
+      setErrorRetry("new_session");
       postToRN(RN_EVENTS.VERIFICATION_FAILED, {
         error: { message: "No active session" },
       });
@@ -134,25 +148,38 @@ export function useCreatorVerification({
       setStage("success");
       postToRN(RN_EVENTS.VERIFICATION_COMPLETE, verifyResult);
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      const name = err instanceof Error ? err.name : "Error";
-      emitPostVerifyAnalyticsOnce(sid, "verification_failed", {
-        failure_reason: "verify_api_error",
-        error_message: message,
-        error_name: name,
+      const ui = getVerifyFailureUi(err);
+      const extraParams = {
+        failure_reason: ui.errorCode ?? "verify_api_error",
+        error_code: ui.errorCode,
+      };
+      if (ui.retry === "retry_verify") {
+        enqueueCreatorVerificationAnalyticsEvent(analyticsContext, {
+          eventName: "verification_failed",
+          sessionId: sid,
+          extraParams,
+        });
+      } else {
+        emitPostVerifyAnalyticsOnce(sid, "verification_failed", extraParams);
+      }
+      setErrorTitle(ui.title);
+      setError(ui.message);
+      setErrorRetry(ui.retry);
+      setStage(ui.stage);
+      postToRN(RN_EVENTS.VERIFICATION_FAILED, {
+        error: { message: ui.message, error_code: ui.errorCode },
       });
-      setStage("error");
-      setError(message);
-      postToRN(RN_EVENTS.VERIFICATION_FAILED, { error: err } as object);
     }
   }, [analyticsContext, client, sessionId, emitPostVerifyAnalyticsOnce]);
 
   const handleLivenessError = useCallback((err: unknown) => {
     setStage("error");
+    setErrorTitle("Liveness check failed");
     setError(
       (err as { error?: { message?: string } })?.error?.message ??
         "Liveness check failed"
     );
+    setErrorRetry("new_session");
     postToRN(RN_EVENTS.VERIFICATION_FAILED, { error: err } as object);
   }, []);
 
@@ -161,6 +188,8 @@ export function useCreatorVerification({
     sessionId,
     result,
     error,
+    errorTitle,
+    errorRetry,
     handleAnalysisComplete,
     handleLivenessError,
     client,
