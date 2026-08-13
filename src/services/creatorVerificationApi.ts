@@ -1,9 +1,9 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
-import { apiUri } from "../utility/constants";
+import { verifApiUri } from "../utility/constants";
 
-/** Axios instance for creator verification endpoints (base URL only). **/
+/** TEMP: verification against dev. Revert to `apiUri` before prod deploy. */
 export const creatorVerificationHttp: AxiosInstance = axios.create({
-  baseURL: apiUri,
+  baseURL: verifApiUri,
 });
 
 export class GenderIneligibleError extends Error {
