@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo } from "react";
+import "../styles/creator-verification-liveness.css";
 import AlreadyVerifiedScreen from "../components/creator-verification/AlreadyVerifiedScreen";
 import DuplicateFaceScreen from "../components/creator-verification/DuplicateFaceScreen";
 import ErrorScreen from "../components/creator-verification/ErrorScreen";
@@ -22,11 +23,13 @@ function useVerificationBodyStyles() {
       overflowX: document.body.style.overflowX,
       overflowY: document.body.style.overflowY,
     };
+    document.documentElement.classList.add("creator-verification-flow");
     document.body.style.margin = "0";
     document.body.style.padding = "0";
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "auto";
     return () => {
+      document.documentElement.classList.remove("creator-verification-flow");
       document.body.style.margin = previous.margin;
       document.body.style.padding = previous.padding;
       document.body.style.overflowX = previous.overflowX;

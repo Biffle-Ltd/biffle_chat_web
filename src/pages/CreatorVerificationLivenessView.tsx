@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@aws-amplify/ui-react";
 import { FaceLivenessDetectorCore } from "@aws-amplify/ui-react-liveness";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CreatorVerificationScreenLayout from "../components/creator-verification/CreatorVerificationScreenLayout";
+import { useLivenessStartScreenLayout } from "../hooks/useLivenessStartScreenLayout";
 import { enqueueCreatorVerificationAnalyticsEvent } from "../services/biffleUserCenterEvents";
 import { fetchRekognitionStreamCredentials } from "../services/creatorVerificationApi";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
@@ -112,9 +113,21 @@ export default function CreatorVerificationLivenessView({
   const cameraGrantedForSessionRef = useRef<string | null>(null);
   const cameraDeniedForSessionRef = useRef<string | null>(null);
   const selfieEmittedForSessionRef = useRef<string | null>(null);
+  const livenessRootRef = useRef<HTMLDivElement>(null);
 
   const [cameraGate, setCameraGate] = useState<CameraGateState>("probing");
   const [permissionProbeNonce, setPermissionProbeNonce] = useState(0);
+
+  useLivenessStartScreenLayout(livenessRootRef, cameraGate === "ready");
+
+  // Inner scroller owns overflow so the start-screen CTA can stay reachable.
+  useEffect(() => {
+    const previous = document.body.style.overflowY;
+    document.body.style.overflowY = "hidden";
+    return () => {
+      document.body.style.overflowY = previous;
+    };
+  }, []);
 
   const handleRetryCameraAccess = useCallback(() => {
     setCameraGate("probing");
@@ -288,7 +301,10 @@ export default function CreatorVerificationLivenessView({
   return (
     <ThemeProvider theme={professionalLivenessTheme}>
       <CreatorVerificationScreenLayout variant="fill">
-        <div className="mx-auto flex w-full max-w-lg flex-1 flex-col min-h-[65dvh] sm:max-w-xl lg:max-w-2xl">
+        <div
+          ref={livenessRootRef}
+          className="mx-auto flex w-full max-w-lg flex-1 flex-col min-h-[65dvh] sm:max-w-xl lg:max-w-2xl"
+        >
           {cameraGate === "probing" ? (
             <CameraProbeSkeleton />
           ) : cameraGate === "blocked" ? (
