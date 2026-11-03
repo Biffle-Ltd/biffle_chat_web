@@ -28,6 +28,14 @@ import ProductsServices from "./components/ProductAndServices";
 import PricingPage from "./components/Pricing";
 import FBRedirect from "./components/FBRedirect";
 import LoadingScreen from "./components/creator-verification/LoadingScreen";
+import {
+  clearLinkrunnerUser,
+  identifyLinkrunnerUser,
+  isLinkrunnerSignup,
+  readLinkrunnerUserId,
+  readSignupTraits,
+  trackLinkrunnerSignup,
+} from "./utility/linkrunner";
 
 interface User {
   id: string;
@@ -70,6 +78,7 @@ function AppContent() {
   const [appliedCoupon, setAppliedCoupon] = React.useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const identifiedUserId = React.useRef<string | null>(null);
 
   // Check for stored user data on app load
   React.useEffect(() => {
@@ -139,13 +148,31 @@ function AppContent() {
   };
 
   const handleLogin = (userData: User) => {
+    const userId = readLinkrunnerUserId(userData);
+    if (userId) {
+      identifiedUserId.current = userId;
+      identifyLinkrunnerUser(userId);
+      if (isLinkrunnerSignup(userData)) {
+        trackLinkrunnerSignup(readSignupTraits(userData));
+      }
+    }
     setUser(userData);
     localStorage.setItem("authToken", userData.token);
     localStorage.setItem("userData", JSON.stringify(userData));
     navigate("/coins");
   };
 
+  React.useEffect(() => {
+    if (!user) return;
+    const userId = readLinkrunnerUserId(user);
+    if (!userId || identifiedUserId.current === userId) return;
+    identifiedUserId.current = userId;
+    identifyLinkrunnerUser(userId);
+  }, [user]);
+
   const handleLogout = () => {
+    clearLinkrunnerUser();
+    identifiedUserId.current = null;
     setUser(null);
     setSelectedPackage(null);
     setAppliedCoupon(null);
