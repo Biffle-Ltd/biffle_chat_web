@@ -1,7 +1,46 @@
 /**
  * Calmer chrome around AWS Face Liveness. Challenge colors on the freshness
  * canvas come from Rekognition and cannot be restyled without failing checks.
+ *
+ * Start screen: pin the CTA, darken the scrollbar, and auto-scroll to the
+ * button (see useLivenessStartScreenLayout).
  */
+
+.creator-verification-liveness-scroll,
+html.creator-verification-flow,
+html.creator-verification-flow body {
+  scrollbar-width: auto;
+  scrollbar-color: #111827 #d1d5db;
+  scroll-padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.creator-verification-liveness-scroll::-webkit-scrollbar,
+html.creator-verification-flow::-webkit-scrollbar,
+html.creator-verification-flow body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.creator-verification-liveness-scroll::-webkit-scrollbar-track,
+html.creator-verification-flow::-webkit-scrollbar-track,
+html.creator-verification-flow body::-webkit-scrollbar-track {
+  background: #d1d5db;
+}
+
+.creator-verification-liveness-scroll::-webkit-scrollbar-thumb,
+html.creator-verification-flow::-webkit-scrollbar-thumb,
+html.creator-verification-flow body::-webkit-scrollbar-thumb {
+  background: #111827;
+  border-radius: 999px;
+}
+
+.creator-verification-liveness-scroll::-webkit-scrollbar-thumb:hover,
+html.creator-verification-flow::-webkit-scrollbar-thumb:hover,
+html.creator-verification-flow body::-webkit-scrollbar-thumb:hover {
+  background: #030712;
+}
+
 [data-amplify-theme="biffle-liveness"] {
   --amplify-components-liveness-camera-module-background-color: hsl(220, 14%, 97%);
 }
@@ -63,6 +102,19 @@
   background-color: #1d4ed8;
   border-color: #1d4ed8;
   color: #fff;
+}
+
+[data-amplify-theme="biffle-liveness"]
+  .liveness-detector-check
+  > .amplify-flex:has(> .amplify-button--primary) {
+  position: sticky;
+  bottom: 0;
+  z-index: 6;
+  flex-shrink: 0;
+  justify-content: center;
+  background: hsl(220, 14%, 97%);
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

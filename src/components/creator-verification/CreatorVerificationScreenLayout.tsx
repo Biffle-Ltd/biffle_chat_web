@@ -10,7 +10,8 @@ type CreatorVerificationScreenLayoutProps = {
   children: ReactNode;
   /**
    * `centered` — static result / loading screens (default).
-   * `fill` — liveness: full viewport column so the detector can size correctly.
+   * `fill` — liveness: viewport-height column with its own scroller so the
+   * start-screen CTA can stay on screen on short phones.
    */
   variant?: "centered" | "fill";
 };
@@ -21,8 +22,10 @@ export default function CreatorVerificationScreenLayout({
 }: CreatorVerificationScreenLayoutProps) {
   if (variant === "fill") {
     return (
-      <div className={shell}>
-        <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+      <div
+        className={`${shell} creator-verification-liveness-scroll h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto`}
+      >
+        <div className="flex min-h-full flex-col">{children}</div>
       </div>
     );
   }
