@@ -15,6 +15,13 @@ interface ImportMetaEnv {
    * Must NOT be Meta’s secret Graph token in public builds — bundle exposes all `VITE_*` values.
    */
   readonly VITE_META_CONVERSION_BRIDGE_ACCESS_TOKEN?: string;
+  /** Firebase web app config. Analytics no-ops when any required value is missing. */
+  readonly VITE_FIREBASE_API_KEY?: string;
+  readonly VITE_FIREBASE_APP_ID?: string;
+  readonly VITE_FIREBASE_PROJECT_ID?: string;
+  readonly VITE_FIREBASE_AUTH_DOMAIN?: string;
+  /** GA4 web stream measurement ID (G-...). Required for female_verification_complete. */
+  readonly VITE_FIREBASE_MEASUREMENT_ID?: string;
 }
 
 interface ImportMeta {

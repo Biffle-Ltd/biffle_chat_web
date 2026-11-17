@@ -13,6 +13,7 @@ import {
   type VerifyRetryPolicy,
 } from "../services/creatorVerificationVerifyErrors";
 import type { CreatorVerificationAnalyticsContext } from "../utils/creatorVerificationUrlContext";
+import { enqueueFemaleVerificationGoogleAnalytics } from "../services/firebaseAnalytics";
 import { enqueueFemaleVerificationCapiBridge } from "../services/metaConversionBridge";
 import { postToRN, RN_EVENTS } from "../utils/rnBridge";
 
@@ -139,6 +140,11 @@ export function useCreatorVerification({
       );
       if (didEmitPostVerify && eventName === "female_verification_complete") {
         enqueueFemaleVerificationCapiBridge({
+          analyticsContext,
+          verifyResult,
+          sessionId: sid,
+        });
+        enqueueFemaleVerificationGoogleAnalytics({
           analyticsContext,
           verifyResult,
           sessionId: sid,
